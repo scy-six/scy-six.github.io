@@ -1,0 +1,918 @@
+@charset "utf-8";
+.qqspace-page ::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+.qqspace-page ::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+}
+.qqspace-page::-webkit-scrollbar-track-piece {
+  background-color: white;
+}
+.qqspace-page ::-webkit-scrollbar-track-piece:no-button {
+}
+.qqspace-page ::-webkit-scrollbar-thumb {
+  background-color: rgb(125, 125, 125);
+  border-radius: 3px;
+}
+.qqspace-page ::-webkit-scrollbar-thumb:hover {
+  background-color: rgb(153, 153, 153);
+}
+.qqspace-page ::-webkit-scrollbar-thumb:active {
+  background-color: rgb(102, 102, 102);
+}
+.qqspace-page {
+  min-height: 900px;
+  max-width: 1140px; /* 与「修身养性」等标准页内容容器同宽、居中 */
+  margin: 0 auto;
+}
+/* qqspace 正文容器直接继承主题 .layout.hide-aside 的 #page 宽度与 cardHover
+ * 卡片样式，不再额外限制宽度，保证与其它标准页面（如 travel）视觉一致。 */
+
+.qqspace-page .navbar-brand {
+  padding-top: 0rem;
+}
+.qqspace-page .breadcrumb {
+  padding-top: 8px !important;
+  margin-bottom: 0rem !important;
+}
+.qqspace-page .breadcrumb-item.active {
+  color: rgba(255, 193, 7, 0.66);
+}
+.qqspace-page .header {
+  text-align: center;
+}
+.qqspace-page #index_html {
+  margin-top: 70px;
+  margin-bottom: 56px;
+}
+.qqspace-page .head-info {
+  margin-top: 15px;
+}
+.qqspace-page .head-avatar img {
+  border-radius: 50px;
+}
+.qqspace-page .list-group-item {
+  border: none;
+  border-radius: 15px;
+}
+.qqspace-page .list-group-horizontal .list-group-item:first-child {
+  border-radius: 15px;
+}
+.qqspace-page .list-group-horizontal .list-group-item:last-child {
+  border-radius: 15px;
+}
+.qqspace-page .data-info {
+  margin-top: 30px;
+}
+.qqspace-page .avatar {
+  display: block;
+  width: 40px;
+  height: 40px;
+  float: left;
+  margin: 0.2em 0px 0px;
+}
+.qqspace-page #blogs-list .list-group-item {
+  border-radius: 15px;
+}
+.qqspace-page #blogs-list img {
+  max-width: 10vw;
+  max-height: 225px;
+}
+.qqspace-page #blogs-list .fa {
+  line-height: inherit;
+}
+.qqspace-page #blogs-types {
+  max-height: 90%;
+  overflow: auto;
+  position: fixed;
+  top: 60px;
+  right: 0px;
+  left: 0px;
+  z-index: 1030;
+}
+.qqspace-page #blog_content {
+  border: 1px solid rgb(233, 236, 239);
+  border-radius: 10px;
+}
+.qqspace-page #blog_content img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+.qqspace-page .boards {
+  top: 40px;
+  position: relative;
+}
+.qqspace-page .boards h1,
+.qqspace-page .boards h2 {
+  border-bottom: 1px solid rgb(234, 236, 239);
+  padding-bottom: 0.3em;
+}
+.qqspace-page .boards .card {
+  border-radius: 15px;
+}
+.qqspace-page .border {
+  border-radius: 15px;
+}
+.qqspace-page .favorites {
+  top: 57px;
+  position: relative;
+}
+.qqspace-page .favorites img {
+  max-width: 100%;
+  max-height: 100%;
+}
+.qqspace-page .dropdown-menu {
+  min-width: auto;
+}
+
+/* ================================================================
+ * 图片尺寸统一方案
+ *   · 说说「主体」配图（.medias 容器内）：统一边长正方形，完整显示不裁切
+ *       - 多图帖子：3 列等宽正方形网格；单图帖子：1 个同样大小的正方形
+ *       - 边长由 --shuo-img 控制，桌面/移动端自适应 → 保证「宽度统一、正方形内居中」
+ *   · 评论配图（.comment-lightgallery 容器内）：宽度 = 说说图片的一半，
+ *       保持原始形状、不裁切（与说说正方形网格作出区分）
+ * ================================================================ */
+.qqspace-page {
+  --shuo-img: 200px; /* 说说主体图片统一边长（正方形） */
+}
+@media (max-width: 767px) {
+  .qqspace-page {
+    --shuo-img: 100px;
+  }
+  /* 移动端收窄，3 列仍不溢出 */
+}
+
+/* 基础容器：CSS Grid，水平居中 */
+.qqspace-page .medias {
+  display: grid !important;
+  gap: 6px;
+  max-width: 100%;
+  justify-content: center;
+  /* 抵消 Bootstrap .row 的负外边距，避免网格溢出产生横向滚动 */
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* 多图：3 列等宽正方形；单图：1 列（与多图单元格同尺寸）*/
+.qqspace-page .medias.two,
+.qqspace-page .medias.three {
+  grid-template-columns: repeat(3, var(--shuo-img));
+}
+.qqspace-page .medias:not(.two):not(.three) {
+  grid-template-columns: var(--shuo-img);
+}
+
+/* 说说图片单元格：统一正方形边长，完整显示不裁切 */
+.qqspace-page .medias-item {
+  cursor: pointer;
+  box-sizing: border-box;
+  border: 1.5px solid transparent;
+  overflow: hidden;
+  width: var(--shuo-img); /* 统一宽度 */
+  height: var(--shuo-img); /* 统一高度 → 正方形 */
+}
+.qqspace-page .medias-item img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain; /* 等比完整显示，居中留白不裁切 */
+}
+
+/* ================================================================
+ * 评论配图布局
+ *   · 宽度 = 说说图片的一半；保持原始形状、不裁切
+ * ================================================================ */
+.qqspace-page .comment-lightgallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.qqspace-page .comment-img-lightbox {
+  display: inline-block;
+  line-height: 0; /* 去掉行内图底部空隙 */
+  cursor: pointer;
+}
+.qqspace-page .comment-img {
+  width: calc(var(--shuo-img) / 2); /* 评论图宽 = 说说图宽的一半 */
+  height: auto; /* 原始形状，不裁切 */
+  max-height: var(--shuo-img); /* 过高图限制，避免撑破评论区 */
+  object-fit: contain;
+  border: 1px solid rgb(230, 236, 241);
+  border-radius: 4px;
+  background: rgb(247, 249, 250); /* 含透明/竖图时留白更自然 */
+}
+
+/* 图片单击放大由主题自带 Fancybox 提供（qqspace-lightbox.js 仅做锚点升级与绑定，
+   样式由主题负责），本页仅保留内容区光标提示。 */
+.qqspace-page .content a {
+  cursor: pointer;
+}
+.qqspace-page .content img {
+  cursor: pointer;
+}
+.qqspace-page .html_header {
+  display: block;
+  height: 60px;
+  line-height: 46px;
+  border-bottom: 1px solid rgb(230, 236, 241);
+  text-align: left !important;
+}
+.qqspace-page .html_header span::after {
+  content: "QQ空间导出助手";
+  font-size: 17px;
+  font-weight: bold;
+}
+.qqspace-page .html_header span::before {
+  content: "❖";
+  font-size: 19px;
+  font-weight: bold;
+  margin: 0px 8px 0px 5px;
+  color: rgb(18, 132, 217);
+}
+.qqspace-page #write {
+  margin: 50px 50px 50px 260px;
+  padding: 20px 60px;
+  max-width: unset;
+  background: rgb(255, 255, 255);
+  border: 1px solid rgb(230, 236, 241);
+  box-shadow: rgba(116, 129, 141, 0.08) 0px 2px 8px;
+  border-radius: 4px;
+}
+
+/* 画廊 */
+.qqspace-page .gallery-container h1 {
+  text-align: center;
+  margin-top: 70px;
+  font-family: "Droid Sans", sans-serif;
+  font-weight: bold;
+  color: rgb(88, 89, 90);
+}
+.qqspace-page .gallery-container p.page-description {
+  text-align: center;
+  margin: 30px auto;
+  font-size: 18px;
+  color: rgb(133, 135, 140);
+}
+.qqspace-page .tz-gallery .thumbnail {
+  padding: 0px;
+  margin-bottom: 30px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 1rem;
+  border: none;
+  transition: all 0.15s ease-in-out 0s;
+  box-shadow: rgba(0, 0, 0, 0.06) 0px 8px 15px;
+}
+.qqspace-page .tz-gallery .thumbnail:hover {
+  transform: translateY(-3px) scale(1.02);
+}
+.qqspace-page .tz-gallery .caption {
+  padding: 26px 30px;
+  text-align: center;
+}
+.qqspace-page .tz-gallery .caption h3 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-top: 0px;
+}
+.qqspace-page .tz-gallery .caption p {
+  font-size: 12px;
+  color: rgb(123, 125, 125);
+  margin: 0px;
+}
+.qqspace-page .baguetteBox-button {
+  background-color: transparent !important;
+}
+.qqspace-page .pic-num-wrap {
+  position: absolute;
+  left: 0px;
+  top: 200px;
+  width: 100%;
+  height: 50px;
+  text-align: right;
+  background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(26, 26, 26, 0.4));
+}
+.qqspace-page .pic-num {
+  display: inline-block;
+  margin: 20px 5px 0px 0px;
+  font-size: 26px;
+  line-height: 1;
+  font-family: Gulim;
+  color: rgb(255, 255, 255);
+}
+.qqspace-page .card-img-top {
+  border-top-left-radius: calc(-1px + 1rem);
+  border-top-right-radius: calc(-1px + 1rem);
+}
+.qqspace-page .lightbox {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  overflow-x: hidden;
+  text-align: center;
+  border-top-left-radius: calc(-1px + 1rem);
+  border-top-right-radius: calc(-1px + 1rem);
+  background-color: black !important;
+}
+.qqspace-page .lightbox img {
+  height: 100%;
+  width: inherit;
+}
+.qqspace-page .data-info .list-group-item {
+  padding: 0.75rem 0.25rem !important;
+}
+.qqspace-page .comment-img {
+  cursor: pointer;
+  text-decoration: none;
+}
+.qqspace-page .cursor {
+  cursor: pointer;
+}
+.qqspace-page pre {
+  white-space: pre-wrap;
+  font: inherit !important;
+}
+
+/* 时间线 */
+.qqspace-page .timeline2-centered {
+  position: relative;
+  margin-bottom: 30px;
+}
+.qqspace-page .timeline2-centered::before,
+.qqspace-page .timeline2-centered::after {
+  content: " ";
+  display: table;
+}
+.qqspace-page .timeline2-centered::after {
+  clear: both;
+}
+.qqspace-page .timeline2-centered::before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 10px;
+  background: rgb(245, 245, 246);
+  top: 20px;
+  bottom: 20px;
+  margin-left: 26px;
+  border-radius: 5px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry {
+  position: relative;
+  margin-top: 5px;
+  margin-left: 30px;
+  margin-bottom: 10px;
+  clear: both;
+}
+.qqspace-page .timeline2-centered .timeline2-entry::before,
+.qqspace-page .timeline2-centered .timeline2-entry::after {
+  content: " ";
+  display: table;
+}
+.qqspace-page .timeline2-centered .timeline2-entry::after {
+  clear: both;
+}
+.qqspace-page .timeline2-centered .timeline2-entry.begin {
+  margin-bottom: 0px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry.left-aligned {
+  float: left;
+}
+.qqspace-page .timeline2-centered .timeline2-entry.left-aligned .timeline2-entry-inner {
+  margin-left: 0px;
+  margin-right: -18px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry.left-aligned .timeline2-entry-inner .timeline2-label {
+  margin-left: 0px;
+  margin-right: 70px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry.left-aligned .timeline2-entry-inner .timeline2-label::after {
+  left: auto;
+  right: 0px;
+  margin-left: 0px;
+  margin-right: -9px;
+  transform: rotate(180deg);
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner {
+  position: relative;
+  margin-left: 35px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner::before,
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner::after {
+  content: " ";
+  display: table;
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner::after {
+  clear: both;
+}
+.qqspace-page .timeline2-time {
+  height: 45px;
+  width: 45px;
+  background: padding-box rgb(255, 255, 255);
+  color: rgb(115, 120, 129);
+  display: block;
+  border-radius: 50%;
+  text-align: center;
+  float: left;
+  margin-top: 40px;
+  line-height: 45px;
+  margin-left: -55px;
+  border: 1px solid rgb(234, 234, 234);
+}
+.qqspace-page .timeline2-icon {
+  background: padding-box rgb(255, 255, 255);
+  color: rgb(115, 120, 129);
+  display: block;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 21px;
+  float: left;
+  margin-top: 40px;
+  line-height: 60px;
+}
+.qqspace-page .timeline2-icon i {
+  font-size: 28px;
+}
+.qqspace-page .timeline2-icon img {
+  vertical-align: inherit;
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner .timeline2-icon {
+  width: 50px;
+  height: 50px;
+  margin-left: 5px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-year .timeline2-icon {
+  width: 70px;
+  height: 70px;
+  border: 3px solid rgb(234, 234, 234);
+  margin-left: -33px;
+  line-height: 65px;
+  font-size: 25px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-month .timeline2-icon,
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-day .timeline2-icon {
+  border: 3px solid rgb(234, 234, 234);
+  margin-left: -24px;
+  height: 50px;
+  width: 50px;
+  line-height: 45px;
+  font-size: 15px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner .timeline2-label {
+  position: relative;
+  background: rgb(245, 245, 245);
+  margin-left: 75px;
+  margin-top: 45px;
+  border: 0px solid rgb(234, 234, 234);
+  border-radius: 0px;
+  padding: 20px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner .timeline2-label::after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 9px 9px 9px 0px;
+  border-color: transparent rgb(245, 245, 245) transparent transparent;
+  left: 0px;
+  top: 10px;
+  margin-left: -9px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner .timeline2-label h2,
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner .timeline2-label p {
+  margin: 0px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner .timeline2-label p + p {
+  margin-top: 15px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner .timeline2-label h2 {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner .timeline2-label h2 a {
+  color: rgb(77, 156, 248);
+}
+.qqspace-page .timeline2-centered .timeline2-entry .timeline2-entry-inner .timeline2-label h2 span {
+  opacity: 0.6;
+}
+.qqspace-page .visitor-list {
+  margin-top: 0.5rem !important;
+}
+.qqspace-page .visitor-list .list-group-item {
+  background-color: inherit;
+}
+.qqspace-page .visitor-list .list-group-item .poster_img > a {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+}
+.qqspace-page .visitor-list .list-group-item .poster_img > a > img {
+  width: 100px;
+  height: 100px;
+}
+.qqspace-page .visitor-list .list-group-item .album {
+  width: 110px;
+}
+
+/* lightGallery 评论 */
+.qqspace-page .lg-comment-body {
+  padding-left: 10px;
+}
+.qqspace-page .lg-outer.lg-comment-active {
+  width: auto;
+  right: 25%;
+  left: 10px;
+}
+.qqspace-page .lg-outer.lg-comment-active .lg-comment-box {
+  inset: 0px 0px 0px auto;
+  width: 25%;
+  position: fixed;
+  max-height: none;
+}
+.qqspace-page .lg-outer.lg-comment-active .lg-comment-overlay {
+  visibility: hidden;
+}
+.qqspace-page .lg-comment-toggle.lg-icon.has-comments {
+  color: rgb(0, 123, 255) !important;
+}
+.qqspace-page .lg-comment-box {
+  overflow: hidden auto;
+}
+.qqspace-page .empty-comments {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.qqspace-page .lg-comment-box .empty-comments .content {
+  top: 50%;
+  position: fixed;
+}
+.qqspace-page .lg-comment-box .comments.border-top {
+  border-top: none !important;
+  border-bottom: 1px solid rgb(222, 226, 230) !important;
+}
+.qqspace-page .lg-outer .lg-video-cont .lg-object,
+.qqspace-page .lg-outer .lg-object.lg-video-poster {
+  width: auto !important;
+  height: 100% !important;
+}
+
+/* （lazyload 类已从 HTML 中移除，此规则保留仅为兼容性兜底）*/
+.qqspace-page .messages {
+  top: 57px;
+  position: relative;
+}
+.qqspace-page .message-infos > .list-group-item {
+  padding: 0.25rem 1.25rem;
+}
+
+/* 说说正文 */
+.qqspace-page .messageText pre {
+  white-space: pre-wrap;
+  font: inherit !important;
+}
+.qqspace-page .messageText pre.hasMore {
+  overflow: hidden;
+  height: 13rem !important;
+}
+.qqspace-page .messageText pre.more {
+  height: auto !important;
+}
+.qqspace-page .readMore {
+  display: block;
+  text-align: center;
+}
+
+/* 评论头像小于说说作者头像（40px），让评论区在视觉上「弱」于正文，避免喧宾夺主 */
+.qqspace-page .comment .avatar {
+  width: 32px;
+  height: 32px;
+}
+.qqspace-page .comment-text {
+  margin-left: 38px;
+}
+.qqspace-page audio {
+  max-width: 80%;
+}
+.qqspace-page #boards_html .comment_quote {
+  padding: 5px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  background-color: rgb(245, 245, 245);
+}
+.qqspace-page .card-body {
+  padding: 1.25rem 0.5rem !important;
+}
+.qqspace-page blockquote.source {
+  padding-left: 0.75rem;
+  border-left: 0.35rem solid rgb(222, 226, 230) !important;
+}
+.qqspace-page .cursor {
+  cursor: pointer;
+}
+
+/* 好友 */
+.qqspace-page #friends-table img {
+  width: 50px;
+  height: 50px;
+  max-width: 50px;
+  max-height: 50px;
+  border-radius: 50px;
+}
+.qqspace-page #friends-list img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+}
+.qqspace-page #friends-list .list-group-item {
+  border-radius: 15px;
+}
+.qqspace-page #friends-list .fa {
+  line-height: inherit;
+}
+.qqspace-page #friends-types {
+  max-height: 90%;
+  overflow: auto;
+  position: fixed;
+  top: 60px;
+  right: 0px;
+  left: 0px;
+  z-index: 1030;
+}
+.qqspace-page #friends-type-list {
+  left: 25%;
+}
+.qqspace-page #friends-type-list .list-inline {
+  margin-bottom: 0.3rem;
+  margin-left: 4rem;
+}
+.qqspace-page #friends-type-list .align-middle.mb-2 > span {
+  margin-bottom: 0.3rem;
+  margin-left: 1.5rem !important;
+}
+
+/* （medias-item img 的尺寸规则已按「多图 / 单图」分别定义在上方，此处不再重复）*/
+.qqspace-page .album-photo-total {
+  position: absolute;
+  right: 0px;
+  font-size: larger;
+  background-color: rgba(40, 167, 69, 0.8);
+}
+.qqspace-page #albums_html .thumbnail a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+  border-top-left-radius: calc(-1px + 1rem);
+  border-top-right-radius: calc(-1px + 1rem);
+  background-color: black !important;
+}
+
+/* ==================== 响应式布局 ==================== */
+
+/* 手机 / 小屏（<768px）：隐藏固定侧栏，正文与评论占满整屏 */
+@media (max-width: 767px) {
+  .qqspace-page .avatar {
+    width: 35px;
+    height: 35px;
+  }
+  .qqspace-page .comment-avatar > .avatar {
+    width: 30px;
+    height: 30px;
+  }
+  .qqspace-page #blogs-types {
+    display: none;
+  }
+  .qqspace-page #blogs-type-list {
+    left: 0px;
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+  }
+  .qqspace-page #friends-types {
+    display: none;
+  }
+  .qqspace-page #friends-type-list {
+    left: 0px;
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+  }
+  .qqspace-page #albums_html .card-img {
+    width: inherit;
+    height: 250px;
+  }
+  .qqspace-page #albums_html .thumbnail {
+    width: 100%;
+  }
+  .qqspace-page .photos .card-img {
+    width: inherit;
+    height: 250px;
+  }
+  .qqspace-page .photos .thumbnail {
+    width: 100%;
+  }
+  .qqspace-page .photos .lightbox {
+    height: 250px;
+  }
+  .qqspace-page .videos .lightbox {
+    height: 250px;
+  }
+
+  /* 照片网格：移动端保持 3 列固定 --shuo-img 正方形（3×100px 仍不溢出，宽度统一） */
+  .qqspace-page .lg-outer.lg-comment-active {
+    right: 0px !important;
+  }
+  .qqspace-page .lg-outer.lg-comment-active .lg-comment-box {
+    width: 100% !important;
+  }
+}
+
+/* 超小屏（≤340px）：略缩 --shuo-img，确保 3 列固定正方形仍不溢出 */
+@media (max-width: 340px) {
+  .qqspace-page {
+    --shuo-img: 90px;
+  }
+}
+
+/* 平板及以上（≥768px）：正文与评论区统一向右偏移（margin-left）并限宽，
+   确保评论不会占满整屏、也不会压在导航下方。
+   （原「显示左侧年份/月份导航 #BlogAnchor」两条规则已随该导航移除而删除） */
+@media (min-width: 768px) {
+  .qqspace-page #messages_html,
+  .qqspace-page #albums_html,
+  .qqspace-page #boards_html,
+  .qqspace-page #favorites_html,
+  .qqspace-page #shares_html,
+  .qqspace-page #visitors_html {
+    margin-left: 230px;
+    max-width: calc(100vw - 260px);
+  }
+  .qqspace-page #blogs-types {
+    display: block !important;
+  }
+  .qqspace-page #blogs-type-list {
+    left: 230px;
+    max-width: calc(100vw - 260px);
+    flex: 1 1 auto;
+  }
+  .qqspace-page #friends-types {
+    display: block !important;
+  }
+  .qqspace-page #friends-type-list {
+    left: 230px;
+    max-width: calc(100vw - 260px);
+    flex: 1 1 auto;
+  }
+  .qqspace-page #albums_html .card-img,
+  .qqspace-page .photos .card-img,
+  .qqspace-page .videos .card-img {
+    width: inherit;
+    height: 175px;
+  }
+  .qqspace-page #albums_html .thumbnail,
+  .qqspace-page .photos .thumbnail,
+  .qqspace-page .videos .thumbnail {
+    width: 175px;
+  }
+  .qqspace-page #albums_html .pic-num-wrap,
+  .qqspace-page .photos .pic-num-wrap,
+  .qqspace-page .videos .pic-num-wrap {
+    top: 125px;
+  }
+  .qqspace-page .photos .lightbox,
+  .qqspace-page .videos .lightbox {
+    height: 175px;
+  }
+  .qqspace-page .comment-avatar > .avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* 照片网格：平板保持 3 列（grid 已自适应） */
+}
+
+/* 宽屏（≥1000px）：正文与评论区改为居中限宽（60vw），与原始导出样式一致 */
+@media (min-width: 1000px) {
+  .qqspace-page #messages_html,
+  .qqspace-page #albums_html,
+  .qqspace-page #boards_html,
+  .qqspace-page #favorites_html,
+  .qqspace-page #shares_html,
+  .qqspace-page #visitors_html {
+    margin-left: 230px;
+    max-width: 60vw;
+  }
+  .qqspace-page #blogs-type-list,
+  .qqspace-page #friends-type-list {
+    left: 230px;
+    max-width: 60vw;
+  }
+  .qqspace-page .comment-avatar > .avatar {
+    width: 32px;
+    height: 32px;
+  }
+
+  /* 照片网格：宽屏保持 3 列自适应（grid 已自动适配） */
+}
+@media (min-width: 1400px) {
+  .qqspace-page #albums_html .card-img {
+    width: inherit;
+    height: 250px;
+  }
+  .qqspace-page #albums_html .thumbnail {
+    width: 250px;
+  }
+  .qqspace-page #albums_html .pic-num-wrap {
+    top: 200px;
+  }
+  .qqspace-page .photos .card-img {
+    width: inherit;
+    height: 300px;
+  }
+  .qqspace-page .photos .thumbnail {
+    width: 300px;
+  }
+  .qqspace-page .photos .lightbox {
+    height: 300px;
+  }
+  .qqspace-page .photos .pic-num-wrap {
+    top: 250px;
+  }
+  .qqspace-page .videos .card-img {
+    width: inherit;
+    height: 300px;
+  }
+  .qqspace-page .videos .thumbnail {
+    width: 300px;
+  }
+  .qqspace-page .videos .lightbox {
+    height: 300px;
+  }
+  .qqspace-page .videos .pic-num-wrap {
+    top: 250px;
+  }
+}
+.qqspace-page .tooltip-inner {
+  max-width: 600px !important;
+}
+
+/*
+ * ============================================================
+ * 功能增强（隐私保护 / 表情显示 / 导航偏移）
+ * ============================================================
+ */
+
+/* QQ 表情：行内小图标，避免撑乱文字排版 */
+.qqspace-page img[src*="images/common/e"] {
+  height: 22px;
+  width: auto;
+  vertical-align: middle;
+  display: inline-block;
+  margin: 0 1px;
+}
+
+/* QQ 表情 emoji 对齐 */
+.qqspace-page .qq-emoji {
+  display: inline-block;
+  vertical-align: -0.1em;
+}
+
+/* === QQ空间「按年份折叠」交互样式 === */
+/* 折叠态：隐藏年份组内的全部内容，仅保留年份标题常驻 */
+.qqspace-page .year-group.is-collapsed > *:not(h2.qq-head) {
+  display: none;
+}
+/* 年份标题可点击（折叠开关） */
+.qqspace-page h2.qq-head.year-toggle {
+  cursor: pointer;
+  position: relative;
+  padding-left: 1.1em;
+  user-select: none;
+}
+/* 展开态指示三角 ▾（右移进竖条内侧，避免压在 border-left 上） */
+.qqspace-page h2.qq-head.year-toggle::before {
+  content: "\25BE";
+  position: absolute;
+  left: 0.5em;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.7em;
+  color: var(--font-color);
+  transition: transform 0.15s ease;
+}
+/* 折叠态指示三角 ▸ */
+.qqspace-page .year-group.is-collapsed > h2.qq-head.year-toggle::before {
+  content: "\25B8";
+}
+/* 目录年份项与内容区状态同步：展开时高亮 */
+.toc-item.toc-year-open > a.toc-link {
+  color: var(--btn-primary-color, #409eff);
+  font-weight: 600;
+}

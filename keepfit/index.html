@@ -1,0 +1,315 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>修身养性 | Scy's Blog</title><meta name="author" content="Scy"><meta name="copyright" content="Scy"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="记录我在游泳、骑行、跑步三项运动上的距离、时长与成长轨迹。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="修身养性">
+<meta property="og:url" content="https://scy-six.github.io/keepfit/index.html">
+<meta property="og:site_name" content="Scy&#39;s Blog">
+<meta property="og:description" content="记录我在游泳、骑行、跑步三项运动上的距离、时长与成长轨迹。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://scy-six.github.io/img/avatar.webp">
+<meta property="article:published_time" content="2026-08-20T16:00:00.000Z">
+<meta property="article:modified_time" content="2026-08-29T18:14:42.123Z">
+<meta property="article:author" content="Scy">
+<meta property="article:tag" content="scy, blog, life">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://scy-six.github.io/img/avatar.webp"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.webp"><link rel="canonical" href="https://scy-six.github.io/keepfit/index.html"><link rel="preconnect"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css"><link rel="preload" href="/pluginsSrc/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/pluginsSrc/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/pluginsSrc/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><!--  Fancybox 是按需组件（点击才展示），非首屏关键路径；--><!--  critters 只内联 ~5% 的规则，导致 95% 布局/交互样式丢失、灯箱错位。--><!--  保留原始 link 让浏览器在 onload 后以 <link media=all> 完整加载。--><link rel="stylesheet" href="/pluginsSrc/@fancyapps/ui/dist/fancybox/fancybox.css" data-no-inline media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', 'ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const hour = new Date().getHours()
+          const start = 8
+          const end = 22
+          const isNight =
+            start < end
+                ? hour < start || hour >= end
+                : hour >= start || hour < end
+          if (theme === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else theme === 'light' ? activateLightMode() : activateDarkMode()
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: true,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false,
+  darkmode: {
+    enable: true,
+    autoChangeMode: 2,
+    start: 8,
+    end: 22,
+    bgLight: "/img/wall/wallpaper.webp",
+    bgDark: "/img/wall/wall.webp"
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '修身养性',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'page'
+}</script><script src="/js/theme-init.js"></script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/album.css"><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="bg-animation" id="web_bg"></div><script>(() => {
+  const arr = ["background-image: url(/img/wall/wallpaper.webp);"]
+  const webBgDiv = document.getElementById('web_bg')
+
+  const setRandomBg = () => {
+    webBgDiv.style = arr[Math.floor(Math.random() * arr.length)]
+    requestAnimationFrame(() => webBgDiv.classList.add('bg-animation'))
+  }
+
+  document.addEventListener('pjax:send', () => {
+    webBgDiv.style = ''
+    webBgDiv.classList.remove('bg-animation')
+  })
+
+  document.addEventListener('pjax:complete', setRandomBg)
+  document.addEventListener('DOMContentLoaded', setRandomBg)
+})()
+</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.webp" onerror="this.onerror=null;this.src='/img/404.webp'" alt="avatar"/></div><div class="site-data text-center"><div class="site-data-item"><div class="headline">文章</div><div class="length-num">10</div></div><div class="site-data-item"><div class="headline">分类</div><div class="length-num">5</div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/index.html"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/pet/index.html"><i class="fa-fw fas fa-cat"></i><span> 编外成员</span></a></li><li><a class="site-page child" href="/garden/index.html"><i class="fa-fw fas fa-seedling"></i><span> 葬爱花园</span></a></li><li><a class="site-page child" href="/diy/index.html"><i class="fa-fw fas fa-gears"></i><span> 手作 DIY</span></a></li><li><a class="site-page child" href="/bird/index.html"><i class="fa-fw fas fa-camera"></i><span> 捕光捉影</span></a></li><li><a class="site-page child" href="/angling/index.html"><i class="fa-fw fas fa-fish"></i><span> 永不空军</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-film"></i><span> 第三次元</span></a></div><div class="menus_item"><a class="site-page" href="/qqspace/index.html"><i class="fa-fw fab fa-qq"></i><span> 空间遗址</span></a></div><div class="menus_item"><a class="site-page" href="/keepfit/index.html"><i class="fa-fw fas fa-person-running"></i><span> 修身养性</span></a></div><div class="menus_item"><a class="site-page" href="/mountain/index.html"><i class="fa-fw fas fa-mountain"></i><span> 十万大山</span></a></div><div class="menus_item"><a class="site-page" href="/travel/index.html"><i class="fa-fw fas fa-person-walking-luggage"></i><span> 到此一游</span></a></div><div class="menus_item"><a class="site-page" href="/about/index.html"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo.webp" alt="Logo"><span class="site-name">Scy's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/index.html"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/pet/index.html"><i class="fa-fw fas fa-cat"></i><span> 编外成员</span></a></li><li><a class="site-page child" href="/garden/index.html"><i class="fa-fw fas fa-seedling"></i><span> 葬爱花园</span></a></li><li><a class="site-page child" href="/diy/index.html"><i class="fa-fw fas fa-gears"></i><span> 手作 DIY</span></a></li><li><a class="site-page child" href="/bird/index.html"><i class="fa-fw fas fa-camera"></i><span> 捕光捉影</span></a></li><li><a class="site-page child" href="/angling/index.html"><i class="fa-fw fas fa-fish"></i><span> 永不空军</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-film"></i><span> 第三次元</span></a></div><div class="menus_item"><a class="site-page" href="/qqspace/index.html"><i class="fa-fw fab fa-qq"></i><span> 空间遗址</span></a></div><div class="menus_item"><a class="site-page" href="/keepfit/index.html"><i class="fa-fw fas fa-person-running"></i><span> 修身养性</span></a></div><div class="menus_item"><a class="site-page" href="/mountain/index.html"><i class="fa-fw fas fa-mountain"></i><span> 十万大山</span></a></div><div class="menus_item"><a class="site-page" href="/travel/index.html"><i class="fa-fw fas fa-person-walking-luggage"></i><span> 到此一游</span></a></div><div class="menus_item"><a class="site-page" href="/about/index.html"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">修身养性</h1></div></header><main class="layout hide-aside" id="content-inner"><div id="page"><div class="container" id="article-container"><blockquote class="page-subtitle"><h2>汗水激发活力，热血唤醒激情</h2></blockquote>
+
+<!-- =========================================================================
+     修身养性 — 三项运动记录
+     数据来源：运动记录.xlsx（游泳/骑行/跑步 三个 sheet），由 tools/gen_keepfit.py 生成
+               source/keepfit/assets/js/keepfit-data.js（window.KEEPFIT_RECORDS）。
+     页面结构：
+       1) 概览        —— 三项统计卡（运动项目 / 次数 / 投入时长）
+       2) 运动记录    —— 三项速率折线图，每项独立一行（跑步/骑行=km/h，游泳=配速 min/100m，纵轴由大到小）
+       3) 累计趋势    —— 三项累计距离折线图，每项独立一行，不列明细表（横纵轴更清晰）
+       4) 质量监控    —— 体重趋势折线图（kg，自高中至今），不含辅助参数；数据由 tools/gen_weight.py 从 质量监控.xlsx 生成
+     改 xlsx 后重跑 python tools/gen_keepfit.py 即可全页更新。
+   ========================================================================= -->
+
+<div class="keepfit-page">
+
+  <!-- 1) 概览 -->
+  <section class="keepfit-section">
+    <h2 class="keepfit-h2" id="概览">概览</h2>
+    <div class="keepfit-stats">
+      <div class="keepfit-stat-card">
+        <span class="num" id="stat-sports">0</span>
+        <span class="lbl">运动项目</span>
+      </div>
+      <div class="keepfit-stat-card">
+        <span class="num" id="stat-counts">0</span>
+        <span class="lbl">运动次数</span>
+      </div>
+      <div class="keepfit-stat-card">
+        <span class="num" id="stat-hours">0</span>
+        <span class="lbl">投入时长 (h)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2) 运动记录：三项速率图（不列明细列表） -->
+  <section class="keepfit-section">
+    <h2 class="keepfit-h2" id="运动记录">运动记录</h2>
+    <p class="hint">三项运动各自的速率轨迹。跑步 / 骑行为 km/h（越靠上越快）；游泳为配速 min/100m，纵轴由大到小，数值越小越快。</p>
+    <div class="keepfit-rate-grid">
+      <div class="keepfit-chart-card">
+        <p class="keepfit-chart-title sport-run">跑步 · 速率</p>
+        <p class="keepfit-chart-sub">单位 km/h，数值越高越快。</p>
+        <div id="rate-run"><!-- SVG 速率折线图 --></div>
+      </div>
+      <div class="keepfit-chart-card">
+        <p class="keepfit-chart-title sport-bike">骑行 · 速率</p>
+        <p class="keepfit-chart-sub">单位 km/h，数值越高越快。</p>
+        <div id="rate-bike"><!-- SVG 速率折线图 --></div>
+      </div>
+      <div class="keepfit-chart-card">
+        <p class="keepfit-chart-title sport-swim">游泳 · 配速</p>
+        <p class="keepfit-chart-sub">单位 min/100m，纵轴由大到小；数值越小越快。</p>
+        <div id="rate-swim"><!-- SVG 配速折线图 --></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3) 累计趋势：三项累计距离折线图（每项独立一行） -->
+  <section class="keepfit-section">
+    <h2 class="keepfit-h2" id="累计趋势">累计趋势</h2>
+    <p class="hint">三项运动各自按日期的累计距离（km）折线图；每项独立一行，横纵轴更清晰，不列明细表。</p>
+    <div class="keepfit-trend-block">
+      <h3 class="keepfit-h3 sport-run">跑步</h3>
+      <div id="trend-run"><!-- 累计距离折线图 --></div>
+      <h3 class="keepfit-h3 sport-bike">骑行</h3>
+      <div id="trend-bike"><!-- 累计距离折线图 --></div>
+      <h3 class="keepfit-h3 sport-swim">游泳</h3>
+      <div id="trend-swim"><!-- 累计距离折线图 --></div>
+    </div>
+  </section>
+
+  <!-- 4) 质量监控：体重趋势折线图（不列辅助参数） -->
+  <section class="keepfit-section">
+    <h2 class="keepfit-h2" id="质量监控">质量监控</h2>
+    <p class="hint">体重随日期的变化趋势（单位 kg），自高中至今。仅展示体重本身，不含目标体重 / BMI 等辅助参数。</p>
+    <div class="keepfit-chart-card">
+      <p class="keepfit-chart-title sport-weight">体重趋势</p>
+      <p class="keepfit-chart-sub">单位 kg，数值越高越重。</p>
+      <div id="weight-chart"><!-- SVG 体重折线图 --></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- 本页资源（相对 /keepfit/ 解析，离线可用） -->
+<link rel="stylesheet" type="text/css" href="assets/css/keepfit.css">
+<script src="assets/js/keepfit-data.js"></script>
+<script src="assets/js/keepfit-weight.js"></script>
+<script src="/js/charts-axis.js"></script>
+<script src="assets/js/keepfit-charts.js"></script>
+</div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2023.07 - 2026 By Scy</span></div><div class="footer_custom_text">在这个智商过剩，利益至上的年代；<br/>💖💖💖诚挚和走心显得格外有质感！💖💖💖</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/pluginsSrc/@fancyapps/ui/dist/fancybox/fancybox.umd.js"></script><script src="/pluginsSrc/instant.page/instantpage.js" type="module"></script><script src="/pluginsSrc/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/pluginsSrc/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script async src="/js/title.js"></script><script data-pjax src="/js/bangumi-view.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

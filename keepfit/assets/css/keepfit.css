@@ -1,0 +1,181 @@
+/* =============================================================================
+ * keepfit.css — 修身养性页（三项运动记录）样式
+ * -----------------------------------------------------------------------------
+ * 设计语言：完全对齐 mountain.css（十万大山）/ travel.css（到此一游）的主题卡片风格
+ *   · 全部以 .keepfit-page 前缀限定作用域，不污染全站其它页面
+ *   · 配色统一走 Butterfly 主题变量（--card-bg / --font-color / --tab-border-color
+ *     / --default-bg-color / --radius-card），亮 / 暗 / 阅读 三种模式自动适配
+ *   · 卡片质感（圆角 / 细描边 / 微阴影 / 悬停浮起）与全站 .card 一致
+ *   · 内容容器 max-width:1140px，与 travel / mountain 同宽
+ *   · 三项运动配色：跑步=主题主色，骑行=绿，游泳=橙（与图表、表格一致）
+ * ========================================================================== */
+
+/* ── 0. 页面容器：居中、限定宽度，露出主题背景 ─────────────────────────────── */
+.keepfit-page {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 1rem 1.2rem 3rem;
+}
+
+/* ── 1. 区块标题（与 travel 卡片对齐，前缀图标保留主题 beautify 的 fa-link） ─ */
+.keepfit-section {
+  margin-bottom: 2.4rem;
+}
+
+.keepfit-h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 1.1rem;
+  padding-left: 0.7rem;
+  color: var(--font-color);
+}
+
+.keepfit-section .hint {
+  margin: -0.4rem 0 1rem;
+  font-size: 0.82rem;
+  opacity: 0.6;
+  line-height: 1.6;
+}
+
+/* ── 2. 概览统计卡（3 张：运动项目 / 次数 / 时长） ──────────────────────── */
+.keepfit-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.keepfit-stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--tab-border-color);
+  border-radius: var(--radius-card);
+  padding: 1.3rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.keepfit-stat-card:hover {
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--font-color) 16%, transparent);
+  transform: translateY(-3px);
+}
+
+.keepfit-stat-card .num {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--default-bg-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.keepfit-stat-card .lbl {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* ── 4. 图表卡片 ──────────────────────────────────────────────────────── */
+.keepfit-chart-card {
+  background: var(--card-bg);
+  border: 1px solid var(--tab-border-color);
+  border-radius: var(--radius-card);
+  padding: 1.2rem 1.3rem 1.4rem;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+}
+
+.keepfit-chart-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin: 0 0 0.3rem;
+  color: var(--font-color);
+}
+
+.keepfit-chart-sub {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  margin: 0 0 0.9rem;
+}
+
+.keepfit-chart-card svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  font-family: inherit;
+}
+
+/* 图表内 SVG 元素（由 keepfit-charts.js 生成，统一走主题变量色） */
+.keepfit-page .mc-grid {
+  stroke: color-mix(in srgb, var(--font-color) 12%, transparent);
+  stroke-width: 1;
+}
+.keepfit-page .mc-axis {
+  stroke: color-mix(in srgb, var(--font-color) 24%, transparent);
+  stroke-width: 1;
+}
+.keepfit-page .mc-axis-text {
+  fill: var(--font-color);
+  opacity: 0.7;
+  font-size: 0.92rem;
+}
+.keepfit-page .mc-line {
+  fill: none;
+  stroke: var(--default-bg-color);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+.keepfit-page .mc-dot {
+  stroke: var(--card-bg);
+  stroke-width: 2;
+}
+
+/* 三项运动配色（与表格、图例一致）：跑步=主色，骑行=绿，游泳=橙 */
+.keepfit-page .mc-dot.run { fill: var(--default-bg-color); }
+.keepfit-page .mc-line.run { stroke: var(--default-bg-color); }
+
+.keepfit-page .mc-dot.bike { fill: #4cbf8b; }
+.keepfit-page .mc-line.bike { stroke: #4cbf8b; }
+
+.keepfit-page .mc-dot.swim { fill: #ff9f43; }
+.keepfit-page .mc-line.swim { stroke: #ff9f43; }
+
+/* 质量监控：体重趋势（紫，区别于三项运动） */
+.keepfit-page .mc-dot.weight { fill: #a06cd5; }
+.keepfit-page .mc-line.weight { stroke: #a06cd5; }
+
+/* ── 4b. 速率图网格（每项独立一行，整行宽度） ─────────────────────────── */
+.keepfit-rate-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+}
+
+/* 运动项着色（用于图表标题 / 趋势子标题，与图表三色一致） */
+.keepfit-chart-title.sport-run,
+.keepfit-h3.sport-run { color: var(--default-bg-color); }
+.keepfit-chart-title.sport-bike,
+.keepfit-h3.sport-bike { color: #4cbf8b; }
+.keepfit-chart-title.sport-swim,
+.keepfit-h3.sport-swim { color: #ff9f43; }
+.keepfit-chart-title.sport-weight { color: #a06cd5; }
+
+/* ── 4c. 趋势图块（每项独立一行） ───────────────────────────────────────── */
+.keepfit-h3 {
+  font-size: 1.12rem;
+  font-weight: 700;
+  margin: 1.5rem 0 0.7rem;
+}
+.keepfit-trend-block .keepfit-h3:first-child { margin-top: 0; }
+
+/* ── 5. 响应式 ───────────────────────────────────────────────────────────── */
+@media (max-width: var(--bp-md)) {
+  .keepfit-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: var(--bp-sm)) {
+  .keepfit-stats {
+    grid-template-columns: 1fr;
+  }
+}

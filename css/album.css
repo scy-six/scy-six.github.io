@@ -1,0 +1,167 @@
+/* =============================================================================
+ * 五相册统一网格样式（garden / angling / bird / diy / pet 共用）
+ * -----------------------------------------------------------------------------
+ * 各相册脚本各自输出带本相册前缀的类名（garden-* / angling-* / … / pet-*），
+ * 本文件用「分组选择器」一次性覆盖五套前缀，保证五相册视觉与交互完全一致，
+ * 且只需在 _config.butterfly.yml 的 inject.head 注入一次（避免此前「只注入 garden、
+ * 其余相册的 CSS 各自漏注入导致单列」的漂移问题）。
+ *
+ * 两级结构：
+ *   落地页     分类导航卡片，复用 Butterfly 自带 figure.gallery-group（主题提供样式）。
+ *   分类页     .*-grid.*-<key> 照片网格，本文件负责其样式：
+ *              .*-card > .*-media(img) + .*-info > .*-filename（文件名在下方）。
+ *
+ * 列数随窗口自适应：窄屏(≤480px) 1 列；默认 2 列；宽屏(≥992px) 3 列。
+ * 配色走 Butterfly 主题变量（--card-bg / --font-color），亮/暗模式自动适配。
+ * ========================================================================== */
+
+/* ── 1. 照片网格（响应式列数） ─────────────────────────────────────────────── */
+.garden-grid,
+.angling-grid,
+.bird-grid,
+.diy-grid,
+.pet-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(2, 1fr); /* 默认双列 */
+}
+
+/* 窄屏：单列 */
+@media (max-width: var(--bp-sm)) {
+  .garden-grid,
+  .angling-grid,
+  .bird-grid,
+  .diy-grid,
+  .pet-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 宽屏：三列 */
+@media (min-width: var(--bp-lg)) {
+  .garden-grid,
+  .angling-grid,
+  .bird-grid,
+  .diy-grid,
+  .pet-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ── 2. 单张卡片 ─────────────────────────────────────────────────────────── */
+.garden-card,
+.angling-card,
+.bird-card,
+.diy-card,
+.pet-card {
+  margin: 0;
+  padding: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--card-bg) 97%, var(--font-color) 3%);
+  border: 1px solid color-mix(in srgb, var(--font-color) 8%, transparent);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.garden-card:hover,
+.angling-card:hover,
+.bird-card:hover,
+.diy-card:hover,
+.pet-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--font-color) 16%, transparent);
+}
+
+/* 统一裁成正方形，横竖照片混排也能对齐成整洁的格子 */
+.garden-media,
+.angling-media,
+.bird-media,
+.diy-media,
+.pet-media {
+  display: block;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--font-color) 6%, transparent);
+}
+
+.garden-media img,
+.angling-media img,
+.bird-media img,
+.diy-media img,
+.pet-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+  border-radius: 0;
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+.garden-card:hover .garden-media img,
+.angling-card:hover .angling-media img,
+.bird-card:hover .bird-media img,
+.diy-card:hover .diy-media img,
+.pet-card:hover .pet-media img {
+  transform: scale(1.05);
+}
+
+/* ── 3. 卡片文字：文件名（主，显示在图片下方） ───────────────────────────── */
+.garden-info,
+.angling-info,
+.bird-info,
+.diy-info,
+.pet-info {
+  padding: 0.5rem 0.6rem 0.6rem;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.garden-filename,
+.angling-filename,
+.bird-filename,
+.diy-filename,
+.pet-filename {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2; /* 文件名较长时最多两行，超出省略，保持网格整齐 */
+  overflow: hidden;
+  font-size: 0.82em;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+/* ── 4. 仅花园：已故植物灰度（其它相册无 gone 分组，不受影响） ───────────── */
+.garden-gone .garden-media img {
+  filter: grayscale(0.42) brightness(0.97);
+}
+
+.garden-gone .garden-card:hover .garden-media img {
+  filter: grayscale(0) brightness(1);
+}
+
+.garden-gone .garden-filename {
+  opacity: 0.85;
+}
+
+/* ── 5. 空态 ────────────────────────────────────────────────────────────── */
+.garden-empty,
+.angling-empty,
+.bird-empty,
+.diy-empty,
+.pet-empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  opacity: 0.6;
+  border-radius: 10px;
+  border: 1px dashed color-mix(in srgb, var(--font-color) 20%, transparent);
+}
+
+/* ── 6. 宠物相册：子分类卡片容器的下间距 ─────────────────────────────────── */
+.pet-subcards {
+  margin-bottom: 1.4rem;
+}
