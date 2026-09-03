@@ -1,0 +1,339 @@
+/* =============================================================================
+ * travel.css — 旅行页（到此一游）样式
+ * -----------------------------------------------------------------------------
+ * 设计语言：对齐 qqspace / angling 等常规页面的主题卡片风格
+ *   · 全部以 .travel-page 前缀限定作用域，不污染全站其它页面
+ *   · 配色统一走 Butterfly 主题变量（--card-bg / --font-color / --tab-border-color
+ *     / --default-bg-color），亮色 / 暗色 / 阅读 三种模式自动适配，无需写两套
+ *   · 卡片质感（圆角 12px / 细描边 / 微阴影 / 悬停浮起）与 qqspace .card 一致
+ *   · 内容容器 max-width:1140px，与 qqspace .container 同宽
+ * ========================================================================== */
+
+/* ── 0. 页面容器：居中、限定宽度，露出主题背景 ─────────────────────────────── */
+.travel-page {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 1rem 1.2rem 3rem;
+}
+
+/* ── 1. 区块容器 ─────────────────────────────────────────────────────────── */
+.travel-section {
+  margin-bottom: 2.4rem;
+}
+
+/* 区块标题 .travel-h2：完全对齐 keepfit(修身养性) 同款字号/字重，前缀图标保留主题 beautify 的 fa-link */
+.travel-h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 1.1rem;
+  padding-left: 0.7rem;
+  color: var(--font-color);
+}
+
+/* ── 2. 足迹地图卡片 ─────────────────────────────────────────────────────── */
+.travel-map-card {
+  background: var(--card-bg);
+  border: 1px solid var(--tab-border-color);
+  border-radius: var(--radius-card);
+  padding: 1rem;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+}
+
+#travel-map {
+  width: 100%;
+  aspect-ratio: 1.5;   /* 与 viewBox 1000×660 比例接近，地图填满容器、消除左右白边 */
+  height: auto;
+  position: relative; /* 作为锁定提示角标的定位容器 */
+}
+
+/* 地图「聚焦锁定」状态提示角标：默认隐藏，点击地图锁定后显示于右上角
+   z-index 须高于 Leaflet 各图层（pane 最高 ~700），否则被地图画布盖住 */
+.travel-map-hint {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.72rem;
+  line-height: 1.4;
+  color: #fff;
+  background: rgba(73, 177, 245, 0.85); /* 与站点主题强调色一致 */
+  border-radius: 8px;
+  pointer-events: none; /* 不挡地图交互 */
+  display: none; /* 默认隐藏，锁定后由 JS 显示 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* ── 3. 足迹概览：统计卡网格 ─────────────────────────────────────────────── */
+.travel-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.travel-stat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--tab-border-color);
+  border-radius: var(--radius-card);
+  padding: 1.3rem 1rem;
+  text-align: center;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.travel-stat-card:hover {
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--font-color) 16%, transparent);
+  transform: translateY(-3px);
+}
+
+.travel-stat-card .num {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--default-bg-color);
+  font-variant-numeric: tabular-nums;
+}
+
+.travel-stat-card .lbl {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.85rem;
+  opacity: 0.7;
+}
+
+/* ── 4. 旅行日记：年份时间线 ─────────────────────────────────────────────── */
+.travel-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* 年份标题 .travel-year-title：与 .travel-h2 一致，对齐 keepfit 同款字号/字重 */
+.travel-year-title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 1.1rem;
+  padding-left: 0.7rem;
+  color: var(--font-color);
+}
+
+.travel-diary-cards {
+  display: grid;
+  gap: 1.4rem;
+}
+
+/* 单篇日记卡片（主题卡片风格，与 qqspace .card 一致） */
+.travel-card {
+  background: var(--card-bg);
+  border: 1px solid var(--tab-border-color);
+  border-radius: var(--radius-card);
+  padding: 1.4rem 1.5rem;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.travel-card:hover {
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--font-color) 16%, transparent);
+  transform: translateY(-3px);
+}
+
+.travel-card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.travel-card-head .place {
+  margin: 0; /* 避免主题 h3 默认 margin 在 flex 头内撑高 */
+  font-size: 1.12rem;       /* 对齐 keepfit h3 同款字号 */
+  font-weight: 700;
+  color: var(--font-color);
+}
+
+/* 标题前缀图标（主题 beautify）依赖 h2/h3 自身相对定位，兜底确保 flex 卡片头内的图标不错位 */
+.travel-page h2,
+.travel-page h3 {
+  position: relative;
+}
+
+.travel-card-head .date {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  font-style: italic;
+}
+
+/* 图片网格：自适应列数 */
+.travel-photos {
+  display: grid;
+  gap: 0.6rem;
+  grid-template-columns: repeat(3, 1fr);
+  margin-bottom: 1rem;
+}
+
+.travel-photo {
+  position: relative;
+  overflow: hidden;
+  border-radius: 10px;
+  aspect-ratio: 4 / 3;
+  background: color-mix(in srgb, var(--font-color) 6%, transparent);
+}
+
+.travel-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.35s ease;
+}
+
+/* 图片名称：以伪元素贴在图片底部，不撑大图片框；从 data-caption 自动读取 */
+.travel-photo a::after {
+  content: attr(data-caption);
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0.55rem 0.35rem 0.45rem;
+  font-size: 0.78rem;
+  color: #ffffff;
+  text-align: center;
+  text-shadow: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* 图片用 <a data-fancybox> 包裹以复用全站 Fancybox 点击放大；
+   让 <a> 撑满容器，布局与之前一致 */
+.travel-photo a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.travel-card:hover .travel-photo img {
+  transform: scale(1.05);
+}
+
+.travel-text {
+  color: var(--font-color);
+  opacity: 0.85;
+  line-height: 1.75;
+  margin: 0;
+}
+
+.travel-text .hl {
+  color: var(--default-bg-color);
+  font-weight: 700;
+}
+
+/* ── 5. 响应式 ───────────────────────────────────────────────────────────── */
+  @media (max-width: var(--bp-md)) {
+    .travel-stats {
+      grid-template-columns: 1fr;
+    }
+    .travel-photos {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+@media (max-width: var(--bp-sm)) {
+  .travel-photos {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ──2b. 纯 SVG 地图（零地图库依赖）────────────────────────────────────────────── */
+/* 主题变量：亮/暗模式随 data-theme 自动切换 */
+.travel-page {
+  --prov-unvisited: #e8edf4;
+  --prov-unv-light: #f4f7fc;
+  --prov-unv-dark:  #d6dfec;
+  --prov-stroke: #c2cede;
+  --prov-label: #1e3a5f;          /* 省名：深蓝色，与主题搭配 */
+  --prov-halo: #ffffff;
+  --prov-vis-light: #8fd6f5;      /* 已访省份渐变：截图蓝 #59aada 的浅色调 */
+  --prov-vis-dark:  #59aada;      /* 已访省份渐变：用户截图中的蓝色 */
+  --city-label: #5a7a9a;          /* 城市名：柔和蓝灰 */
+  --city-dot: var(--default-bg-color);
+}
+[data-theme="dark"] .travel-page {
+  --prov-unvisited: #2b2f3a;
+  --prov-unv-light: #3c4452;
+  --prov-unv-dark:  #2c333f;
+  --prov-stroke: #454d5c;
+  --prov-label: #8ab4d8;          /* 暗模式省名：亮蓝，保证可读 */
+  --prov-halo: #15171c;
+  --prov-vis-light: #59aada;      /* 暗模式已访省份：截图蓝亮部 */
+  --prov-vis-dark:  #3178a3;      /* 暗模式已访省份：截图蓝深部 */
+  --city-label: #6a8aaa;
+}
+
+.travel-page .travel-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: transparent;
+  border-radius: var(--radius-card);
+  font-family: inherit;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none; /* 触屏拖拽不触发页面滚动 */
+  cursor: default;     /* 始终默认箭头，不显示手型 */
+}
+
+.travel-page .province {
+  fill: url(#provUnvisitedGrad); /* 未访省份：微渐变模拟光照，增加立体感 */
+  fill-rule: evenodd; /* 正确处理省内含飞地/孔洞 */
+  stroke: var(--prov-stroke);
+  stroke-width: 0.5;
+  stroke-linejoin: round;
+  transition: stroke 0.2s ease, opacity 0.2s ease;
+}
+.travel-page .province.visited {
+  fill: url(#provVisitedGrad); /* 已访省份：主题色渐变 + 发光，突出足迹 */
+  filter: url(#provGlow);
+}
+.travel-page .province:hover {
+  stroke: var(--default-bg-color);
+  stroke-width: 2;
+  opacity: 0.9;
+}
+.travel-page .prov-unv-light { stop-color: var(--prov-unv-light); }
+.travel-page .prov-unv-dark  { stop-color: var(--prov-unv-dark); }
+.travel-page .prov-vis-light { stop-color: var(--prov-vis-light); }
+.travel-page .prov-vis-dark  { stop-color: var(--prov-vis-dark); }
+.travel-page .province-label {
+  fill: var(--prov-label);
+  font-size: 12px;
+  font-weight: 500;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}
+
+/* 城市标注：圆环 + 实心核 + 城市名（名置于顶层文字组，参与统一避让） */
+.travel-page .city-dot {
+  fill: var(--default-bg-color);   /* 城市中心圆点，强调足迹城市 */
+  filter: url(#provGlow);
+  pointer-events: none;
+}
+.travel-page .city-label {
+  fill: var(--city-label);
+  font-size: 6px;
+  font-weight: 500;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+}

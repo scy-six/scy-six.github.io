@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://scy-six.github.io/sitemap.xml
