@@ -6,13 +6,15 @@
  *   · 配色统一走 Butterfly 主题变量（--card-bg / --font-color / --tab-border-color
  *     / --default-bg-color / --radius-card），亮 / 暗 / 阅读 三种模式自动适配
  *   · 卡片质感（圆角 / 细描边 / 微阴影 / 悬停浮起）与全站 .card 一致
- *   · 内容容器 max-width:1140px，与 travel / mountain 同宽
+ *   · 内容容器跟随主题 .container（与 travel / mountain 等标准页同宽）
  *   · 三项运动配色：跑步=主题主色，骑行=绿，游泳=橙（与图表、表格一致）
  * ========================================================================== */
 
-/* ── 0. 页面容器：居中、限定宽度，露出主题背景 ─────────────────────────────── */
+/* ── 0. 页面容器：跟随主题 .container（与 travel / mountain 等标准页同宽） ──────
+ * 原 max-width:1140px 会让本页在「侧栏关闭 + 宽屏」时比标准页窄一圈且居中偏移，
+ * 改为 100% 撑满父级 .container，与所有标准页主体宽度一致。 */
 .keepfit-page {
-  max-width: 1140px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 1rem 1.2rem 3rem;
 }
@@ -23,7 +25,7 @@
 }
 
 .keepfit-h2 {
-  font-size: 1.4rem;
+  font-size: var(--fs-section);
   font-weight: 700;
   margin: 0 0 1.1rem;
   padding-left: 0.7rem;
@@ -32,7 +34,7 @@
 
 .keepfit-section .hint {
   margin: -0.4rem 0 1rem;
-  font-size: 0.82rem;
+  font-size: var(--fs-meta);
   opacity: 0.6;
   line-height: 1.6;
 }
@@ -61,7 +63,7 @@
 
 .keepfit-stat-card .num {
   display: block;
-  font-size: 2rem;
+  font-size: var(--fs-num);
   font-weight: 800;
   line-height: 1.1;
   color: var(--default-bg-color);
@@ -71,7 +73,7 @@
 .keepfit-stat-card .lbl {
   display: block;
   margin-top: 0.35rem;
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   opacity: 0.7;
 }
 
@@ -85,14 +87,14 @@
 }
 
 .keepfit-chart-title {
-  font-size: 1.05rem;
+  font-size: var(--fs-card);
   font-weight: 700;
   margin: 0 0 0.3rem;
   color: var(--font-color);
 }
 
 .keepfit-chart-sub {
-  font-size: 0.8rem;
+  font-size: var(--fs-meta);
   opacity: 0.6;
   margin: 0 0 0.9rem;
 }
@@ -116,7 +118,7 @@
 .keepfit-page .mc-axis-text {
   fill: var(--font-color);
   opacity: 0.7;
-  font-size: 0.92rem;
+  font-size: var(--fs-body);
 }
 .keepfit-page .mc-line {
   fill: none;
@@ -161,7 +163,7 @@
 
 /* ── 4c. 趋势图块（每项独立一行） ───────────────────────────────────────── */
 .keepfit-h3 {
-  font-size: 1.12rem;
+  font-size: var(--fs-card);
   font-weight: 700;
   margin: 1.5rem 0 0.7rem;
 }

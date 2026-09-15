@@ -6,12 +6,14 @@
  *   · 配色统一走 Butterfly 主题变量（--card-bg / --font-color / --tab-border-color
  *     / --default-bg-color / --radius-card），亮 / 暗 / 阅读 三种模式自动适配
  *   · 卡片质感（圆角 / 细描边 / 微阴影 / 悬停浮起）与全站 .card 一致
- *   · 内容容器 max-width:1140px，与 travel 同宽
+ *   · 内容容器跟随主题 .container（与 travel / 标准页同宽）
  * ========================================================================== */
 
-/* ── 0. 页面容器：居中、限定宽度，露出主题背景 ─────────────────────────────── */
+/* ── 0. 页面容器：跟随主题 .container（与 travel 等标准页同宽） ─────────────────
+ * 原 max-width:1140px 会让本页在「侧栏关闭 + 宽屏」时比标准页窄一圈且居中偏移，
+ * 改为 100% 撑满父级 .container，与所有标准页主体宽度一致。 */
 .mountain-page {
-  max-width: 1140px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 1rem 1.2rem 3rem;
 }
@@ -22,7 +24,7 @@
 }
 
 .mountain-h2 {
-  font-size: 1.4rem;
+  font-size: var(--fs-section);
   font-weight: 700;
   margin: 0 0 1.1rem;
   padding-left: 0.7rem;
@@ -31,7 +33,7 @@
 
 .mountain-section .hint {
   margin: -0.4rem 0 1rem;
-  font-size: 0.82rem;
+  font-size: var(--fs-body);
   opacity: 0.6;
   line-height: 1.6;
 }
@@ -63,7 +65,7 @@
 
 .mountain-stat-card .num {
   display: block;
-  font-size: 2rem;
+  font-size: var(--fs-num);
   font-weight: 800;
   line-height: 1.1;
   color: var(--default-bg-color);
@@ -73,7 +75,7 @@
 .mountain-stat-card .lbl {
   display: block;
   margin-top: 0.35rem;
-  font-size: 0.85rem;
+  font-size: var(--fs-body);
   opacity: 0.7;
 }
 
@@ -89,7 +91,7 @@
 .mountain-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.92rem;
+  font-size: var(--fs-body);
   color: var(--font-color);
 }
 
@@ -99,15 +101,16 @@
   background: color-mix(in srgb, var(--default-bg-color) 12%, var(--card-bg));
   color: var(--font-color);
   font-weight: 700;
-  text-align: left;
+  text-align: center;
   padding: 0.8rem 1rem;
   white-space: nowrap;
   border-bottom: 2px solid var(--tab-border-color);
 }
 
 .mountain-table tbody td {
-  padding: 0.7rem 1rem;
+  padding: 0.9rem 1rem;
   border-bottom: 1px solid var(--tab-border-color);
+  text-align: center;
   font-variant-numeric: tabular-nums;
 }
 
@@ -120,12 +123,15 @@
 }
 
 .mountain-table .peak-name {
-  font-weight: 700;
+  /* 与右侧列统一字重（不再加粗），字号不变 */
+  font-weight: 400;
 }
 
+/* 「区域」列（深圳罗湖 / 香港中西区 等）：2026-09-15 由 --fs-meta(12px) 提到 --fs-body(14px)，
+   与表格其余单元格同号；层级感改由 opacity 承担。 */
 .mountain-table .region {
   opacity: 0.65;
-  font-size: 0.85rem;
+  font-size: var(--fs-body);
 }
 
 .mountain-table .dist {
@@ -134,15 +140,14 @@
 }
 
 .mountain-table .badge {
-  display: inline-block;
-  margin-left: 0.4rem;
+  display: block;
+  margin: 0.3rem 0 0;
   padding: 0.05rem 0.45rem;
-  font-size: 0.7rem;
+  font-size: var(--fs-badge);
   line-height: 1.4;
   border-radius: 999px;
   background: color-mix(in srgb, var(--default-bg-color) 18%, transparent);
   color: var(--default-bg-color);
-  vertical-align: middle;
 }
 
 /* ── 4. 图表卡片 ──────────────────────────────────────────────────────── */
@@ -155,14 +160,14 @@
 }
 
 .mountain-chart-title {
-  font-size: 1.05rem;
+  font-size: var(--fs-card);
   font-weight: 700;
   margin: 0 0 0.3rem;
   color: var(--font-color);
 }
 
 .mountain-chart-sub {
-  font-size: 0.8rem;
+  font-size: var(--fs-body);
   opacity: 0.6;
   margin: 0 0 0.9rem;
 }
@@ -186,7 +191,7 @@
 .mountain-page .mc-axis-text {
   fill: var(--font-color);
   opacity: 0.7;
-  font-size: 0.92rem;
+  font-size: var(--fs-body);
 }
 .mountain-page .mc-bar {
   fill: var(--default-bg-color);
@@ -198,12 +203,12 @@
 }
 .mountain-page .mc-bar-label {
   fill: var(--font-color);
-  font-size: 0.92rem;
+  font-size: var(--fs-body);
   font-weight: 600;
 }
 .mountain-page .mc-name-label {
   fill: var(--font-color);
-  font-size: 0.92rem;
+  font-size: var(--fs-body);
   font-weight: 500;
 }
 .mountain-page .mc-line {

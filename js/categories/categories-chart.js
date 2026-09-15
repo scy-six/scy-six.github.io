@@ -202,7 +202,7 @@
 
         var label = el('text', {
           x: p.x, y: p.y + 4, 'text-anchor': anchor,
-          'font-size': '13', 'font-weight': '500', fill: c.font,
+          'font-size': '14', 'font-weight': '500', fill: c.font,
           'font-family': '"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif'
         });
         label.textContent = data[i].name + ' (' + (data[i].value || 0) + ')';

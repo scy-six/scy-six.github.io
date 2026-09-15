@@ -1,79 +1,33 @@
-/* 番剧页 列表/网格视图切换（anilist 风格）
+/* 番剧页 网格视图（anilist 风格）
+ * 本站本地化（2026-09-15）：仅保留网格视图，移除列表视图及其切换 UI（列表/网格按钮、localStorage 记忆）。
+ * 容器恒加 .bangumi-view-grid，网格样式见 source/css/custom.css 的「12. 番剧页」段落。
  * 通过 Butterfly _config.butterfly.yml 的 inject.bottom 引入（带 data-pjax，pjax 跳转后重建）。
- * 样式见 source/css/custom.css 的「12. 番剧页」段落。
+ *
+ * ⚠ 以下逻辑为站点硬约束，删改会导致 tab 切换 / 分页 / 异步渲染失效，不得移除：
+ *   - ensureBangumiScripts：扫描含文本 "function renderBilibiliBangumi" 的 <script> 并重新执行（pjax 跳转后恢复事件）；
+ *   - boot / pjax:complete 中对 window.renderBilibiliBangumi() 的调用；
+ *   - 标题原生 tooltip（bindTitleTooltip）。
  */
 (function () {
   "use strict";
 
-  var LIST_SVG =
-    '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M3 6h18v2H3zM3 11h18v2H3zM3 16h18v2H3z"/></svg>';
-  var GRID_SVG =
-    '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M3 3h8v8H3zM13 3h8v8h-8zM3 13h8v8H3zM13 13h8v8h-8z"/></svg>';
-
-  function applyView(v) {
+  // 容器恒为网格视图（列表视图已随本地化移除）
+  function ensureGridView() {
     var c = document.querySelector(".bangumi-container");
-    if (!c) return;
-    c.classList.toggle("bangumi-view-grid", v === "grid");
-    c.classList.toggle("bangumi-view-list", v !== "grid");
-  }
-
-  function bindToggle(bar) {
-    if (bar.dataset.bound) return;
-    bar.dataset.bound = "1";
-
-    bar.innerHTML =
-      '<button type="button" class="bangumi-view-btn active" data-view="list" title="列表视图" aria-label="列表视图">' +
-      LIST_SVG +
-      "</button>" +
-      '<button type="button" class="bangumi-view-btn" data-view="grid" title="网格视图" aria-label="网格视图">' +
-      GRID_SVG +
-      "</button>";
-
-    bar.querySelectorAll("[data-view]").forEach(function (btn) {
-      btn.addEventListener("click", function () {
-        var v = btn.getAttribute("data-view");
-        applyView(v);
-        try {
-          localStorage.setItem("bangumi-view", v);
-        } catch (_) {}
-        bar.querySelectorAll("[data-view]").forEach(function (b) {
-          b.classList.toggle("active", b.getAttribute("data-view") === v);
-        });
-      });
-    });
-
-    var saved = "list";
-    try {
-      saved = localStorage.getItem("bangumi-view") || "list";
-    } catch (_) {}
-    applyView(saved);
-    bar.querySelectorAll("[data-view]").forEach(function (b) {
-      b.classList.toggle("active", b.getAttribute("data-view") === saved);
-    });
-  }
-
-  function initView() {
-    var bar = document.querySelector(".bangumi-view-toggle");
-    if (!bar) {
-      var tabs = document.querySelector(".bangumi-tabs");
-      if (!tabs) {
-        // 插件内容异步渲染：监听 DOM 变化，等 .bangumi-tabs 出现再初始化
-        if (typeof MutationObserver !== "undefined") {
-          var obs = new MutationObserver(function (mutations, o) {
-            if (document.querySelector(".bangumi-tabs")) {
-              o.disconnect();
-              initView();
-            }
-          });
-          obs.observe(document.body, { childList: true, subtree: true });
-        }
-        return;
-      }
-      bar = document.createElement("span");
-      bar.className = "bangumi-view-toggle";
-      tabs.appendChild(bar);
+    if (c) {
+      c.classList.add("bangumi-view-grid");
+      return;
     }
-    bindToggle(bar);
+    if (typeof MutationObserver !== "undefined") {
+      var obs = new MutationObserver(function (_, o) {
+        var el = document.querySelector(".bangumi-container");
+        if (el) {
+          o.disconnect();
+          el.classList.add("bangumi-view-grid");
+        }
+      });
+      obs.observe(document.body, { childList: true, subtree: true });
+    }
   }
 
   // 给每个番剧标题挂原生 title（浏览器 tooltip，位于鼠标右下角、全文不截断、不受卡片 overflow 裁剪）。
@@ -107,7 +61,7 @@
   }
 
   function boot() {
-    initView();
+    ensureGridView();
     // 兜底：若插件全局渲染函数存在则再调用一次，确保 tab/分页状态正确
     if (typeof window.renderBilibiliBangumi === "function") {
       try {
@@ -145,7 +99,7 @@
   window.addEventListener("pjax:complete", function () {
     if (!document.querySelector(".bangumi-container")) return;
     ensureBangumiScripts();
-    initView();
+    ensureGridView();
     if (typeof window.renderBilibiliBangumi === "function") {
       try {
         window.renderBilibiliBangumi();

@@ -230,10 +230,9 @@
       html +=
         '<tr>' +
         '<td>' + (i + 1) + '</td>' +
-        '<td class="peak-name">' + esc(d.name) + badge + '</td>' +
+        '<td class="peak-name">' + esc(d.name) + (badge ? '<br>' + badge : '') + '</td>' +
         '<td class="region">' + esc(d.region) + '</td>' +
         '<td>' + d.height + '</td>' +
-        '<td>' + (d.plannedDist ? fmt(d.plannedDist) : '—') + '</td>' +
         '<td class="dist">' + fmt(d.bestDist) + '</td>' +
         '<td>' + esc(d.bestDate) + '</td>' +
         '</tr>';

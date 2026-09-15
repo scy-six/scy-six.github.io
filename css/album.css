@@ -6,16 +6,23 @@
  * 且只需在 _config.butterfly.yml 的 inject.head 注入一次（避免此前「只注入 garden、
  * 其余相册的 CSS 各自漏注入导致单列」的漂移问题）。
  *
- * 两级结构：
- *   落地页     分类导航卡片，复用 Butterfly 自带 figure.gallery-group（主题提供样式）。
- *   分类页     .*-grid.*-<key> 照片网格，本文件负责其样式：
+ * 结构：
+ *   照片网格   .*-grid.*-<key> —— 本文件负责其样式：
  *              .*-card > .*-media(img) + .*-info > .*-filename（文件名在下方）。
+ *              落地页默认就直出网格；多分组相册（garden）也自 2026-09-04 起改为直出，
+ *              各分组照片首尾相接铺成一张（容器 .*-all）。
+ *   导航卡片   figure.gallery-group —— 现仅 pet（树状多地点）落地页使用，见 §7。
  *
- * 列数随窗口自适应：窄屏(≤480px) 1 列；默认 2 列；宽屏(≥992px) 3 列。
+ * 列数不写死断点：grid + auto-fill，每列最小 220px，列数随容器宽度自动增减。
+ * 图片固定 4:3 框 + object-fit:contain —— 完整显示、**不做任何裁切**。
  * 配色走 Butterfly 主题变量（--card-bg / --font-color），亮/暗模式自动适配。
  * ========================================================================== */
 
-/* ── 1. 照片网格（响应式列数） ─────────────────────────────────────────────── */
+/* ── 1. 照片网格：等高网格（列宽自适应，不裁切）─────────────────────────────
+ * grid + auto-fill：每列最小 220px，列数随容器宽度自动增减，无需写死断点。
+ * grid 会把同行卡片拉成等高，再配合 §2 固定比例的 media 与 §3 等高的文字区，
+ * 得到整齐的等高网格；图片用 object-fit:contain 完整显示，**不做任何裁切**。
+ * ───────────────────────────────────────────────────────────────────────── */
 .garden-grid,
 .angling-grid,
 .bird-grid,
@@ -23,29 +30,7 @@
 .pet-grid {
   display: grid;
   gap: 0.85rem;
-  grid-template-columns: repeat(2, 1fr); /* 默认双列 */
-}
-
-/* 窄屏：单列 */
-@media (max-width: var(--bp-sm)) {
-  .garden-grid,
-  .angling-grid,
-  .bird-grid,
-  .diy-grid,
-  .pet-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* 宽屏：三列 */
-@media (min-width: var(--bp-lg)) {
-  .garden-grid,
-  .angling-grid,
-  .bird-grid,
-  .diy-grid,
-  .pet-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
 /* ── 2. 单张卡片 ─────────────────────────────────────────────────────────── */
@@ -54,6 +39,8 @@
 .bird-card,
 .diy-card,
 .pet-card {
+  display: flex;
+  flex-direction: column; /* 图片在上、文字在下；grid 拉伸后同行卡片等高 */
   margin: 0;
   padding: 0;
   border-radius: 10px;
@@ -74,15 +61,16 @@
   box-shadow: 0 6px 18px color-mix(in srgb, var(--font-color) 16%, transparent);
 }
 
-/* 统一裁成正方形，横竖照片混排也能对齐成整洁的格子 */
+/* 固定 4:3 展示框：本站照片绝大多数为 4:3，取该比例留白最少、最贴近原图。
+   图片用 contain 完整显示——横竖混排绝不裁切，多余空间留浅色背景。 */
 .garden-media,
 .angling-media,
 .bird-media,
 .diy-media,
 .pet-media {
   display: block;
-  aspect-ratio: 1 / 1;
-  overflow: hidden;
+  aspect-ratio: 4 / 3;
+  overflow: hidden; /* 仅供 hover 放大时裁掉溢出部分 */
   background: color-mix(in srgb, var(--font-color) 6%, transparent);
 }
 
@@ -93,7 +81,7 @@
 .pet-media img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain; /* 完整显示，不裁切 */
   display: block;
   margin: 0;
   border-radius: 0;
@@ -119,6 +107,11 @@
   padding: 0.5rem 0.6rem 0.6rem;
   text-align: center;
   line-height: 1.3;
+  /* 等高网格：文字区锁定两行高度并垂直居中，文件名长短不一时卡片依然等高 */
+  min-height: 2.6em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .garden-filename,
@@ -130,21 +123,25 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2; /* 文件名较长时最多两行，超出省略，保持网格整齐 */
   overflow: hidden;
-  font-size: 0.82em;
+  font-size: var(--fs-meta);
   font-weight: 600;
   word-break: break-all;
 }
 
-/* ── 4. 仅花园：已故植物灰度（其它相册无 gone 分组，不受影响） ───────────── */
-.garden-gone .garden-media img {
+/* ── 4. 仅花园：已故植物灰度（其它相册无 gone 分组，不受影响） ─────────────
+ * 挂在卡片自身的 data-group 上而非容器 class：garden 落地页自 2026-09-04 起
+ * 改成「全部分组拼成一张网格」，容器是 .garden-all 而非 .garden-gone，
+ * 靠容器选择器会让灰度失效。data-group 由 cardHTML 逐张写入，任何容器都成立。
+ * ───────────────────────────────────────────────────────────────────────── */
+.garden-card[data-group="gone"] .garden-media img {
   filter: grayscale(0.42) brightness(0.97);
 }
 
-.garden-gone .garden-card:hover .garden-media img {
+.garden-card[data-group="gone"]:hover .garden-media img {
   filter: grayscale(0) brightness(1);
 }
 
-.garden-gone .garden-filename {
+.garden-card[data-group="gone"] .garden-filename {
   opacity: 0.85;
 }
 
@@ -164,4 +161,309 @@
 /* ── 6. 宠物相册：子分类卡片容器的下间距 ─────────────────────────────────── */
 .pet-subcards {
   margin-bottom: 1.4rem;
+}
+
+/* ── 7. 落地页分类导航卡（figure.gallery-group）─────────────────────────────
+ * ⚠ 原设计（见文件头注释）假定「Butterfly 自带 figure.gallery-group 样式」，
+ * 但本魔改主题并未随包提供：主题 source/css 与编译产物 public/css/index.css
+ * 中均无 .gallery-group 规则。后果是导航卡零样式裸奔，且 navCardHTML 输出的
+ * 空 <a>（原靠主题 CSS 撑成整卡热区）塌陷 → 卡片看得见却点不动。
+ * 故此处自建整套样式，与上面照片卡片风格一致，且不再依赖主题。
+ * 适用：目前仅 pet（树状多地点相册）落地页仍出导航卡；
+ *      angling / bird / diy 一直是单分组直出网格；
+ *      garden 自 2026-09-04 起也改为落地页直出网格，不再出导航卡。
+ * 卡片结构（由 navCardHTML 输出，勿擅自加回名称/张数）：
+ *      figure.gallery-group > img.gallery-group-img(alt 必须为空)
+ *                           + figcaption.gallery-group-title(封面左下角标题)
+ *                           + a(撑满整卡的热区)
+ * ───────────────────────────────────────────────────────────────────────── */
+/* 与照片网格保持一致的自适应节奏：每列最小 220px，列数随屏宽自动增减 */
+.gallery-group-main {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.gallery-group {
+  position: relative; /* 关键：供内部空 <a> 做整卡热区定位 */
+  margin: 0;
+  padding: 0;
+  border-radius: 10px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--card-bg) 97%, var(--font-color) 3%);
+  border: 1px solid color-mix(in srgb, var(--font-color) 8%, transparent);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.gallery-group:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--font-color) 16%, transparent);
+}
+
+/* 封面图：与照片卡片同为 4:3 框 + contain，不再正方强裁 */
+.gallery-group-img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  margin: 0;
+  border-radius: 0;
+  background: color-mix(in srgb, var(--font-color) 6%, transparent);
+  transition: transform 0.35s ease;
+}
+
+.gallery-group:hover .gallery-group-img {
+  transform: scale(1.05);
+}
+
+/* 封面左下角的文件夹名：叠加在图片底部，靠底部渐变保证白字在任何封面、
+   明暗模式下都清晰可读。
+   2026-09-04 整改：此前同一张卡上会出现三处文字——img alt（懒加载时渲染在框内左下）、
+   图片正下方的 .gallery-group-name、最下方居中的「N 张」。现已全部收敛为这一处：
+   navCardHTML 把 alt 清空、移除名称与张数，只保留这个叠加标题。 */
+.gallery-group figcaption.gallery-group-title {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0;
+  padding: 1.7rem 0.75rem 0.6rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.66), rgba(0, 0, 0, 0));
+  color: var(--font-color);
+  font-size: var(--fs-card);
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+  pointer-events: none; /* 不遮挡整卡点击热区 */
+}
+
+/* 关键：navCardHTML 输出的 <a> 无任何文字，靠这条规则撑满整卡成为点击热区。
+   没有它，卡片「看得见点不动」——这正是此前 angling 落地页的实际表现。 */
+.gallery-group > a {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* ── 8. 相册菜单：顶部菜单 + 悬停下拉选子相册（2026-09-15；取代「照片下方标签切换」）────
+ * 结构（由 scripts/lib/gallery-core.js 的 renderAlbumMenu 输出，交互见 source/js/album-menu.js）：
+ *   .album-nav[data-album]
+ *     > .album-menu-bar > .album-menu[data-node] > .album-menu-trigger
+ *                                                + .album-menu-list > .album-menu-item[data-node]
+ *     > .album-panels   > .album-panel[data-node]
+ * 要点：
+ *   · 子相册收进下拉，不再挤在照片下方 —— 照片再多也不必下滑才切换得了；
+ *   · 下拉的展开条件是纯 CSS 的 :hover / :focus-within（键盘可达），触屏由 JS 加 .is-open 兜底；
+ *   · 面板扁平：只有 .is-active 那个可见；无 JS 时首个面板由服务端标 is-active（渐进增强）。
+ * 配色一律走主题变量（--default-bg-color / --card-bg / --font-color / --light-grey / --on-accent），
+ * 亮色 / 暗色 / 阅读模式自动跟随。
+ * ⚠ 菜单条不要用 overflow-x 滚动：会连带把 overflow-y 变成 auto，把绝对定位的下拉裁掉。
+ * ───────────────────────────────────────────────────────────────────────────── */
+
+/* 8.1 菜单条 */
+.album-menu-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 0 0 0.9rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 1px solid var(--light-grey);
+}
+
+/* 8.2 模块（触发按钮 + 下拉） */
+.album-menu {
+  position: relative; /* 下拉的定位参照 */
+  display: inline-flex;
+}
+.album-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  appearance: none;
+  cursor: pointer;
+  padding: 0.32rem 0.85rem;
+  border: 1px solid var(--light-grey);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--card-bg) 88%, var(--light-grey) 12%);
+  color: color-mix(in srgb, var(--font-color) 82%, transparent);
+  font-family: inherit;
+  font-size: var(--fs-body);
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+  transition:
+    background 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease;
+}
+.album-menu-trigger:hover {
+  border-color: color-mix(in srgb, var(--default-bg-color) 45%, transparent);
+  background: color-mix(in srgb, var(--default-bg-color) 12%, var(--card-bg));
+  color: var(--font-color);
+}
+.album-menu-trigger:focus-visible {
+  outline: 2px solid var(--default-bg-color);
+  outline-offset: 2px;
+}
+/* 正在看该模块自身 / 它的子相册：主色实底（与全站徽章、表头同一套配色约定） */
+.album-menu.is-active > .album-menu-trigger {
+  background: var(--default-bg-color);
+  border-color: var(--default-bg-color);
+  color: var(--on-accent, #fff);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--default-bg-color) 34%, transparent);
+}
+/* 当前所在子相册名（如「设备物资」）——JS 写入，空时自动隐藏 */
+.album-menu-current {
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  opacity: 0.85;
+}
+.album-menu-current:empty {
+  display: none;
+}
+/* 下拉指示三角（纯 CSS，不依赖图标字体） */
+.album-menu-caret {
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid currentColor;
+  opacity: 0.7;
+  transition: transform 0.18s ease;
+}
+.album-menu:hover > .album-menu-trigger > .album-menu-caret,
+.album-menu:focus-within > .album-menu-trigger > .album-menu-caret,
+.album-menu.is-open > .album-menu-trigger > .album-menu-caret {
+  transform: rotate(180deg);
+}
+
+/* 8.3 下拉：默认收起；hover / 聚焦 / .is-open 时展开 */
+.album-menu-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  min-width: 8.5rem;
+  padding: 0.3rem;
+  border: 1px solid var(--light-grey);
+  border-radius: 10px;
+  background: var(--card-bg);
+  box-shadow: 0 10px 26px color-mix(in srgb, var(--font-color) 20%, transparent);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition:
+    opacity 0.16s ease,
+    transform 0.16s ease,
+    visibility 0.16s;
+}
+.album-menu:hover > .album-menu-list,
+.album-menu:focus-within > .album-menu-list,
+.album-menu.is-open > .album-menu-list {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+/* 触发按钮与下拉之间留一条透明缓冲区：鼠标下移途中经过这里不会「掉出模块」导致收起 */
+.album-menu-list::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -8px;
+  height: 8px;
+}
+
+/* 8.4 下拉项 */
+.album-menu-item {
+  display: block;
+  width: 100%;
+  appearance: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 0.4rem 0.7rem;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--font-color);
+  font-family: inherit;
+  font-size: var(--fs-body);
+  line-height: 1.5;
+  white-space: nowrap;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+/* 更深的子相册依次缩进（子相册自身还有子相册时） */
+.album-menu-item[data-depth="1"] {
+  padding-left: 1.6rem;
+}
+.album-menu-item[data-depth="2"] {
+  padding-left: 2.4rem;
+}
+.album-menu-item:hover,
+.album-menu-item:focus-visible {
+  background: color-mix(in srgb, var(--default-bg-color) 14%, transparent);
+  color: var(--font-color);
+  outline: none;
+}
+.album-menu-item.is-active {
+  background: color-mix(in srgb, var(--default-bg-color) 20%, transparent);
+  color: var(--default-bg-color);
+  font-weight: 600;
+}
+
+/* 8.5 面板：仅 is-active 可见；scroll-margin-top 供 hash 深链避开固定导航栏 */
+.album-panels {
+  display: block;
+}
+.album-panel {
+  display: none;
+  scroll-margin-top: 5rem;
+}
+.album-panel.is-active {
+  display: block;
+  animation: albumPanelIn 0.22s ease;
+}
+@keyframes albumPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 8.6 窄屏：模块换行排列（不下滑、不裁下拉），按钮略收 */
+@media (max-width: 560px) {
+  .album-menu-bar {
+    gap: 0.35rem;
+  }
+  .album-menu-trigger {
+    padding: 0.3rem 0.7rem;
+    font-size: var(--fs-meta);
+  }
+  .album-menu-list {
+    min-width: 7.5rem;
+  }
+}
+
+/* 8.7 尊重系统「减少动效」偏好 */
+@media (prefers-reduced-motion: reduce) {
+  .album-panel.is-active {
+    animation: none;
+  }
+  .album-menu-list,
+  .album-menu-trigger,
+  .album-menu-caret,
+  .album-menu-item {
+    transition: none;
+  }
 }

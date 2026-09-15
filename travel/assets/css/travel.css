@@ -6,12 +6,15 @@
  *   · 配色统一走 Butterfly 主题变量（--card-bg / --font-color / --tab-border-color
  *     / --default-bg-color），亮色 / 暗色 / 阅读 三种模式自动适配，无需写两套
  *   · 卡片质感（圆角 12px / 细描边 / 微阴影 / 悬停浮起）与 qqspace .card 一致
- *   · 内容容器 max-width:1140px，与 qqspace .container 同宽
+ *   · 内容容器跟随主题 .container（与标准页同宽，不再自设 max-width）
  * ========================================================================== */
 
-/* ── 0. 页面容器：居中、限定宽度，露出主题背景 ─────────────────────────────── */
+/* ── 0. 页面容器：跟随主题 .container（与 about 等标准页同宽） ─────────────────
+ * 原先 max-width:1140px 会让本页在「侧栏关闭 + 宽屏」时比标准页（about 等）窄约 20px，
+ * 且多一层 margin:auto 居中导致左右偏移。改为 100% 撑满父级 .container，
+ * 与所有标准页主体宽度一致；内部网格 / 地图由自身 width:100% 自适应，不受影响。 */
 .travel-page {
-  max-width: 1140px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 1rem 1.2rem 3rem;
 }
@@ -23,7 +26,7 @@
 
 /* 区块标题 .travel-h2：完全对齐 keepfit(修身养性) 同款字号/字重，前缀图标保留主题 beautify 的 fa-link */
 .travel-h2 {
-  font-size: 1.4rem;
+  font-size: var(--fs-section);
   font-weight: 700;
   margin: 0 0 1.1rem;
   padding-left: 0.7rem;
@@ -54,7 +57,7 @@
   right: 10px;
   z-index: 1000;
   padding: 0.35rem 0.6rem;
-  font-size: 0.72rem;
+  font-size: var(--fs-badge);
   line-height: 1.4;
   color: #fff;
   background: rgba(73, 177, 245, 0.85); /* 与站点主题强调色一致 */
@@ -90,7 +93,7 @@
 
 .travel-stat-card .num {
   display: block;
-  font-size: 2rem;
+  font-size: var(--fs-num);
   font-weight: 800;
   line-height: 1.1;
   color: var(--default-bg-color);
@@ -100,7 +103,7 @@
 .travel-stat-card .lbl {
   display: block;
   margin-top: 0.35rem;
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   opacity: 0.7;
 }
 
@@ -113,7 +116,7 @@
 
 /* 年份标题 .travel-year-title：与 .travel-h2 一致，对齐 keepfit 同款字号/字重 */
 .travel-year-title {
-  font-size: 1.4rem;
+  font-size: var(--fs-section);
   font-weight: 700;
   margin: 0 0 1.1rem;
   padding-left: 0.7rem;
@@ -153,7 +156,7 @@
 
 .travel-card-head .place {
   margin: 0; /* 避免主题 h3 默认 margin 在 flex 头内撑高 */
-  font-size: 1.12rem;       /* 对齐 keepfit h3 同款字号 */
+  font-size: var(--fs-card);       /* 对齐 keepfit h3 同款字号 */
   font-weight: 700;
   color: var(--font-color);
 }
@@ -165,7 +168,7 @@
 }
 
 .travel-card-head .date {
-  font-size: 0.85rem;
+  font-size: var(--fs-meta);
   opacity: 0.6;
   font-style: italic;
 }
@@ -202,10 +205,10 @@
   right: 0;
   bottom: 0;
   padding: 0.55rem 0.35rem 0.45rem;
-  font-size: 0.78rem;
-  color: #ffffff;
+  font-size: var(--fs-meta);
+  color: var(--font-color);
   text-align: center;
-  text-shadow: none;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

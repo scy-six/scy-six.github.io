@@ -26,6 +26,21 @@
   /* 主题色（--default-bg-color）之上的前景文字色。表头渐变、徽章等
      以主题色为底的容器都应引用它，而不是直接写 #fff。 */
   --on-accent: #fff;
+
+  /* ── 字号阶梯（Font Scale，2026-09-12 定稿）─────────────────────────
+     唯一基准 = --global-font-size（14px），一律 calc 绝对换算，
+     不用 em —— em 会随嵌套容器累乘（旧 #nav 1.3em × .site-page .78em = 14.2px 即此坑）。
+     取值依据：Material 3 字阶（Headline 32/28/24、Title 22/16/14、Body 16/14/12、Label 14/12/11）
+              + Ant Design 主字号 14 / 辅助 12（正文行高 22）
+              + Apple HIG（Title1 28、Title2 22、Footnote 13、Caption 12/11）。
+     倍率 = 目标 px ÷ 14；改 --global-font-size 即整站等比缩放。 */
+  --fs-page: calc(var(--global-font-size) * 28 / 14); /* T1 28px 页面主标题 */
+  --fs-section: calc(var(--global-font-size) * 22 / 14); /* T2 22px 区块标题 */
+  --fs-card: calc(var(--global-font-size) * 16 / 14); /* T3 16px 卡片/条目标题 */
+  --fs-body: var(--global-font-size); /* T4 14px 正文 / 按钮 / 导航 */
+  --fs-meta: calc(var(--global-font-size) * 12 / 14); /* T5 12px 辅助 / 元信息 */
+  --fs-badge: var(--fs-meta); /* T6 12px 微标签 / 角标（与 meta 同号；2026-09-13 就近取大合并） */
+  --fs-num: calc(var(--global-font-size) * 32 / 14); /* D1 32px 数据强调（统计大数字） */
 }
 
 /* =============================================================================
@@ -66,7 +81,7 @@ html {
 .table-wrap table {
   width: 100%;
   border-collapse: collapse; /* 合并边框，避免双边线 */
-  font-size: 0.92em;
+  font-size: var(--fs-body);
   line-height: 1.6;
   color: var(--font-color);
   background: var(--card-bg);
@@ -127,7 +142,7 @@ html {
     padding: 7px 10px;
   }
   .table-wrap table {
-    font-size: 0.85em;
+    font-size: var(--fs-meta);
   }
 }
 
@@ -149,7 +164,9 @@ td code,
 a code {
   padding: 0.15em 0.4em;
   border-radius: 4px;
-  font-size: 0.9em;
+  /* 原 0.9em（12.6px）→ T5（12px）：等宽字体与正文同号会显得偏大，
+     比正文小一档是通用做法（GitHub 85%、Ant 辅助 12），顺手并入阶梯。 */
+  font-size: var(--fs-meta);
   color: var(--default-bg-color);
   background: color-mix(in srgb, var(--default-bg-color) 12%, var(--card-bg));
 }
@@ -266,14 +283,11 @@ blockquote {
 }
 
 /* =============================================================================
- * 第五节：QQ空间归档页（qqspace）融入主题布局
- * 目标：与全站其它页面风格统一（共用主题 header / footer / 背景），
- *       - 不再使用自定义左侧导航（#BlogAnchor 已删除），改为主题原生「右侧栏 + 目录卡」；
- *       - 正文用真实 <h2>/<h3>/<h4> 年份/月份/日期标题，被右侧原生目录自动收集；
- *       - 内容列作为 .layout 的 flex 子项，必须 min-width:0 才能收缩，否则会撑破
- *         右侧栏导致「主栏与右栏重叠」的典型错位。
- * 说明：归档页依赖的 bootstrap / common.css / 脚本由 themes/butterfly/layout/qqspace.pug
- *       注入；此处仅做「主题化」覆盖，使其与站点视觉一致，并自动适配亮/暗/阅读模式。
+ * 第五节：QQ空间归档页（/qqspace/）样式说明
+ *   该页的卡片 / 年份折叠 / 图片网格 / Fancybox 灯箱样式已集中到
+ *   source/qqspace/assets/css/qqspace.css（复用 Butterfly 主题变量，自动适配亮/暗），
+ *   由 scripts/qqspace-archive.js 把 source/qqspace/_content/YYYY.md 渲染为卡片。
+ *   下方仅保留容器级的布局兜底（与其它特殊页 .travel-page 等保持一致）。
  * ========================================================================== */
 
 /* 5.0 空间遗址跟随全站统一宽度（hide-aside 下由 .layout 约束 ≈970px），
@@ -336,11 +350,11 @@ blockquote {
 }
 .ten-year__head h2 {
   margin: 0;
-  font-size: 1.25em;
+  font-size: var(--fs-card);
 }
 .ten-year__head span {
   margin-left: 4px;
-  font-size: 0.9em;
+  font-size: var(--fs-body);
   color: var(--font-color);
   opacity: 0.8;
 }
@@ -359,12 +373,12 @@ blockquote {
 }
 .ten-year__date span {
   display: block;
-  font-size: 0.8em;
+  font-size: var(--fs-body);
   color: var(--font-color);
   opacity: 0.75;
 }
 .ten-year__date strong {
-  font-size: 1.05em;
+  font-size: var(--fs-body);
   color: var(--default-bg-color);
 }
 
@@ -403,12 +417,12 @@ blockquote {
 }
 .ten-year__stat-item span {
   display: block;
-  font-size: 0.78em;
+  font-size: var(--fs-body);
   color: var(--font-color);
   opacity: 0.8;
 }
 .ten-year__stat-item strong {
-  font-size: 1.05em;
+  font-size: var(--fs-body);
   color: var(--default-bg-color);
 }
 
@@ -421,12 +435,14 @@ blockquote {
   padding: 0 4%;
 }
 .ten-year__milestone::before {
-  /* 贯穿连线，置于圆点之下 */
+  /* 贯穿连线：从首节点圆心连到尾节点圆心
+     节点固定宽 48px，圆点 12px 居中 → 圆心距节点左缘 24px；
+     容器左内边距 4% → 连线端点 = 4% + 24px。 */
   content: "";
   position: absolute;
   top: 5px;
-  left: 10%;
-  right: 10%;
+  left: calc(4% + 24px);
+  right: calc(4% + 24px);
   height: 2px;
   background: var(--light-grey);
 }
@@ -437,7 +453,8 @@ blockquote {
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  font-size: 0.82em; /* 还原到“之前”版本字号 */
+  width: 48px; /* 固定宽度：圆点居中，圆心稳定，连线端点可精确对齐 */
+  font-size: var(--fs-body); /* 统一为标准正文 */
   color: var(--font-color);
 }
 /* 圆点：还原到 categories 统一“之前”的版本 —— 12px 直径、2px 描边（主题灰）。 */
@@ -455,9 +472,9 @@ blockquote {
   border-color: var(--default-bg-color);
 }
 .ten-year__ms-item.is-ellipsis .dot {
-  /* 省略节点：更小 + 虚线空心 */
-  width: 8px;
-  height: 8px;
+  /* 省略节点：与其他圆点同尺寸，仅虚线空心 */
+  width: 12px;
+  height: 12px;
   background: transparent;
   border-style: dashed;
 }
@@ -467,6 +484,7 @@ blockquote {
   margin: 0;
   text-align: center;
   font-style: italic;
+  font-size: var(--fs-body);
   color: var(--font-color);
 }
 
@@ -509,7 +527,7 @@ blockquote {
 }
 .skill-group h3 {
   margin: 0 0 10px;
-  font-size: 1em;
+  font-size: var(--fs-card);
   font-weight: 600;
   color: var(--font-color);
 }
@@ -528,7 +546,7 @@ blockquote {
   gap: 12px;
 }
 .skill-row__name {
-  font-size: 0.9em;
+  font-size: var(--fs-body);
   color: var(--font-color);
   white-space: nowrap;
   overflow: hidden;
@@ -615,11 +633,18 @@ blockquote {
  * 亮/暗模式均用深色基底 + 不同不透明度。 */
 #footer {
   background: rgba(0, 0, 0, 0.35);
+  font-size: var(--fs-body);
 }
 
 [data-theme="dark"] #footer,
 .theme-dark #footer {
   background: rgba(0, 0, 0, 0.55);
+}
+
+#footer .copyright,
+#footer .framework-info,
+#footer .footer_custom_text {
+  font-size: var(--fs-body);
 }
 
 /* 分类列表：圆圈图标 + 文字 + 计数，整体靠左不居中 */
@@ -648,50 +673,16 @@ blockquote {
 }
 
 /* =============================================================================
- * 九、番剧页（第三次元 / bangumis）跟随网站模式
+ * 九、（已退役）番剧页变量同步
  * -----------------------------------------------------------------------------
- * hexo-bilibili-bangumi 插件自带 [data-theme=dark] 暗色变量，但亮色仅依赖
- * @media (prefers-color-scheme:dark) —— 当「网站手动选亮色、而系统为暗色」时，
- * 番剧页仍会跟随系统变暗，与网站不一致。
- * 故补 [data-theme=light] 强制亮色变量（来自插件 :root 默认值）；暗色侧
- * 因 critters 会剪掉初始不匹配的 [data-theme=dark] 规则，也需在本文件补一份，
- * 使番剧页与网站亮/暗模式严格同步。
+ * 原先这里用 html[data-theme=light/dark] 逐条覆盖 --bangumi-*，让番剧页跟随网站明暗
+ * （插件原本只在暗色侧有 [data-theme=dark]，亮色侧依赖 prefers-color-scheme，
+ *   于是「网站手动选亮色 + 系统为暗色」时会跑偏）。
+ * 现插件已本地化到 plugins/hexo-bilibili-bangumi，其 index.css 中的 --bangumi-*
+ * 直接 alias 到站点 token（--font-color / --card-bg / --default-bg-color /
+ * --light-grey / --on-accent），明暗自动跟随站点，也不再需要 color-scheme 声明
+ * —— 本段整段移除。
  * ========================================================================== */
-html[data-theme="light"] .bangumi-container.bangumi-theme-auto {
-  --bangumi-bg: #fff;
-  --bangumi-surface: #f7f9fc;
-  --bangumi-surface-strong: #eef3f8;
-  --bangumi-text: #1d2733;
-  --bangumi-muted: #697586;
-  --bangumi-border: #dde5ee;
-  --bangumi-accent: #2f80ed;
-  --bangumi-accent-strong: #1766c2;
-  --bangumi-accent-soft: #e8f2ff;
-  /* 强调色（--bangumi-accent）之上的前景文字：亮色 accent 是中蓝，白字可读 */
-  --bangumi-on-accent: #fff;
-  --bangumi-shadow: rgba(25, 39, 52, 0.09);
-  color-scheme: light;
-}
-
-/* 暗色侧不能只依赖插件 [data-theme=dark] 规则：
- * critters 关键 CSS 内联时，该规则不匹配初始 DOM(data-theme="light")会被剪掉，
- * 完整 custom.css 异步加载后此规则才存在 → 网站手动切暗色时番剧页随之变暗。
- * 值镜像插件 .bangumi-container.bangumi-theme-dark 暗色变量。 */
-html[data-theme="dark"] .bangumi-container.bangumi-theme-auto {
-  --bangumi-bg: #171b22;
-  --bangumi-surface: #202630;
-  --bangumi-surface-strong: #29313d;
-  --bangumi-text: #edf2f7;
-  --bangumi-muted: #a5b1bf;
-  --bangumi-border: #333d4a;
-  --bangumi-accent: #7bb7ff;
-  --bangumi-accent-strong: #9fcbff;
-  --bangumi-accent-soft: #1f354d;
-  /* 暗色 accent 是浅蓝，白字对比度仅 2.1:1 不达标 → 改用近黑文字（约 8.9:1） */
-  --bangumi-on-accent: #0d1520;
-  --bangumi-shadow: rgba(0, 0, 0, 0.32);
-  color-scheme: dark;
-}
 
 /* =============================================================================
  * 十、防 CLS：给封面容器固定宽高比（性能优化指南 #4）
@@ -826,17 +817,11 @@ html.with-fancybox body {
 /* 分页栏：居中、不被网格拆成 item */
 .bangumi-pagination{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:16px;width:100%;}
 .bangumi-view-grid .bangumi-pagination{grid-column:1/-1;margin-top:10px;}
-.bangumi-pagination .bangumi-button,.bangumi-pagination .bangumi-pagenum{display:inline-flex;align-items:center;justify-content:center;padding:6px 12px;border:1px solid var(--bangumi-border);border-radius:6px;background:var(--bangumi-bg);color:var(--bangumi-text);font-size:14px;cursor:pointer;text-decoration:none;transition:all .2s ease;}
+.bangumi-pagination .bangumi-button,.bangumi-pagination .bangumi-pagenum{display:inline-flex;align-items:center;justify-content:center;padding:6px 12px;border:1px solid var(--bangumi-border);border-radius:6px;background:var(--bangumi-bg);color:var(--bangumi-text);font-size: var(--fs-body);cursor:pointer;text-decoration:none;transition:all .2s ease;}
 .bangumi-pagination .bangumi-button:hover{background:var(--bangumi-accent-soft);color:var(--bangumi-accent-strong);}
 .bangumi-pagination .bangumi-pagenum{cursor:default;background:var(--bangumi-accent);color:var(--bangumi-on-accent);border-color:var(--bangumi-accent);}
 
-/* 视图切换按钮（列表 / 网格） */
-.bangumi-view-toggle{margin-left:auto;display:inline-flex;gap:6px;align-self:center;}
-.bangumi-view-btn{display:inline-flex;align-items:center;justify-content:center;width:34px;height:30px;border:1px solid var(--bangumi-border);border-radius:7px;background:var(--bangumi-bg);color:var(--bangumi-muted);cursor:pointer;transition:all .2s ease;}
-.bangumi-view-btn:hover{color:var(--bangumi-accent-strong);background:var(--bangumi-accent-soft);}
-.bangumi-view-btn.active{color:var(--bangumi-on-accent);background:var(--bangumi-accent);border-color:var(--bangumi-accent);}
-
-/* 网格视图：封面网格 + 卡片内边距留白 */
+/* 网格视图：封面网格 + 卡片内边距留白（本站已移除列表视图，网格为唯一视图，见 bangumi-view.js） */
 /* 关键：网格规则只作用于 .bangumi-show 的容器，隐藏容器(.bangumi-hide)不匹配 → 自然被 display:none 隐藏，
    避免 .bangumi-view-grid #bangumi-itemN{display:grid}(1,1,0) 压过隐藏类的矛盾。 */
 .bangumi-view-grid #bangumi-item1.bangumi-show,.bangumi-view-grid #bangumi-item2.bangumi-show,.bangumi-view-grid #bangumi-item3.bangumi-show{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;}
@@ -844,7 +829,13 @@ html.with-fancybox body {
 .bangumi-view-grid .bangumi-picture{flex:none;width:100%;margin:0;padding:0;aspect-ratio:2/3;overflow:hidden;border-radius:8px;background:var(--bangumi-accent-soft,#f0f0f0);}
 .bangumi-view-grid .bangumi-picture img{display:block;width:100%!important;height:100%!important;margin:0!important;object-fit:cover;object-position:center;border-radius:8px;box-shadow:none;}
 .bangumi-view-grid .bangumi-info{min-height:0;padding:10px 4px 0;text-align:center;}
-.bangumi-view-grid .bangumi-title{font-size:14px;margin-bottom:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;}
+/* font-size 已随标题 12px 一并回烤到插件 index.css（此处若保留 var(--fs-body) 会以更高特异性盖回 14px）。
+   这里只留网格视图专属的排版：单行省略号 + 居中。 */
+.bangumi-view-grid .bangumi-title{margin-bottom:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;}
+/* 列表视图标题 / 元信息的字号与颜色：已回烤到插件 index.css
+   （标题取 T5 --fs-meta 12px；元信息同为 T5 --fs-meta —— 12px，网格下已隐藏；
+   颜色统一走 var(--bangumi-text)）。原先需用 body 前缀把特异性提到 (0,1,1) 才能压过
+   「在 </head> 前内联注入」的插件样式，本地化后由插件源头决定，本段退役。 */
 .bangumi-view-grid .bangumi-meta,.bangumi-view-grid .bangumi-summary,.bangumi-view-grid .bangumi-comments{display:none;}
 
 /* =============================================================================
@@ -872,24 +863,30 @@ html.with-fancybox body {
     color-mix(in srgb, var(--default-bg-color) 10%, var(--card-bg)),
     var(--card-bg)
   );
-  box-shadow: var(--card-box-shadow);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08); /* 与 .bangumi-quote（第三次元）同量级 */
 }
+/* 大引号：尺寸 / 位置 / 透明度全部对齐插件的 .bangumi-quote::before
+   （40px / top 8px / left 15px / opacity .6），使六个页面的副标题框看起来是同一个组件。
+   2.5 × T3(16px) = 40px，保留随全局字号缩放的能力。 */
 .page-subtitle::before {
   content: "“";
   position: absolute;
-  top: 2px;
-  left: 6px;
+  top: 8px;
+  left: 15px;
   color: var(--default-bg-color);
-  font-size: 18px;
+  font-size: calc(var(--fs-card) * 2.5);
   font-weight: 700;
   line-height: 1;
-  opacity: 0.4;
+  opacity: 0.6;
 }
 .page-subtitle > p {
   position: relative;
   margin: 0;
   color: inherit;
-  font-size: 15px;
+  /* 与框内 h2 同号（T3 16px）：空间遗址的副标题写的是 <p>，其余页写 <h2>，
+     统一后两种写法外观一致，也都等于第三次元副标题的字号。 */
+  font-size: var(--fs-card);
+  font-weight: 600;
   line-height: 1.8;
 }
 
@@ -900,83 +897,67 @@ html.with-fancybox body {
   position: relative;
   margin: 0;
   color: inherit;
-  font-size: 18px;
+  font-size: var(--fs-card);
   font-weight: 600;
   line-height: 1.8;
   border: none;
   padding: 0;
 }
 
-/* 追番页「第三次元」副标题框（.bangumi-quote）：与 .page-subtitle 内容样式统一，
- * 使全站 6 个副标题框高度一致。
- *  - 清空插件模板遗留的空 <p></p> 的 margin（浏览器把 <p><h2>…</h2></p> 拆为 <p></p><h2>…</h2><p></p>）
- *  - 框内 h2 字号/间距与 .page-subtitle > h2 相同，不再继承主题默认大字号撑高 */
-.bangumi-quote > p {
-  margin: 0;
-  padding: 0;
-}
-/* 浏览器把 <p><h2>…</h2></p> 拆为 <p></p><h2>…</h2><p></p>，两个空 <p> 仍占行高，
- * 需清零 line-height/font-size/height 让其不撑高框，与 .page-subtitle 高度对齐。 */
-.bangumi-quote > p:empty {
-  margin: 0;
-  padding: 0;
-  line-height: 0;
-  font-size: 0;
-  height: 0;
-}
-.bangumi-quote > h2,
-.bangumi-quote > p > h2 {
-  position: relative;
-  margin: 0;
-  color: inherit;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 1.8;
-  border: none;
-  padding: 0;
-}
+/* 追番页「第三次元」副标题框（.bangumi-quote）：外观已回烤到插件 index.css，
+ * 与 .page-subtitle 完全同一套（浅底深字渐变 + 主色左边框 + 大引号 + 空 <p> 清零 + h2 同号）。
+ * 原先需用 #article-container 提特异性才能压过「在 </head> 前内联注入」的插件样式，
+ * 插件本地化后由插件源头直接给出，本段退役。 */
 
 /* 去掉主题默认给标题添加的 FA 链接图标（content:'\f0c1'，绝对定位 left:0 的红色 fa-link）：
  * 副标题框与 qqspace 的 h2/h3/h4 标题有各自的装饰（大引号 / 折叠三角 / 左竖条），
  * 无需 fa-link 图标；且该图标 absolute 定位在文字起点，与 padding 覆盖后的文字重合
  * （主题 h2:hover{ padding-left:30px } 会在聚焦时把文字右移，造成「未聚焦重合、聚焦分开」）。
  * 折叠三角 .year-toggle::before 由更高特异性规则提供，不受影响。 */
-.page-subtitle > h2::before,
-.bangumi-quote > h2::before,
-.bangumi-quote > p > h2::before,
-.qqspace-page h2.wow_head::before,
-.qqspace-page h3.wow_head::before,
-.qqspace-page h4.wow_head::before,
-.qqspace-page .day-label::before {
+/* .bangumi-quote 的两条已回烤到插件 index.css，此处只保留 .page-subtitle 的 */
+.page-subtitle > h2::before {
   content: none;
 }
 
-/* ── 首页横向分叉树状导航图（source/index.md） ──
-   配色严格沿用 Butterfly 主题：
-   主色 #49B1F5 / 青绿 #00c4b6（分类·toc·paginator）/ 橙红 #FF7242（按钮悬停·单页）
-   卡片圆角 10px、阴影复用 --card-box-shadow，连线色 var(--hr-before-color) 明暗自适应。
-   布局：CSS flex 横向分叉树（根在左、向右分叉，父节点垂直居中于子树高度）。 */
+/* ── 首页树状导航图（节点数据 scripts/site-tree.js / 模板 themes/butterfly/layout/index.pug）──
+   分工：**DOM 只管排版**——节点排布（板块竖排、分类横排、清单父左子右）完全由 flex 决定；
+        **连线全部交给 JS 现算**——source/js/site-tree-lines.js 生成一层 SVG 覆盖层，
+        按节点 getBoundingClientRect() 的真实坐标画正交折线。
+   不再用 ::before/::after 画线的原因：伪元素连线依赖写死的像素偏移（「卡片半高 18px」
+        「卡片半宽 40px」、28/24/14px 各种间距），字号档位一变、换行一发生、跨过 768px
+        断点就会与节点脱节；SVG 现算对这几种情况天然免疫。
+   配色沿用 Butterfly 主题：主色 #49B1F5 / 青绿 #00c4b6 / 橙红 #FF7242；
+   卡片圆角 10px、阴影复用 --card-box-shadow、连线色 var(--hr-before-color) 明暗自适应。 */
 .site-tree {
   --tree-line: var(--hr-before-color, #bfe4fb);
   --c-cat: #00c4b6;   /* 分类类节点 */
   --c-album: #49b1f5; /* 相册类节点（主题主色） */
   --c-page: #ff7242;  /* 单页类节点（按钮悬停色） */
-  --h: 30px;          /* 横向连线长度（父节点 → 子节点） */
-  --row-gap: 16px;    /* 同层节点纵向间距（原 12px，加宽使三组分布更舒展） */
+  --h: 30px;          /* 横向连线长度（总干线/轨道 → 卡片；同时是子层 li 的左内边距） */
+  --row-gap: 16px;    /* 同层节点纵向间距 */
+  --bus-gap: 24px;    /* 水平干线到「横排子卡片」的垂直距离（连线层读此变量，勿在 JS 里写死） */
+  --drop-gap: 24px;   /* 单页行干线到卡片的垂直距离（同上） */
+  --tree-corner: 6px; /* 折线拐角圆角半径（同上） */
   max-width: 100%;
   margin: 0;
-  padding: 8px .2em;   /* 上下对称：与 li 的 padding-top/.9 合计，使「首节点顶」与「末横线底」到卡片边距相等 */
-  font-size: 14px;
+  padding: 8px .2em;
+  font-size: var(--fs-body);
   min-height: 723px;   /* 略大于展开态内容高度：展开/折叠两态容器高度一致，底部与侧栏「网站信息」卡片对齐 */
   display: flex;       /* 让 min-height 撑出的余量上下均分，折叠态上下留白仍对称 */
   flex-direction: column;
   justify-content: center;
+  position: relative;  /* 承载连线层 SVG（绝对定位覆盖整棵树） */
 }
 /* 首页主内容卡片：主题 .layout > div:first-child 默认 padding:50px 40px（为文章流分页器预留），
    底部留白会让白色卡片比侧栏「网站信息」卡片低 70px。首页只放树状图，去掉底部留白使底边对齐。 */
 #recent-posts { padding-top: 27px; padding-bottom: 27px; }
 /* details 作为透明容器，使 summary + ul 直接参与 li 的 flex 流 */
 .site-tree details { display: contents; }
+/* ⚠ 但 display:contents 会让浏览器原生的「details 闭合时隐藏内容」失效（没有盒子可隐藏），
+   表现为：点标题只有三角在转、内容根本不收，且连线层按「已收起」不画线 → 看起来就是「错乱」。
+   故必须显式补回隐藏规则；用 !important 是因为它要压过高特异性的
+   `.site-tree .cat-branch > details > ul { display:flex }`（分类行横排）。 */
+.site-tree details:not([open]) > ul { display: none !important; }
 
 /* 每一层：子节点纵向堆叠（同层上下排列）；节点在左、子树在右 */
 .site-tree ul {
@@ -988,163 +969,45 @@ html.with-fancybox body {
   padding: 0;
   position: relative;
 }
-/* 顶层间距用 li 的 padding 制造，使干线（li::after）在间隙处不断开 */
+/* 顶层各板块的纵向间距 */
 .site-tree > ul { gap: 0; }
 .site-tree > ul > li {
-  padding-left: var(--h);
+  padding-left: var(--h);   /* 卡片右移，给总干线留出横向分叉空间 */
   padding-top: calc(var(--row-gap) * .9);
   padding-bottom: calc(var(--row-gap) * .9);
 }
-/* 顶层板块从总干线向右分叉出水平连线 */
-.site-tree > ul > li::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: var(--h);
-  height: 2px;
-  background: var(--tree-line);
-  border-radius: 0 2px 2px 0;
-}
-/* 总干线：由各顶层 li 竖线段拼接，连接首末节点中心、不超出两端 */
-.site-tree > ul > li::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2px;
-  height: 100%;
-  background: var(--tree-line);
-}
-.site-tree > ul > li:first-child::after { top: 50%; height: 50%; }
-.site-tree > ul > li:last-child::after  { height: 50%; }
 
-/* ── 单页组（第三次元 ~ 关于）：水平排布，连线从总干线下方绕上来 ── */
-.site-tree > ul > li.h-branch { padding-left: 0; }          /* 取消左侧分叉水平线，改由绕线 */
-.site-tree > ul > li.h-branch::before { display: none; }    /* 不在顶层高度拉水平梳子线 */
+/* ── 单页组（第三次元 ~ 关于）：卡片横排，连线由总干线底部绕上来接住 ── */
+.site-tree > ul > li.h-branch { padding-left: 0; } /* 与总干线同一起点，卡片靠 .h-row 的 padding 右移 */
 .site-tree .h-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px 22px;
-  position: relative;
+  column-gap: 22px;
+  row-gap: calc(var(--drop-gap) + 10px); /* 换行时行距必须大于干线间距，否则行下方的干线会压到下一行卡片 */
   margin-top: calc(var(--row-gap) * .5);
-  padding-left: var(--h);     /* 节点右移到干线右侧，绕线左端对齐 x=0 */
-  padding-bottom: 24px;       /* 留出底部水平干线 + 上竖线空间 */
-}
-/* 子行底部水平干线：横贯 6 个节点 */
-.site-tree .h-row::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 2px;
-  background: var(--tree-line);
-}
-/* 绕线：从总干线（x=0）向下绕到子行底部水平干线 */
-.site-tree .h-row::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: -14px;
-  bottom: 0;
-  width: 2px;
-  background: var(--tree-line);
-}
-/* 每个节点：向上竖线接到底部水平干线 */
-.site-tree .h-row > a { position: relative; }
-.site-tree .h-row > a::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -24px;
-  width: 2px;
-  height: 24px;
-  background: var(--tree-line);
+  padding-left: var(--h);                      /* 卡片右移到干线右侧 */
+  padding-bottom: calc(var(--drop-gap) + 4px); /* 给卡片下方的水平干线留出空间 */
 }
 
-/* ── 分类组：分类节点居中（主线接左侧中点），向下汇入 5 个分类 ── */
+/* ── 分类组：分类节点居中，其下横向排开各分类（连线由 SVG 连线层画） ── */
 .site-tree > ul > li.cat-branch {
   padding-left: 0;
   flex-direction: column;
   align-items: center;
 }
-/* 主竖线：起点与 cat-branch::before 水平线 y 同位（即「分类」节点中心，左上角无突出） */
-.site-tree > ul > li.cat-branch::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: calc(var(--row-gap) * .9 + 18px);   /* = 「分类」节点垂直中心（li padding-top + 卡片半高） */
-  height: calc(100% - var(--row-gap) * .9 - 18px);
-  width: 2px;
-  background: var(--tree-line);
-}
-/* 水平线：从主竖线（x=0）向右接入「分类」节点**左侧中点**（与主竖线起点同 y） */
-.site-tree > ul > li.cat-branch::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: calc(var(--row-gap) * .9 + 18px);   /* = 节点中心，与 cat-branch::after 主竖线 y 平齐 */
-  width: calc(50% - 40px);                 /* = 居中卡片左端 */
-  height: 2px;
-  background: var(--tree-line);
-}
-/* 分类节点：底部留 28px 间距让下方水平线 + 短竖线 + 5 个分类整块下移（间距处由 summary::after 竖线连接，树状连贯） */
-.site-tree .cat-branch > details > summary {
-  position: relative;
-  margin: 0 auto 28px;
-}
-/* 连接竖线：从「分类」节点底部向下 28px 接到 ul 顶部水平线（下移间距处补线，不中断树结构） */
-.site-tree .cat-branch > details > summary::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  transform: translateX(-1px);
-  width: 2px;
-  height: 28px;
-  background: var(--tree-line);
-}
-/* 折叠时隐藏连接竖线（避免指向空区域） */
-.site-tree .cat-branch > details:not([open]) > summary::after { display: none; }
-/* 5 个分类横向一行：嵌套 ul 改为水平排列（覆盖默认 li li 竖列树），从「分类」节点下方引出 */
+/* 分类节点：底部留出干线空间（这段间距由连线层补竖线，树状连贯） */
+.site-tree .cat-branch > details > summary { margin: 0 auto 28px; }
+/* 各分类横向一行：嵌套 ul 改为水平排列（覆盖默认的「父在左、子在右」竖列树） */
 .site-tree .cat-branch > details > ul {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 16px 22px;
-  position: relative;
-  padding: 24px 0 0;            /* 仅顶部 padding（水平线 + 24px 短竖线空间），左右归零让 ul 宽度 = 内容，首末分类对称分布，水平线 left/right 精准对齐 */
+  column-gap: 22px;
+  row-gap: calc(var(--bus-gap) + 10px); /* 换行时行距大于干线间距，确保行上方的干线落在行间空隙里 */
+  padding: var(--bus-gap) 0 0;          /* 顶部留出水平干线 + 垂线空间；左右归零使首末分类左右对称 */
 }
-/* 取消 li 默认「父在左、子在右」连接线（横向排布改由 ul 顶部水平干线统一连接） */
-.site-tree .cat-branch > details > ul > li {
-  padding-left: 0;
-}
-.site-tree .cat-branch > details > ul > li::before,
-.site-tree .cat-branch > details > ul > li::after { display: none; }
-/* 顶部水平干线：横贯 5 个分类，两端对齐首末分类中心 */
-.site-tree .cat-branch > details > ul::before {
-  content: "";
-  position: absolute;
-  left: 40px;
-  right: 40px;
-  top: 0;
-  height: 2px;
-  background: var(--tree-line);
-}
-/* 每个分类：从顶部水平干线向下 24px 接入（a 顶部上方到水平线） */
-.site-tree .cat-branch > details > ul > li > a { position: relative; }
-.site-tree .cat-branch > details > ul > li > a::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -24px;
-  transform: translateX(-1px);
-  width: 2px;
-  height: 24px;
-  background: var(--tree-line);
-}
+.site-tree .cat-branch > details > ul > li { padding-left: 0; }
 /* 节点单元：节点在左、子树在右，节点垂直居中于子树高度 */
 .site-tree li {
   display: flex;
@@ -1153,35 +1016,29 @@ html.with-fancybox body {
   list-style: none;
 }
 
-/* ── 连线（横向树：仅子层 li 绘制，父在左、向右分叉）── */
+/* ── 子层 li：左内边距把卡片推到「竖直轨道」右侧，轨道与短接线由连线层画 ── */
 .site-tree li li { padding-left: var(--h); }
-/* 水平段：从父节点右侧连到本节点左侧 */
-.site-tree li li::before {
-  content: "";
+
+/* ── 连线层 SVG：绝对定位覆盖整棵树，坐标由 source/js/site-tree-lines.js 现算 ──
+   线色/线宽走变量，明暗主题切换时随 CSS 变量自动变色（无需 JS 重绘）。
+   pointer-events:none 让点击穿透到卡片；z-index:0 使线压在卡片之下。 */
+.site-tree-lines {
   position: absolute;
-  top: 50%;
-  left: 0;
-  width: var(--h);
-  height: 2px;
-  background: var(--tree-line);
-  border-radius: 0 2px 2px 0;
-}
-/* 竖直段：连接同一父下的各兄弟节点（位于子树左缘 = 父节点右缘） */
-.site-tree li li::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 2px;
+  inset: 0;
+  width: 100%;
   height: 100%;
-  background: var(--tree-line);
+  overflow: visible;      /* 干线略超容器边界时也照常绘制 */
+  pointer-events: none;
+  z-index: 0;
+  fill: none;
+  stroke: var(--tree-line);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
 }
-/* 首节点：竖线只从中点向下 */
-.site-tree li li:first-child::after { top: 50%; height: 50%; }
-/* 末节点：竖线只到中点 */
-.site-tree li li:last-child::after  { height: 50%; }
-/* 独子：无需竖线，仅水平段 */
-.site-tree li li:only-child::after  { display: none; }
+/* 卡片抬到连线之上；同时作为定位上下文（悬停位移不受影响） */
+.site-tree details > summary,
+.site-tree a { position: relative; z-index: 1; }
 
 /* 节点卡片（summary 与 a 共用主题卡片观感） */
 .site-tree details > summary,
@@ -1246,7 +1103,7 @@ html.with-fancybox body {
   border-radius: 999px;
   background: color-mix(in srgb, var(--c-cat) 14%, var(--card-bg, #fff));
   color: var(--c-cat);
-  font-size: .76em;
+  font-size: var(--fs-badge);
   font-weight: 600;
 }
 
@@ -1275,7 +1132,9 @@ html.with-fancybox body {
   .site-tree {
     --h: 12px;          /* 每层连线缩短，减少横向占用 */
     --row-gap: 10px;     /* 同层节点纵向间距收窄 */
-    font-size: 12px;
+    --bus-gap: 16px;     /* 干线间距同步收窄（连线层读变量，自动跟随） */
+    --drop-gap: 18px;
+    font-size: var(--fs-meta);
     min-height: 0;       /* 移动端无侧栏并排，不必维持等高留白 */
     padding: 6px .1em;
   }
@@ -1286,11 +1145,10 @@ html.with-fancybox body {
   }
   .site-tree li li { padding-left: var(--h); }
   .site-tree .h-row {
-    gap: 10px 14px;
+    column-gap: 14px;
+    row-gap: calc(var(--drop-gap) + 8px);
     padding-left: var(--h);
-    padding-bottom: 18px;
   }
-  .site-tree .h-row > a::after { bottom: -18px; height: 18px; }
   .site-tree i[class*="fa-"] { width: 1.1em; }
 }
 
@@ -1303,3 +1161,25 @@ html.with-fancybox body {
 .pagination-post .pagination-related .cover {
   background: var(--btn-bg) !important;
 }
+
+/* =============================================================================
+ * 十四、emoji 统一（.github-emoji）
+ * -----------------------------------------------------------------------------
+ * 由 hexo-filter-github-emojis 在构建时把样式内联注入到 </head> 之前，
+ * **晚于本文件**，所以普通选择器 (0,1,0) 覆盖不到 —— 这里用 #article-container /
+ * #page / #aside-content / #footer 把特异性提到 (1,1,0) 取胜，不必写 !important。
+ *  · 尺寸 1.2em：与 GitHub 观感一致，且相对父级等比缩放，跨页天然协调；
+ *  · 去掉 min-height:1.2em：它会把行盒撑高，造成带 emoji 的行与纯文字行行距不均；
+ *  · vertical-align 由 top 改 -0.15em：原写法顶部对齐，行高大时 emoji 视觉上浮。
+ * ========================================================================== */
+#article-container .github-emoji,
+#page .github-emoji,
+#aside-content .github-emoji,
+#footer .github-emoji {
+  min-height: 0;
+  vertical-align: -0.15em;
+}
+/* 小字容器（徽章 / 角标，T6 11px）里的 emoji 跟着缩到 13px 会偏小，给一点下限 */
+#article-container .leaf-count .github-emoji,
+#page .badge .github-emoji,
+#article-container .badge .github-emoji { font-size: 1.05em; }
