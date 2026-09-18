@@ -14,18 +14,23 @@
 /* =============================================================================
  * 零点五、设计 Token（Design Tokens）
  * -----------------------------------------------------------------------------
- * 集中定义全站点半径 / 阴影 / 断点变量，供各页面样式（album / travel / qqspace 等）
+ * 集中定义全站点半径 / 阴影 / 断点变量，供各页面样式（album / travel / notes 等）
  * 引用，避免重复硬编码、便于统一调整。仅替换数值等价处，不改变外观。
  * ========================================================================== */
 :root {
   --radius-card: 12px;
-  --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.08);
+  /* 2026-09-17：改为**派生自主题变量**，不再自造固定值。
+     - 阴影：直接引用主题的卡片阴影（明暗各一套），主题换风格时全站卡片同步；
+       兜底值为原来的自造阴影，主题未定义时回退。
+       ⚠ 这会改变各页卡片的阴影观感（主题阴影更柔更扩散）——即「卡片观感」清单里的选项二。 */
+  --shadow-card: var(--card-box-shadow, 0 4px 14px rgba(0, 0, 0, 0.08));
   --bp-sm: 480px;
   --bp-md: 768px;
   --bp-lg: 992px;
   /* 主题色（--default-bg-color）之上的前景文字色。表头渐变、徽章等
-     以主题色为底的容器都应引用它，而不是直接写 #fff。 */
-  --on-accent: #fff;
+     以主题色为底的容器都应引用它，而不是直接写 #fff。
+     2026-09-17：改用主题 --white（亮色 #fff / 暗色 rgba(255,255,255,.9)），随明暗自动切换。 */
+  --on-accent: var(--white, #fff);
 
   /* ── 字号阶梯（Font Scale，2026-09-12 定稿）─────────────────────────
      唯一基准 = --global-font-size（14px），一律 calc 绝对换算，
@@ -283,16 +288,16 @@ blockquote {
 }
 
 /* =============================================================================
- * 第五节：QQ空间归档页（/qqspace/）样式说明
+ * 第五节：「此去经年」归档页（/notes/）样式说明
  *   该页的卡片 / 年份折叠 / 图片网格 / Fancybox 灯箱样式已集中到
- *   source/qqspace/assets/css/qqspace.css（复用 Butterfly 主题变量，自动适配亮/暗），
- *   由 scripts/qqspace-archive.js 把 source/qqspace/_content/YYYY.md 渲染为卡片。
+ *   source/notes/assets/css/notes.css（复用 Butterfly 主题变量，自动适配亮/暗），
+ *   由 scripts/notes-archive.js 把 source/notes/content/YYYY.md 渲染为卡片。
  *   下方仅保留容器级的布局兜底（与其它特殊页 .travel-page 等保持一致）。
  * ========================================================================== */
 
-/* 5.0 空间遗址跟随全站统一宽度（hide-aside 下由 .layout 约束 ≈970px），
+/* 5.0 「此去经年」跟随全站统一宽度（hide-aside 下由 .layout 约束 ≈970px），
  *     移除早期「max-width:1200px」的独立限宽，避免比其它页宽。 */
-/* （规则已删除：不再单独限宽 qqspace 的 #content-inner） */
+/* （规则已删除：不再单独限宽 notes 的 #content-inner） */
 
 /* 5.1 内容列：作为 .layout 的 flex 子项占满主栏（与标准页「到此一游」同构）。
  *      ⚠ min-width:0 是关键 —— 否则卡片内容的 min-content 会把主栏撑开，
@@ -302,10 +307,10 @@ blockquote {
  *      导致主栏像“悬浮/居中”、顶端与右侧目录卡不对齐、像被侧栏遮住。
  *      还原卡片后：主栏 = 左 74% 白卡，副栏 = 右 26% 目录卡，与到此一游一致。
  *      box-sizing:border-box 确保 50px/40px 内边距算进 74% 宽度内，避免撑破重叠。 */
-/* 5.1 空间遗址正文容器（默认 page 渲染）
+/* 5.1 此去经年正文容器（默认 page 渲染）
  *  与 .keepfit-page / .mountain-page / .travel-page 保持一致：仅做宽度控制，不再做"卡片化"外观，
- *  使 qqspace 容器在 hide-aside 全站统一布局下与其它特殊页样式一致。 */
-#qqspace.qqspace-page {
+ *  使 notes（此去经年）容器在 hide-aside 全站统一布局下与其它特殊页样式一致。 */
+#notes.notes-page {
   flex: 1 1 auto;
   min-width: 0;
   max-width: 100%;
@@ -314,7 +319,7 @@ blockquote {
 
 /* 5.2 移动端 / 窄屏：右侧栏折叠为抽屉，主栏占满宽度（主题负责收起 aside） */
 @media (max-width: 900px) {
-  #qqspace.qqspace-page {
+  #notes.notes-page {
     flex: 1 1 100%;
     min-width: 0;
   }
@@ -843,7 +848,7 @@ html.with-fancybox body {
  * -----------------------------------------------------------------------------
  * 仿照「第三次元」番剧页的 .bangumi-quote 引用块：左侧主色竖线 + 圆角 + 渐变背景
  * + 左上角大引号装饰。做成全站通用类，供各独立页（到此一游 / 修身养性 / 十万大山 /
- * 空间遗址 / 关于 等）在正文顶部放一句可自定义的「副标题」。
+ * 此去经年 / 关于 等）在正文顶部放一句可自定义的「副标题」。
  * 全部复用 Butterfly 主题变量（--default-bg-color / --card-bg / --light-grey /
  * --font-color），自动适配亮色 / 暗色 / 阅读模式。
  * 用法：在页面正文最前插入
@@ -883,7 +888,7 @@ html.with-fancybox body {
   position: relative;
   margin: 0;
   color: inherit;
-  /* 与框内 h2 同号（T3 16px）：空间遗址的副标题写的是 <p>，其余页写 <h2>，
+  /* 与框内 h2 同号（T3 16px）：此去经年的副标题写的是 <p>，其余页写 <h2>，
      统一后两种写法外观一致，也都等于第三次元副标题的字号。 */
   font-size: var(--fs-card);
   font-weight: 600;
@@ -910,13 +915,27 @@ html.with-fancybox body {
  * 插件本地化后由插件源头直接给出，本段退役。 */
 
 /* 去掉主题默认给标题添加的 FA 链接图标（content:'\f0c1'，绝对定位 left:0 的红色 fa-link）：
- * 副标题框与 qqspace 的 h2/h3/h4 标题有各自的装饰（大引号 / 折叠三角 / 左竖条），
+ * 副标题框与 notes（此去经年）的 h2/h3/h4 标题有各自的装饰（大引号 / 折叠三角 / 左竖条），
  * 无需 fa-link 图标；且该图标 absolute 定位在文字起点，与 padding 覆盖后的文字重合
  * （主题 h2:hover{ padding-left:30px } 会在聚焦时把文字右移，造成「未聚焦重合、聚焦分开」）。
  * 折叠三角 .year-toggle::before 由更高特异性规则提供，不受影响。 */
 /* .bangumi-quote 的两条已回烤到插件 index.css，此处只保留 .page-subtitle 的 */
 .page-subtitle > h2::before {
   content: none;
+}
+
+/* ── 暗色模式主色微调（2026-09-18）────────────────────────────────────────
+   亮色模式主色 #2F6E63 在暗底 #121212 上对比度只有 3.15，作为文字/图标会偏暗。
+   暗色下换成浅一档的 #40786B：白字对比 5.10（仍达 AA），且在暗底上更清楚（3.67）。
+   放在这里是因为 custom.css 在主题 index.css 之后加载，可稳定覆盖。 */
+[data-theme="dark"] {
+  --default-bg-color: #40786b;
+}
+
+/* 首页「置顶」图钉：主题在 index.styl 里硬编码了橙红 #FF7242（100% 饱和），
+   不读 theme_color 配置，只能在这里覆盖 —— 统一为主题主色青绿（随明暗模式自适应）。 */
+#recent-posts .recent-post-item > .recent-post-info > .article-title .sticky {
+  color: var(--default-bg-color);
 }
 
 /* ── 首页树状导航图（节点数据 scripts/site-tree.js / 模板 themes/butterfly/layout/index.pug）──
@@ -942,7 +961,7 @@ html.with-fancybox body {
   margin: 0;
   padding: 8px .2em;
   font-size: var(--fs-body);
-  min-height: 723px;   /* 略大于展开态内容高度：展开/折叠两态容器高度一致，底部与侧栏「网站信息」卡片对齐 */
+  min-height: 723px;   /* 桌面端（≥900px）高度由下方「主列 flex 填充」结构决定；此下限供 769–899px 等无侧栏并排的场景维持「展开/折叠两态高度一致」 */
   display: flex;       /* 让 min-height 撑出的余量上下均分，折叠态上下留白仍对称 */
   flex-direction: column;
   justify-content: center;
@@ -951,6 +970,34 @@ html.with-fancybox body {
 /* 首页主内容卡片：主题 .layout > div:first-child 默认 padding:50px 40px（为文章流分页器预留），
    底部留白会让白色卡片比侧栏「网站信息」卡片低 70px。首页只放树状图，去掉底部留白使底边对齐。 */
 #recent-posts { padding-top: 27px; padding-bottom: 27px; }
+/* 树卡「底边对齐侧栏末卡」的纯 CSS 机制（**不依赖任何脚本**，仅桌面端）：
+   实测：MAIN.layout 是 row flex，但主题给 #recent-posts 写了 align-self:flex-start，
+   主列默认不参与拉伸、高度只等于自身内容 —— 必须先改回 stretch 才能与侧栏等高。
+   再把主列改为纵向 flex + 去掉底部内边距 → 树卡以 flex:1 填满列高。
+   于是：树卡底边 === 主列盒底 === 侧栏盒底 === 末卡可见底边（配合下方「末卡 margin-bottom:0」）。
+   （此前用 JS 量高度写 min-height 的做法已移除：脚本一旦未执行 / 被浏览器缓存 / 被拦，
+     就退化成写死 723px，偏差随机漂移 —— 改为由结构决定，任何情况下都成立。）
+   :has() 限定「主列里确实放着树卡」的页面，不影响文章流页面。 */
+@media (min-width: 900px) {
+  #recent-posts:has(> .site-tree) {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;   /* 主题给 #recent-posts 写了 align-self:flex-start（不参与拉伸），必须改回 stretch 才能与侧栏等高 */
+    padding-bottom: 0;
+  }
+  #recent-posts:has(> .site-tree) > .site-tree {
+    flex: 1 1 auto;
+    min-height: 0;   /* 桌面端高度由「填满列高」决定，不再需要写死下限（769–899px 仍用上面的 723px 下限） */
+  }
+}
+/* 侧栏最后一张卡片清零底部外边距（仅桌面端）：
+   主题 .card-widget{margin-bottom:20px} 是卡间距；但末卡片的下方已无兄弟卡片，
+   而 .sticky_layout 是 position:sticky（自成 BFC），这 20px **不会**折叠到容器之外，
+   而是留在容器边框盒内 → 容器「盒子底边」比卡片肉眼可见的底边（绿框底）低 20px。
+   清零后容器底边 === 卡片可见底边，与上面的主列 flex 填充配合，树卡底边精确落在末卡可见底边。 */
+@media (min-width: 900px) {
+  #aside-content .sticky_layout > :last-child { margin-bottom: 0; }
+}
 /* details 作为透明容器，使 summary + ul 直接参与 li 的 flex 流 */
 .site-tree details { display: contents; }
 /* ⚠ 但 display:contents 会让浏览器原生的「details 闭合时隐藏内容」失效（没有盒子可隐藏），

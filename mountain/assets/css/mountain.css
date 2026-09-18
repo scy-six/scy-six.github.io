@@ -23,16 +23,17 @@
   margin-bottom: 2.4rem;
 }
 
+/* 区块标题：**完全使用主题 h2 样式**（同 keepfit / travel / notes，见 keepfit.css 同名注释）。
+   审计（2026-09-17）移除：font-size、padding-left 为死声明（特异性不足，从未生效），
+   font-weight 与主题 bold 重复，color 会让本页脱离主题标题色。仅保留 margin 作布局取舍。 */
 .mountain-h2 {
-  font-size: var(--fs-section);
-  font-weight: 700;
   margin: 0 0 1.1rem;
-  padding-left: 0.7rem;
-  color: var(--font-color);
 }
 
 .mountain-section .hint {
   margin: -0.4rem 0 1rem;
+  /* 2026-09-18：这段是标题/图表上下的**说明正文**（不是注释），按正文档 14px（--fs-body），
+     与同页 .mountain-chart-sub（图表上方说明）同号。此前按「注释 12px」处理过，现按用户口径更正。 */
   font-size: var(--fs-body);
   opacity: 0.6;
   line-height: 1.6;
@@ -54,12 +55,12 @@
   border-radius: var(--radius-card);
   padding: 1.3rem 1rem;
   text-align: center;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  box-shadow: var(--card-box-shadow);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .mountain-stat-card:hover {
-  box-shadow: 0 10px 26px color-mix(in srgb, var(--font-color) 16%, transparent);
+  box-shadow: var(--card-hover-box-shadow);
   transform: translateY(-3px);
 }
 
@@ -84,7 +85,7 @@
   background: var(--card-bg);
   border: 1px solid var(--tab-border-color);
   border-radius: var(--radius-card);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  box-shadow: var(--card-box-shadow);
   overflow: hidden;
 }
 
@@ -156,7 +157,7 @@
   border: 1px solid var(--tab-border-color);
   border-radius: var(--radius-card);
   padding: 1.2rem 1.3rem 1.4rem;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  box-shadow: var(--card-box-shadow);
 }
 
 .mountain-chart-title {

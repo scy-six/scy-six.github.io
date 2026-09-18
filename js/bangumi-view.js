@@ -11,6 +11,12 @@
 (function () {
   "use strict";
 
+  // 幂等守卫：本脚本经 inject.bottom 全局注入且带 data-pjax，pjax 每次导航都会重新执行本 IIFE。
+  // 不加锁的话，window 上的 pjax:complete 监听器会随导航次数线性累积（每次一个新闭包）→ 重复执行。
+  // （album-menu.js 的 window.__albumMenuBound 同款做法。）
+  if (window.__bangumiViewReady) return;
+  window.__bangumiViewReady = true;
+
   // 容器恒为网格视图（列表视图已随本地化移除）
   function ensureGridView() {
     var c = document.querySelector(".bangumi-container");
@@ -22,10 +28,13 @@
       var obs = new MutationObserver(function (_, o) {
         var el = document.querySelector(".bangumi-container");
         if (el) {
+          clearTimeout(tid);
           o.disconnect();
           el.classList.add("bangumi-view-grid");
         }
       });
+      // 非番剧页上目标永不出现 → 观察器会一直挂着监听全站 DOM；15 秒后自动收工（插件渲染远快于此）
+      var tid = setTimeout(function () { obs.disconnect(); }, 15000);
       obs.observe(document.body, { childList: true, subtree: true });
     }
   }
@@ -52,10 +61,13 @@
     if (typeof MutationObserver !== "undefined") {
       var obs = new MutationObserver(function (_, o) {
         if (document.querySelector(".bangumi-info .bangumi-title")) {
+          clearTimeout(tid);
           o.disconnect();
           bindTitleTooltip();
         }
       });
+      // 同上：15 秒未出现即收工，避免在非番剧页长期监听全站 DOM
+      var tid = setTimeout(function () { obs.disconnect(); }, 15000);
       obs.observe(document.body, { childList: true, subtree: true });
     }
   }

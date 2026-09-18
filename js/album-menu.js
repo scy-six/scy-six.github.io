@@ -1,4 +1,3 @@
-/* eslint-env browser */
 /* 相册菜单（album-menu）——清单相册（pet / garden / angling / bird / diy）共用。
  * 取代 2026-09-14 的「照片下方标签切换」：子相册不再堆在照片下面（照片一多就得下滑才能选），
  * 改为顶部菜单 + 悬停下拉。

@@ -4,7 +4,25 @@
   <url>
     <loc>https://scy-six.github.io/travel/index.html</loc>
     
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-18</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://scy-six.github.io/about/index.html</loc>
+    
+    <lastmod>2026-09-17</lastmod>
+    
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>https://scy-six.github.io/notes/index.html</loc>
+    
+    <lastmod>2026-09-17</lastmod>
     
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -101,25 +119,7 @@
   </url>
   
   <url>
-    <loc>https://scy-six.github.io/qqspace/index.html</loc>
-    
-    <lastmod>2026-09-10</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>https://scy-six.github.io/keepfit/index.html</loc>
-    
-    <lastmod>2026-09-06</lastmod>
-    
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
-    <loc>https://scy-six.github.io/about/index.html</loc>
     
     <lastmod>2026-09-06</lastmod>
     
@@ -238,7 +238,7 @@
 
   <url>
     <loc>https://scy-six.github.io/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
@@ -248,42 +248,42 @@
   
   <url>
     <loc>https://scy-six.github.io/categories/%E7%94%9F%E6%B4%BB/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://scy-six.github.io/categories/%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2026-09-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
-    <loc>https://scy-six.github.io/categories/%E6%96%87%E6%91%98/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://scy-six.github.io/categories/%E7%94%B5%E8%84%91/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://scy-six.github.io/categories/%E6%96%87%E6%91%98/</loc>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://scy-six.github.io/categories/%E7%9B%B8%E6%9C%BA/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>
   
   <url>
     <loc>https://scy-six.github.io/categories/%E8%AF%97%E8%AE%B0/</loc>
-    <lastmod>2026-09-15</lastmod>
+    <lastmod>2026-09-18</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
   </url>

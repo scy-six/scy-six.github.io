@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>捕光捉影 | Scy's Blog</title><meta name="author" content="Scy"><meta name="copyright" content="Scy"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="镜头里的鸟">
+<!-- 侧栏默认折叠条件：① 全局 theme.aside.hide；② 单页 front-matter aside:false。--><!-- 注意：aside:false 时侧栏仍照常渲染（见下方 widget），仅默认折叠，右下角设置里的侧栏开关可手动展开。--><!-- 仅当全局关闭侧栏时给 .layout 加 hide-aside（窄化、无侧栏 DOM）；单页 aside:false 改由 html.hide-aside 处理--><!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>捕光捉影 | Scy's Blog</title><meta name="author" content="Scy"><meta name="copyright" content="Scy"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="镜头里的鸟">
 <meta property="og:type" content="website">
 <meta property="og:title" content="捕光捉影">
 <meta property="og:url" content="https://scy-six.github.io/bird/index.html">
@@ -137,7 +137,9 @@
           else theme === 'light' ? activateLightMode() : activateDarkMode()
         
       
-      const asideStatus = saveToLocal.get('aside-status')
+      // 每页独立记忆：以 pathname 区分不同页面的侧栏开合状态
+      const asideKey = 'aside-status-' + location.pathname
+      const asideStatus = saveToLocal.get(asideKey)
       if (asideStatus !== undefined) {
         document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
       }
@@ -221,23 +223,7 @@
   document.addEventListener('pjax:complete', setRandomBg)
   document.addEventListener('DOMContentLoaded', setRandomBg)
 })()
-</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.webp" onerror="this.onerror=null;this.src='/img/404.webp'" alt="avatar"/></div><div class="site-data text-center"><div class="site-data-item"><div class="headline">文章</div><div class="length-num">13</div></div><div class="site-data-item"><div class="headline">分类</div><div class="length-num">6</div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/index.html"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/pet/index.html"><i class="fa-fw fas fa-cat"></i><span> 编外成员</span></a></li><li><a class="site-page child" href="/garden/index.html"><i class="fa-fw fas fa-seedling"></i><span> 葬爱花园</span></a></li><li><a class="site-page child" href="/diy/index.html"><i class="fa-fw fas fa-gears"></i><span> 手作 DIY</span></a></li><li><a class="site-page child" href="/bird/index.html"><i class="fa-fw fas fa-camera"></i><span> 捕光捉影</span></a></li><li><a class="site-page child" href="/angling/index.html"><i class="fa-fw fas fa-fish"></i><span> 永不空军</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-film"></i><span> 第三次元</span></a></div><div class="menus_item"><a class="site-page" href="/qqspace/index.html"><i class="fa-fw fab fa-qq"></i><span> 空间遗址</span></a></div><div class="menus_item"><a class="site-page" href="/keepfit/index.html"><i class="fa-fw fas fa-person-running"></i><span> 修身养性</span></a></div><div class="menus_item"><a class="site-page" href="/mountain/index.html"><i class="fa-fw fas fa-mountain"></i><span> 十万大山</span></a></div><div class="menus_item"><a class="site-page" href="/travel/index.html"><i class="fa-fw fas fa-person-walking-luggage"></i><span> 到此一游</span></a></div><div class="menus_item"><a class="site-page" href="/about/index.html"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo.webp" alt="Logo"><span class="site-name">Scy's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/index.html"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/pet/index.html"><i class="fa-fw fas fa-cat"></i><span> 编外成员</span></a></li><li><a class="site-page child" href="/garden/index.html"><i class="fa-fw fas fa-seedling"></i><span> 葬爱花园</span></a></li><li><a class="site-page child" href="/diy/index.html"><i class="fa-fw fas fa-gears"></i><span> 手作 DIY</span></a></li><li><a class="site-page child" href="/bird/index.html"><i class="fa-fw fas fa-camera"></i><span> 捕光捉影</span></a></li><li><a class="site-page child" href="/angling/index.html"><i class="fa-fw fas fa-fish"></i><span> 永不空军</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-film"></i><span> 第三次元</span></a></div><div class="menus_item"><a class="site-page" href="/qqspace/index.html"><i class="fa-fw fab fa-qq"></i><span> 空间遗址</span></a></div><div class="menus_item"><a class="site-page" href="/keepfit/index.html"><i class="fa-fw fas fa-person-running"></i><span> 修身养性</span></a></div><div class="menus_item"><a class="site-page" href="/mountain/index.html"><i class="fa-fw fas fa-mountain"></i><span> 十万大山</span></a></div><div class="menus_item"><a class="site-page" href="/travel/index.html"><i class="fa-fw fas fa-person-walking-luggage"></i><span> 到此一游</span></a></div><div class="menus_item"><a class="site-page" href="/about/index.html"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">捕光捉影</h1></div></header><main class="layout hide-aside" id="content-inner"><div id="page"><div class="container" id="article-container"><div class="bird-grid bird-all">
-<figure class="bird-card" data-group="all">
-  <a class="bird-media" href="/bird/images/%E7%99%BD%E9%B9%AD-%E5%A4%A7%E7%90%86.webp" data-fancybox="bird" data-caption="白鹭-大理" title="白鹭-大理">
-    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E7%99%BD%E9%B9%AD-%E5%A4%A7%E7%90%86.webp" alt="" width="1400" height="934" loading="lazy" decoding="async">
-  </a>
-  <figcaption class="bird-info">
-    <span class="bird-filename" title="白鹭-大理.webp">白鹭-大理</span>
-  </figcaption>
-</figure>
-<figure class="bird-card" data-group="all">
-  <a class="bird-media" href="/bird/images/%E7%99%BD%E9%B9%AD-%E5%A4%A7%E7%90%861.webp" data-fancybox="bird" data-caption="白鹭-大理1" title="白鹭-大理1">
-    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E7%99%BD%E9%B9%AD-%E5%A4%A7%E7%90%861.webp" alt="" width="1400" height="933" loading="lazy" decoding="async">
-  </a>
-  <figcaption class="bird-info">
-    <span class="bird-filename" title="白鹭-大理1.webp">白鹭-大理1</span>
-  </figcaption>
-</figure>
+</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.webp" onerror="this.onerror=null;this.src='/img/error.gif'" alt="avatar"/></div><div class="site-data text-center"><div class="site-data-item"><div class="headline">文章</div><div class="length-num">13</div></div><div class="site-data-item"><div class="headline">分类</div><div class="length-num">6</div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/index.html"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/pet/index.html"><i class="fa-fw fas fa-cat"></i><span> 编外成员</span></a></li><li><a class="site-page child" href="/garden/index.html"><i class="fa-fw fas fa-seedling"></i><span> 葬爱花园</span></a></li><li><a class="site-page child" href="/diy/index.html"><i class="fa-fw fas fa-gears"></i><span> 手作 DIY</span></a></li><li><a class="site-page child" href="/bird/index.html"><i class="fa-fw fas fa-camera"></i><span> 捕光捉影</span></a></li><li><a class="site-page child" href="/angling/index.html"><i class="fa-fw fas fa-fish"></i><span> 永不空军</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-film"></i><span> 第三次元</span></a></div><div class="menus_item"><a class="site-page" href="/notes/index.html"><i class="fa-fw fas fa-feather-pointed"></i><span> 此去经年</span></a></div><div class="menus_item"><a class="site-page" href="/keepfit/index.html"><i class="fa-fw fas fa-person-running"></i><span> 修身养性</span></a></div><div class="menus_item"><a class="site-page" href="/mountain/index.html"><i class="fa-fw fas fa-mountain"></i><span> 十万大山</span></a></div><div class="menus_item"><a class="site-page" href="/travel/index.html"><i class="fa-fw fas fa-person-walking-luggage"></i><span> 到此一游</span></a></div><div class="menus_item"><a class="site-page" href="/about/index.html"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="not-home-page fixed" id="page-header" style="background: transparent;"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo.webp" alt="Logo"><span class="site-name">Scy's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/categories/index.html"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/pet/index.html"><i class="fa-fw fas fa-cat"></i><span> 编外成员</span></a></li><li><a class="site-page child" href="/garden/index.html"><i class="fa-fw fas fa-seedling"></i><span> 葬爱花园</span></a></li><li><a class="site-page child" href="/diy/index.html"><i class="fa-fw fas fa-gears"></i><span> 手作 DIY</span></a></li><li><a class="site-page child" href="/bird/index.html"><i class="fa-fw fas fa-camera"></i><span> 捕光捉影</span></a></li><li><a class="site-page child" href="/angling/index.html"><i class="fa-fw fas fa-fish"></i><span> 永不空军</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-film"></i><span> 第三次元</span></a></div><div class="menus_item"><a class="site-page" href="/notes/index.html"><i class="fa-fw fas fa-feather-pointed"></i><span> 此去经年</span></a></div><div class="menus_item"><a class="site-page" href="/keepfit/index.html"><i class="fa-fw fas fa-person-running"></i><span> 修身养性</span></a></div><div class="menus_item"><a class="site-page" href="/mountain/index.html"><i class="fa-fw fas fa-mountain"></i><span> 十万大山</span></a></div><div class="menus_item"><a class="site-page" href="/travel/index.html"><i class="fa-fw fas fa-person-walking-luggage"></i><span> 到此一游</span></a></div><div class="menus_item"><a class="site-page" href="/about/index.html"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="page-site-info"><h1 id="site-title">捕光捉影</h1></div></header><main class="layout" id="content-inner"><div id="page"><div class="container" id="article-container"><div class="bird-grid bird-all">
 <figure class="bird-card" data-group="all">
   <a class="bird-media" href="/bird/images/%E7%99%BD%E9%B9%AD-%E6%B7%B1%E4%BA%91%E6%96%87%E4%BD%93%E5%85%AC%E5%9B%AD.webp" data-fancybox="bird" data-caption="白鹭-深云文体公园" title="白鹭-深云文体公园">
     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E7%99%BD%E9%B9%AD-%E6%B7%B1%E4%BA%91%E6%96%87%E4%BD%93%E5%85%AC%E5%9B%AD.webp" alt="" width="1400" height="933" loading="lazy" decoding="async">
@@ -255,19 +241,19 @@
   </figcaption>
 </figure>
 <figure class="bird-card" data-group="all">
-  <a class="bird-media" href="/bird/images/%E7%99%BD%E9%B9%AD-%E4%BB%99%E6%B9%96%E6%A4%8D%E7%89%A9%E5%9B%AD.webp" data-fancybox="bird" data-caption="白鹭-仙湖植物园" title="白鹭-仙湖植物园">
-    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E7%99%BD%E9%B9%AD-%E4%BB%99%E6%B9%96%E6%A4%8D%E7%89%A9%E5%9B%AD.webp" alt="" width="1400" height="933" loading="lazy" decoding="async">
+  <a class="bird-media" href="/bird/images/%E6%B1%A0%E9%B9%AD-%E8%A5%BF%E4%B8%BD%E6%B9%96.webp" data-fancybox="bird" data-caption="池鹭-西丽湖" title="池鹭-西丽湖">
+    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E6%B1%A0%E9%B9%AD-%E8%A5%BF%E4%B8%BD%E6%B9%96.webp" alt="" width="1400" height="1050" loading="lazy" decoding="async">
   </a>
   <figcaption class="bird-info">
-    <span class="bird-filename" title="白鹭-仙湖植物园.webp">白鹭-仙湖植物园</span>
+    <span class="bird-filename" title="池鹭-西丽湖.webp">池鹭-西丽湖</span>
   </figcaption>
 </figure>
 <figure class="bird-card" data-group="all">
-  <a class="bird-media" href="/bird/images/%E6%B5%B7%E9%B8%A5-%E5%A4%A7%E7%90%86.webp" data-fancybox="bird" data-caption="海鸥-大理" title="海鸥-大理">
-    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E6%B5%B7%E9%B8%A5-%E5%A4%A7%E7%90%86.webp" alt="" width="1400" height="933" loading="lazy" decoding="async">
+  <a class="bird-media" href="/bird/images/%E6%B1%A0%E9%B9%AD-%E7%8F%A0%E6%B5%B7.webp" data-fancybox="bird" data-caption="池鹭-珠海" title="池鹭-珠海">
+    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E6%B1%A0%E9%B9%AD-%E7%8F%A0%E6%B5%B7.webp" alt="" width="1400" height="1050" loading="lazy" decoding="async">
   </a>
   <figcaption class="bird-info">
-    <span class="bird-filename" title="海鸥-大理.webp">海鸥-大理</span>
+    <span class="bird-filename" title="池鹭-珠海.webp">池鹭-珠海</span>
   </figcaption>
 </figure>
 <figure class="bird-card" data-group="all">
@@ -295,14 +281,6 @@
   </figcaption>
 </figure>
 <figure class="bird-card" data-group="all">
-  <a class="bird-media" href="/bird/images/%E6%B5%B7%E9%B8%A5%E4%BF%AF%E5%86%B2-%E5%A4%A7%E7%90%862.webp" data-fancybox="bird" data-caption="海鸥俯冲-大理2" title="海鸥俯冲-大理2">
-    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E6%B5%B7%E9%B8%A5%E4%BF%AF%E5%86%B2-%E5%A4%A7%E7%90%862.webp" alt="" width="1400" height="933" loading="lazy" decoding="async">
-  </a>
-  <figcaption class="bird-info">
-    <span class="bird-filename" title="海鸥俯冲-大理2.webp">海鸥俯冲-大理2</span>
-  </figcaption>
-</figure>
-<figure class="bird-card" data-group="all">
   <a class="bird-media" href="/bird/images/%E6%B5%B7%E9%B8%A5%E5%B1%95%E7%BF%85-%E5%A4%A7%E7%90%86.webp" data-fancybox="bird" data-caption="海鸥展翅-大理" title="海鸥展翅-大理">
     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E6%B5%B7%E9%B8%A5%E5%B1%95%E7%BF%85-%E5%A4%A7%E7%90%86.webp" alt="" width="1400" height="933" loading="lazy" decoding="async">
   </a>
@@ -327,11 +305,43 @@
   </figcaption>
 </figure>
 <figure class="bird-card" data-group="all">
+  <a class="bird-media" href="/bird/images/%E9%B3%9E%E5%A4%B4%E6%A0%91%E8%8E%BA-%E5%8D%97%E5%B1%B1%E5%B9%95%E5%A2%99%E4%B8%8B.webp" data-fancybox="bird" data-caption="鳞头树莺-南山幕墙下" title="鳞头树莺-南山幕墙下">
+    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E9%B3%9E%E5%A4%B4%E6%A0%91%E8%8E%BA-%E5%8D%97%E5%B1%B1%E5%B9%95%E5%A2%99%E4%B8%8B.webp" alt="" width="1400" height="1050" loading="lazy" decoding="async">
+  </a>
+  <figcaption class="bird-info">
+    <span class="bird-filename" title="鳞头树莺-南山幕墙下.webp">鳞头树莺-南山幕墙下</span>
+  </figcaption>
+</figure>
+<figure class="bird-card" data-group="all">
+  <a class="bird-media" href="/bird/images/%E5%B0%8F%E7%99%BD%E9%B9%AD-%E5%A4%A7%E7%90%86.webp" data-fancybox="bird" data-caption="小白鹭-大理" title="小白鹭-大理">
+    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E5%B0%8F%E7%99%BD%E9%B9%AD-%E5%A4%A7%E7%90%86.webp" alt="" width="1400" height="934" loading="lazy" decoding="async">
+  </a>
+  <figcaption class="bird-info">
+    <span class="bird-filename" title="小白鹭-大理.webp">小白鹭-大理</span>
+  </figcaption>
+</figure>
+<figure class="bird-card" data-group="all">
+  <a class="bird-media" href="/bird/images/%E5%B0%8F%E7%99%BD%E9%B9%AD-%E5%A4%A7%E7%90%861.webp" data-fancybox="bird" data-caption="小白鹭-大理1" title="小白鹭-大理1">
+    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E5%B0%8F%E7%99%BD%E9%B9%AD-%E5%A4%A7%E7%90%861.webp" alt="" width="1400" height="933" loading="lazy" decoding="async">
+  </a>
+  <figcaption class="bird-info">
+    <span class="bird-filename" title="小白鹭-大理1.webp">小白鹭-大理1</span>
+  </figcaption>
+</figure>
+<figure class="bird-card" data-group="all">
   <a class="bird-media" href="/bird/images/%E9%B8%AD%E9%B8%AD%E5%AF%B9%E6%8B%9C-%E8%B5%84%E6%BA%90.webp" data-fancybox="bird" data-caption="鸭鸭对拜-资源" title="鸭鸭对拜-资源">
     <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E9%B8%AD%E9%B8%AD%E5%AF%B9%E6%8B%9C-%E8%B5%84%E6%BA%90.webp" alt="" width="1400" height="1050" loading="lazy" decoding="async">
   </a>
   <figcaption class="bird-info">
     <span class="bird-filename" title="鸭鸭对拜-资源.webp">鸭鸭对拜-资源</span>
+  </figcaption>
+</figure>
+<figure class="bird-card" data-group="all">
+  <a class="bird-media" href="/bird/images/%E9%B8%AD%E9%B8%AD%E7%BF%98%E5%B1%81-%E8%B5%84%E6%BA%90.webp" data-fancybox="bird" data-caption="鸭鸭翘屁-资源" title="鸭鸭翘屁-资源">
+    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E9%B8%AD%E9%B8%AD%E7%BF%98%E5%B1%81-%E8%B5%84%E6%BA%90.webp" alt="" width="1400" height="933" loading="lazy" decoding="async">
+  </a>
+  <figcaption class="bird-info">
+    <span class="bird-filename" title="鸭鸭翘屁-资源.webp">鸭鸭翘屁-资源</span>
   </figcaption>
 </figure>
 <figure class="bird-card" data-group="all">
@@ -358,13 +368,5 @@
     <span class="bird-filename" title="鸭鸭仔-珠海.webp">鸭鸭仔-珠海</span>
   </figcaption>
 </figure>
-<figure class="bird-card" data-group="all">
-  <a class="bird-media" href="/bird/images/%E5%A4%9C%E9%B9%AD-%E7%8F%A0%E6%B5%B7.webp" data-fancybox="bird" data-caption="夜鹭-珠海" title="夜鹭-珠海">
-    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/bird/images/%E5%A4%9C%E9%B9%AD-%E7%8F%A0%E6%B5%B7.webp" alt="" width="1400" height="1050" loading="lazy" decoding="async">
-  </a>
-  <figcaption class="bird-info">
-    <span class="bird-filename" title="夜鹭-珠海.webp">夜鹭-珠海</span>
-  </figcaption>
-</figure>
 </div>
-</div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2023.07 - 2026 By Scy</span></div><div class="footer_custom_text">在这个智商过剩，利益至上的年代；<br/>💖💖💖诚挚和走心显得格外有质感！💖💖💖</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/pluginsSrc/@fancyapps/ui/dist/fancybox/fancybox.umd.js"></script><script src="/pluginsSrc/instant.page/instantpage.js" type="module"></script><script src="/pluginsSrc/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/pluginsSrc/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script data-pjax src="/js/bangumi-view.js"></script><script data-pjax src="/js/album-menu.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+</div></div><div class="aside-content" id="aside-content"></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2023.07 - 2026 By Scy</span></div><div class="footer_custom_text">在这个智商过剩，利益至上的年代；<br/>💖💖💖诚挚和走心显得格外有质感！💖💖💖</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/pluginsSrc/@fancyapps/ui/dist/fancybox/fancybox.umd.js"></script><script src="/pluginsSrc/instant.page/instantpage.js" type="module"></script><script src="/pluginsSrc/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/pluginsSrc/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script data-pjax src="/js/bangumi-view.js"></script><script data-pjax src="/js/album-menu.js"></script><script src="/js/img-fallback.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

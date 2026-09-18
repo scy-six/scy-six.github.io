@@ -703,7 +703,8 @@ document.addEventListener('DOMContentLoaded', () => {
     'hide-aside-btn': () => { // Hide aside
       const $htmlDom = document.documentElement.classList
       const saveStatus = $htmlDom.contains('hide-aside') ? 'show' : 'hide'
-      btf.saveToLocal.set('aside-status', saveStatus, 2)
+      // 每页独立记忆：以 pathname 区分不同页面，互不牵连
+      btf.saveToLocal.set('aside-status-' + location.pathname, saveStatus, 2)
       $htmlDom.toggle('hide-aside')
     },
     'mobile-toc-button': (p, item) => { // Show mobile toc

@@ -24,12 +24,14 @@
   margin-bottom: 2.4rem;
 }
 
+/* 区块标题：**完全使用主题 h2 样式**（24px / 主题标题色 --text-highlight-color /
+   padding-left:26px 给 fa-link 图标留位 / font-weight:bold），与 travel、notes 三页一致。
+   审计（2026-09-17）已移除：font-size(--fs-section) 与 padding-left(0.7rem) 均为**死声明**
+   ——.keepfit-h2 特异性 (0,1,0) 低于主题 .container h2 (0,1,1)，从未生效；
+   font-weight:700 与主题 bold 重复；color 是生效的，但会把主题标题色改掉，故一并交还主题。
+   仅保留 margin —— 主题默认 margin:20px 0 14px 在本页区块间过松，属布局取舍。 */
 .keepfit-h2 {
-  font-size: var(--fs-section);
-  font-weight: 700;
   margin: 0 0 1.1rem;
-  padding-left: 0.7rem;
-  color: var(--font-color);
 }
 
 .keepfit-section .hint {
@@ -52,12 +54,12 @@
   border-radius: var(--radius-card);
   padding: 1.3rem 1rem;
   text-align: center;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  box-shadow: var(--card-box-shadow);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .keepfit-stat-card:hover {
-  box-shadow: 0 10px 26px color-mix(in srgb, var(--font-color) 16%, transparent);
+  box-shadow: var(--card-hover-box-shadow);
   transform: translateY(-3px);
 }
 
@@ -71,9 +73,10 @@
 }
 
 .keepfit-stat-card .lbl {
+  /* 2026-09-17：统计标签按「正文」14px（--fs-body），与 mountain 的 .lbl 对齐 */
   display: block;
   margin-top: 0.35rem;
-  font-size: var(--fs-meta);
+  font-size: var(--fs-body);
   opacity: 0.7;
 }
 
@@ -83,7 +86,7 @@
   border: 1px solid var(--tab-border-color);
   border-radius: var(--radius-card);
   padding: 1.2rem 1.3rem 1.4rem;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  box-shadow: var(--card-box-shadow);
 }
 
 .keepfit-chart-title {

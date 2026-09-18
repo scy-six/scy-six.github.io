@@ -1,11 +1,11 @@
 /* =============================================================================
  * travel.css — 旅行页（到此一游）样式
  * -----------------------------------------------------------------------------
- * 设计语言：对齐 qqspace / angling 等常规页面的主题卡片风格
+ * 设计语言：对齐 notes / angling 等常规页面的主题卡片风格
  *   · 全部以 .travel-page 前缀限定作用域，不污染全站其它页面
  *   · 配色统一走 Butterfly 主题变量（--card-bg / --font-color / --tab-border-color
  *     / --default-bg-color），亮色 / 暗色 / 阅读 三种模式自动适配，无需写两套
- *   · 卡片质感（圆角 12px / 细描边 / 微阴影 / 悬停浮起）与 qqspace .card 一致
+ *   · 卡片质感（圆角 12px / 细描边 / 微阴影 / 悬停浮起）与 notes .card 一致
  *   · 内容容器跟随主题 .container（与标准页同宽，不再自设 max-width）
  * ========================================================================== */
 
@@ -24,13 +24,11 @@
   margin-bottom: 2.4rem;
 }
 
-/* 区块标题 .travel-h2：完全对齐 keepfit(修身养性) 同款字号/字重，前缀图标保留主题 beautify 的 fa-link */
+/* 区块标题 .travel-h2：**完全使用主题 h2 样式**（同 keepfit / mountain / notes）。
+   审计（2026-09-17）移除：font-size、padding-left 为死声明（特异性不足，从未生效），
+   font-weight 与主题 bold 重复，color 会让本页脱离主题标题色。仅保留 margin 作布局取舍。 */
 .travel-h2 {
-  font-size: var(--fs-section);
-  font-weight: 700;
   margin: 0 0 1.1rem;
-  padding-left: 0.7rem;
-  color: var(--font-color);
 }
 
 /* ── 2. 足迹地图卡片 ─────────────────────────────────────────────────────── */
@@ -39,7 +37,7 @@
   border: 1px solid var(--tab-border-color);
   border-radius: var(--radius-card);
   padding: 1rem;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  box-shadow: var(--card-box-shadow);
 }
 
 #travel-map {
@@ -59,12 +57,15 @@
   padding: 0.35rem 0.6rem;
   font-size: var(--fs-badge);
   line-height: 1.4;
-  color: #fff;
-  background: rgba(73, 177, 245, 0.85); /* 与站点主题强调色一致 */
+  /* 2026-09-17：三处写死颜色全部改为派生自主题变量 ——
+     文字用站点 token --on-accent（= 主题 --white），底色由主题色 --default-bg-color 调透明度，
+     阴影色由 --font-color 派生。改主题色时这里自动跟随，不再需要手改。 */
+  color: var(--on-accent);
+  background: color-mix(in srgb, var(--default-bg-color) 85%, transparent);
   border-radius: 8px;
   pointer-events: none; /* 不挡地图交互 */
   display: none; /* 默认隐藏，锁定后由 JS 显示 */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 2px 8px color-mix(in srgb, var(--font-color) 15%, transparent);
 }
 
 /* ── 3. 足迹概览：统计卡网格 ─────────────────────────────────────────────── */
@@ -80,14 +81,14 @@
   border-radius: var(--radius-card);
   padding: 1.3rem 1rem;
   text-align: center;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  box-shadow: var(--card-box-shadow);
   transition:
     box-shadow 0.3s ease,
     transform 0.3s ease;
 }
 
 .travel-stat-card:hover {
-  box-shadow: 0 10px 26px color-mix(in srgb, var(--font-color) 16%, transparent);
+  box-shadow: var(--card-hover-box-shadow);
   transform: translateY(-3px);
 }
 
@@ -101,9 +102,10 @@
 }
 
 .travel-stat-card .lbl {
+  /* 2026-09-17：统计标签按「正文」14px（--fs-body），与 mountain 的 .lbl 对齐 */
   display: block;
   margin-top: 0.35rem;
-  font-size: var(--fs-meta);
+  font-size: var(--fs-body);
   opacity: 0.7;
 }
 
@@ -114,13 +116,45 @@
   gap: 2rem;
 }
 
-/* 年份标题 .travel-year-title：与 .travel-h2 一致，对齐 keepfit 同款字号/字重 */
+/* 年份分组：改为可折叠 <details>，默认仅最新年份展开（open 由生成器写入）
+ *   · summary 充当可点击的年份标题；去掉原生三角，改用自定义箭头（展开时旋转 180°） */
+.travel-year > summary.travel-year-summary {
+  list-style: none;            /* 去掉 Chrome / Firefox 原生三角 */
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.1rem;          /* 年份标题与下方卡片间距（原写在 h2 上） */
+  /* 不再写 padding-left / color：主题 h2 自带图标留位（padding-left:26px）与标题色，
+     多写反而与此去经年页不一致（2026-09-17 统一两页标题样式时移除） */
+}
+.travel-year > summary.travel-year-summary::-webkit-details-marker {
+  display: none;              /* 去掉 Safari 原生三角 */
+}
+
+/* 年份标题本体：**完全使用主题 h2 样式**（24px / 字重 / 标题色 --text-highlight-color /
+   图标留位 padding-left:26px / hover 全部由主题负责），与此去经年的 .qz-year-title 完全一致。
+   审计（2026-09-17）：原 font-size(--fs-section) 与 padding:0 **从未生效** —— 选择器 .travel-year-title
+   特异性 (0,1,0) 低于主题 .container h2 (0,1,1)，被直接盖掉；color 则相反、是**生效的**，
+   导致本页标题色（--font-color）与此去经年页（主题 --text-highlight-color）不一致。
+   仅保留 margin:0 —— 主题默认 margin:20px 0 14px 在 flex summary 里会撑出不可控间距。 */
 .travel-year-title {
-  font-size: var(--fs-section);
-  font-weight: 700;
-  margin: 0 0 1.1rem;
-  padding-left: 0.7rem;
-  color: var(--font-color);
+  margin: 0;
+}
+
+/* 折叠指示箭头：默认向下，展开时旋转向上 */
+.travel-year > summary.travel-year-summary::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid currentColor;
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+}
+.travel-year[open] > summary.travel-year-summary::after {
+  transform: rotate(-180deg);
 }
 
 .travel-diary-cards {
@@ -128,20 +162,20 @@
   gap: 1.4rem;
 }
 
-/* 单篇日记卡片（主题卡片风格，与 qqspace .card 一致） */
+/* 单篇日记卡片（主题卡片风格，与 notes .card 一致） */
 .travel-card {
   background: var(--card-bg);
   border: 1px solid var(--tab-border-color);
   border-radius: var(--radius-card);
   padding: 1.4rem 1.5rem;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  box-shadow: var(--card-box-shadow);
   transition:
     box-shadow 0.3s ease,
     transform 0.3s ease;
 }
 
 .travel-card:hover {
-  box-shadow: 0 10px 26px color-mix(in srgb, var(--font-color) 16%, transparent);
+  box-shadow: var(--card-hover-box-shadow);
   transform: translateY(-3px);
 }
 
@@ -154,18 +188,17 @@
   margin-bottom: 1rem;
 }
 
+/* 地点小标题：**完全使用主题 h3 样式**（20px / 标题色 / padding-left:24px 图标留位），
+   与此去经年的 .qz-date（日期 h3 小标题）保持一致。
+   审计（2026-09-17）：原 font-size(--fs-card 16px) 是**生效的**（.travel-card-head .place 特异性
+   (0,2,0) 高于主题 .container h3 (0,1,1)），导致本页小标题 16px 而此去经年页 20px —— 两页不一致，故移除。
+   仅保留 margin:0 —— 避免主题默认 margin:20px 0 14px 在 flex 卡片头内撑高。 */
 .travel-card-head .place {
-  margin: 0; /* 避免主题 h3 默认 margin 在 flex 头内撑高 */
-  font-size: var(--fs-card);       /* 对齐 keepfit h3 同款字号 */
-  font-weight: 700;
-  color: var(--font-color);
+  margin: 0;
 }
 
-/* 标题前缀图标（主题 beautify）依赖 h2/h3 自身相对定位，兜底确保 flex 卡片头内的图标不错位 */
-.travel-page h2,
-.travel-page h3 {
-  position: relative;
-}
+/* 已删除 .travel-page h2/h3 { position: relative }：主题全局
+   `h1,h2,h3,h4,h5,h6{position:relative}` 已提供，图标（::before 绝对定位）定位正常，属冗余声明。 */
 
 .travel-card-head .date {
   font-size: var(--fs-meta);
@@ -197,7 +230,10 @@
   transition: transform 0.35s ease;
 }
 
-/* 图片名称：以伪元素贴在图片底部，不撑大图片框；从 data-caption 自动读取 */
+/* 图片名称：以伪元素贴在图片底部，不撑大图片框；从 data-caption 自动读取。
+   背景是底部半透明黑渐变（明暗两模式一致），故文字必须浅色才能压住照片 ——
+   原用 var(--font-color)：亮色模式解析为深色 #4c4948 → 深字压深底、对比度过低看不清。
+   统一改白色 + 略加深渐变/阴影，任何照片上都清晰（暗色模式原就正常，现在两模式一致）。 */
 .travel-photo a::after {
   content: attr(data-caption);
   position: absolute;
@@ -206,13 +242,14 @@
   bottom: 0;
   padding: 0.55rem 0.35rem 0.45rem;
   font-size: var(--fs-meta);
-  color: var(--font-color);
+  font-weight: 500;
+  color: #fff;
   text-align: center;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0));
   pointer-events: none;
   z-index: 1;
 }
@@ -260,34 +297,42 @@
 /* ──2b. 纯 SVG 地图（零地图库依赖）────────────────────────────────────────────── */
 /* 主题变量：亮/暗模式随 data-theme 自动切换 */
 .travel-page {
-  --prov-unvisited: #e8edf4;
-  --prov-unv-light: #f4f7fc;
-  --prov-unv-dark:  #d6dfec;
-  --prov-stroke: #c2cede;
-  --prov-label: #1e3a5f;          /* 省名：深蓝色，与主题搭配 */
-  --prov-halo: #ffffff;
-  --prov-vis-light: #8fd6f5;      /* 已访省份渐变：截图蓝 #59aada 的浅色调 */
-  --prov-vis-dark:  #59aada;      /* 已访省份渐变：用户截图中的蓝色 */
-  --city-label: #5a7a9a;          /* 城市名：柔和蓝灰 */
+  /* 2026-09-18：地图**背景板加一点灰度** —— 由主题变量派生（明暗自动适配），
+     让浅色的省份图形在卡片上有个柔和的"底"，比纯白/纯透明更耐看、层次更清楚。
+     省界与省名光晕一并使用同系灰，整体配色更协调。 */
+  --map-bg: color-mix(in srgb, var(--card-bg) 94%, var(--font-color) 6%);
+  /* 2026-09-18：地图配色与「此去经年」新主题（鼠尾草绿系）统一 —— 原蓝系全去蓝；
+     用户反馈陶土橙不搭，已访省份统一为主题青绿（比城市点 #2F6E63 更浅，城市点更深故仍能跳出）。
+     未访省份灰绿（呼应壁纸）；省名深青墨；城名灰绿。 */
+  --prov-unvisited: #e4eae5;      /* 未访中：柔和灰绿 */
+  --prov-unv-light: #f0f4f1;      /* 未访浅 */
+  --prov-unv-dark:  #d4ddd6;      /* 未访深 */
+  --prov-stroke: color-mix(in srgb, var(--font-color) 18%, var(--card-bg)); /* 省界：同系灰，随主题走 */
+  --prov-label: #2c4a44;          /* 省名：深青墨（可读，属主题青绿系，非蓝） */
+  --prov-halo: var(--map-bg);     /* 省名光晕：与背景板同色，文字边缘不露白边 */
+  --prov-vis-light: #6fb3a6;      /* 已访浅：主题青绿亮部 */
+  --prov-vis-dark:  #3e8074;      /* 已访深：主题青绿（均浅于城市点，城市点更深故可跳出） */
+  --city-label: #5f7268;          /* 城市名：灰绿（去蓝） */
   --city-dot: var(--default-bg-color);
 }
 [data-theme="dark"] .travel-page {
-  --prov-unvisited: #2b2f3a;
-  --prov-unv-light: #3c4452;
-  --prov-unv-dark:  #2c333f;
-  --prov-stroke: #454d5c;
-  --prov-label: #8ab4d8;          /* 暗模式省名：亮蓝，保证可读 */
-  --prov-halo: #15171c;
-  --prov-vis-light: #59aada;      /* 暗模式已访省份：截图蓝亮部 */
-  --prov-vis-dark:  #3178a3;      /* 暗模式已访省份：截图蓝深部 */
-  --city-label: #6a8aaa;
+  --prov-unvisited: #232a26;      /* 暗模式未访中：暗灰绿（去蓝） */
+  --prov-unv-light: #2f362f;      /* 未访浅 */
+  --prov-unv-dark:  #2a312a;      /* 未访深 */
+  /* 省界 / 光晕不再为暗模式单写固定色 —— 已在亮色块改为由 --font-color / --card-bg 派生，
+     随 data-theme 自动适配（2026-09-18）。以下只为暗模式单独调的青绿系配色（去陶土橙）。 */
+  --prov-label: #93b3a8;          /* 暗模式省名：亮青绿，保证可读（去蓝） */
+  --prov-vis-light: #6fb8a8;      /* 暗模式已访浅：主题青绿亮部 */
+  --prov-vis-dark:  #3e8c7c;      /* 暗模式已访深：主题青绿（浅于城市点） */
+  --city-label: #7e918a;          /* 暗模式城市名：灰绿（去蓝） */
 }
 
 .travel-page .travel-svg {
   width: 100%;
   height: 100%;
   display: block;
-  background: transparent;
+  /* 2026-09-18：铺上灰度背景板（--map-bg，明暗自适应），替代原来的 transparent */
+  background: var(--map-bg);
   border-radius: var(--radius-card);
   font-family: inherit;
   user-select: none;
@@ -328,7 +373,9 @@
 
 /* 城市标注：圆环 + 实心核 + 城市名（名置于顶层文字组，参与统一避让） */
 .travel-page .city-dot {
-  fill: var(--default-bg-color);   /* 城市中心圆点，强调足迹城市 */
+  fill: var(--default-bg-color);   /* 城市中心圆点，强调足迹城市（主题主绿，比已访省份更深故可跳出） */
+  stroke: #ffffff;                 /* 白环：在青绿省份底上勾出清晰轮廓（明暗两模式皆成立） */
+  stroke-width: 1.2;
   filter: url(#provGlow);
   pointer-events: none;
 }

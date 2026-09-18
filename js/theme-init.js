@@ -8,70 +8,74 @@
  *   3. 向 <head> 注入 #web_bg 壁纸样式（亮/暗各一张），并关闭原生 4s 淡入动画，
  *      避免首屏白闪；同时壁纸会随 data-theme 变化自动切换。
  * -----------------------------------------------------------------------------
+ * 风格（2026-09-18）：与 source/js 其余文件统一 —— 严格模式 + 语句带分号。
+ * -----------------------------------------------------------------------------
  */
 (function () {
-  function readLocalTheme () {
+  "use strict";
+
+  function readLocalTheme() {
     try {
-      var raw = localStorage.getItem('theme')
-      if (!raw) return null
+      var raw = localStorage.getItem("theme");
+      if (!raw) return null;
       try {
-        var parsed = JSON.parse(raw)
+        var parsed = JSON.parse(raw);
         // 兼容 {value, expiry} 或直接存字符串的旧情况
-        return (parsed && (parsed.value === 'dark' || parsed.value === 'light')) ? parsed.value : null
+        return (parsed && (parsed.value === "dark" || parsed.value === "light")) ? parsed.value : null;
       } catch (e) {
-        return (raw === 'dark' || raw === 'light') ? raw : null
+        return (raw === "dark" || raw === "light") ? raw : null;
       }
     } catch (e) {
-      return null
+      return null;
     }
   }
 
-  function decideTheme (cfg) {
-    var saved = readLocalTheme()
-    if (saved) return saved
+  function decideTheme(cfg) {
+    var saved = readLocalTheme();
+    if (saved) return saved;
 
-    var mode = Number(cfg && cfg.autoChangeMode)
+    var mode = Number(cfg && cfg.autoChangeMode);
     if (mode === 2) {
-      var h = new Date().getHours()
-      var s = typeof cfg.start === 'number' ? cfg.start : 8
-      var e = typeof cfg.end === 'number' ? cfg.end : 22
+      var h = new Date().getHours();
+      var s = typeof cfg.start === "number" ? cfg.start : 8;
+      var e = typeof cfg.end === "number" ? cfg.end : 22;
       // start <= h < end 为白天（light），否则夜间（dark）；支持跨午夜区间
       if (s < e) {
-        return (s <= h && h < e) ? 'light' : 'dark'
+        return (s <= h && h < e) ? "light" : "dark";
       } else {
-        return (h >= s || h < e) ? 'light' : 'dark'
+        return (h >= s || h < e) ? "light" : "dark";
       }
     }
 
     if (mode === 1) {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
 
-    return 'light'
+    return "light";
   }
 
-  function injectWallpaper (cfg) {
-    var bgLight = (cfg && cfg.bgLight) || '/img/wall/wallpaper.webp'
-    var bgDark = (cfg && cfg.bgDark) || '/img/wall/wall.webp'
+  function injectWallpaper(cfg) {
+    var bgLight = (cfg && cfg.bgLight) || "/img/wall/wallpaper.webp";
+    var bgDark = (cfg && cfg.bgDark) || "/img/wall/wall.webp";
     var css =
-      'body{background:transparent!important}' +
-      '#web_bg{position:fixed!important;z-index:-999!important;width:100%!important;height:100%!important;' +
-      'background-attachment:local!important;background-position:center!important;background-size:cover!important;' +
-      'background-repeat:no-repeat!important;opacity:1!important;background-image:url(' + bgLight + ')!important}' +
-      '[data-theme="dark"] #web_bg{background-image:url(' + bgDark + ')!important}' +
-      '#web_bg.bg-animation{animation:none!important}'
-    var s = document.createElement('style')
-    s.id = 'web-bg-no-flash'
-    s.textContent = css
-    document.head.appendChild(s)
+      "body{background:transparent!important}" +
+      "#web_bg{position:fixed!important;z-index:-999!important;width:100%!important;height:100%!important;" +
+      "background-attachment:local!important;background-position:center!important;background-size:cover!important;" +
+      "background-repeat:no-repeat!important;opacity:1!important;background-image:url(" + bgLight + ")!important}" +
+      "[data-theme=\"dark\"] #web_bg{background-image:url(" + bgDark + ")!important}" +
+      "#web_bg.bg-animation{animation:none!important}";
+    var s = document.createElement("style");
+    s.id = "web-bg-no-flash";
+    s.textContent = css;
+    document.head.appendChild(s);
   }
 
   try {
-    var cfg = (typeof GLOBAL_CONFIG !== 'undefined' && GLOBAL_CONFIG.darkmode) || {}
-    var theme = decideTheme(cfg)
-    document.documentElement.setAttribute('data-theme', theme)
-    injectWallpaper(cfg)
+    var cfg = (typeof GLOBAL_CONFIG !== "undefined" && GLOBAL_CONFIG.darkmode) || {};
+    var theme = decideTheme(cfg);
+    document.documentElement.setAttribute("data-theme", theme);
+    injectWallpaper(cfg);
   } catch (e) {
     /* 静默失败，不影响首屏 */
   }
-})()
+})();
