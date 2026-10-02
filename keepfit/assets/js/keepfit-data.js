@@ -1143,5 +1143,93 @@ window.KEEPFIT_RECORDS = [
     "duration_h": 0.05,
     "speed": null,
     "pace": 3.0
+  },
+  {
+    "sport": "游泳",
+    "date": "2026-09-03",
+    "dist": 1.35,
+    "duration_h": 0.044,
+    "speed": null,
+    "pace": 2.6667
+  },
+  {
+    "sport": "游泳",
+    "date": "2026-09-05",
+    "dist": 1.3,
+    "duration_h": 0.049,
+    "speed": null,
+    "pace": 2.9333
+  },
+  {
+    "sport": "游泳",
+    "date": "2026-09-08",
+    "dist": 1.35,
+    "duration_h": 0.047,
+    "speed": null,
+    "pace": 2.8333
+  },
+  {
+    "sport": "骑行",
+    "date": "2026-09-11",
+    "dist": 100.01,
+    "duration_h": 6.083,
+    "speed": 16.44,
+    "pace": null
+  },
+  {
+    "sport": "游泳",
+    "date": "2026-09-15",
+    "dist": 1.65,
+    "duration_h": 0.046,
+    "speed": null,
+    "pace": 2.7667
+  },
+  {
+    "sport": "游泳",
+    "date": "2026-09-19",
+    "dist": 1.2,
+    "duration_h": 0.044,
+    "speed": null,
+    "pace": 2.6667
+  },
+  {
+    "sport": "骑行",
+    "date": "2026-09-22",
+    "dist": 28.77,
+    "duration_h": 1.6,
+    "speed": 17.98,
+    "pace": null
+  },
+  {
+    "sport": "游泳",
+    "date": "2026-09-24",
+    "dist": 1.0,
+    "duration_h": 0.054,
+    "speed": null,
+    "pace": 3.2667
+  },
+  {
+    "sport": "骑行",
+    "date": "2026-09-26",
+    "dist": 62.72,
+    "duration_h": 3.733,
+    "speed": 16.8,
+    "pace": null
+  },
+  {
+    "sport": "骑行",
+    "date": "2026-09-27",
+    "dist": 18.59,
+    "duration_h": 1.367,
+    "speed": 13.6,
+    "pace": null
+  },
+  {
+    "sport": "骑行",
+    "date": "2026-09-28",
+    "dist": 33.0,
+    "duration_h": 1.95,
+    "speed": 16.92,
+    "pace": null
   }
 ];

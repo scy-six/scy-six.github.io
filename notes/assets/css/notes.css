@@ -1,0 +1,158 @@
+/* =============================================================================
+ * notes.css —— 「此去经年」生活记录 / 说说存档页样式（2026-09-18 由「空间遗址 qqspace」改名）
+ * -----------------------------------------------------------------------------
+ * 由 scripts/notes-archive.js 输出的 HTML 结构配套使用：
+ *   #notes
+ *     └ details.qz-year[open]        年份折叠（原生 details，无 JS 也能展开）
+ *         ├ summary.qz-year-summary  年份标题条（h2.qz-year-title + 折叠箭头），点击切换
+ *         └ div.qz-item              单条说说
+ *             ├ div.qz-item-head     日期 h3 小标题（机型 / 位置均已下线）
+ *             ├ div.qz-text          正文
+ *             └ div.qz-grid          配图网格（固定列数，全部等宽等高）
+ *                 └ a.qz-lightbox > img（灯箱由主题全局 Fancybox 接管）
+ *
+ * 设计原则（与 custom.css / album.css 保持一致）：
+ *   - 颜色全部派生自 Butterfly 主题变量（--card-bg / --font-color / --card-meta /
+ *     --default-bg-color），亮色 / 暗色 / 阅读模式自动适配，不维护第二套配色。
+ *   - 圆角、阴影、断点统一引用 Design Token（--radius-card / --shadow-card /
+ *     --bp-sm / --bp-lg），与站点相册等页面观感一致。
+ *   - 全部选择器收敛在 #notes 内，不污染主题全局样式。
+ * ========================================================================== */
+
+/* ── 1. 年份折叠（对齐「到此一游」travel 的折叠样式）──────────────────────── */
+#notes .qz-year {
+  margin: 0 0 1.5rem;
+}
+
+/* summary 充当可点击的年份标题条：透明背景、无卡片边框，与 travel-year-summary 一致。
+   不再写 padding-left / color —— 主题 h2 自带图标留位（padding-left）与正文色，写了反而错位 */
+#notes .qz-year > summary {
+  list-style: none;            /* 去掉 Chrome / Firefox 原生三角 */
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.1rem;          /* 年份标题与下方卡片间距 */
+}
+
+#notes .qz-year > summary::-webkit-details-marker {
+  display: none;               /* 去掉 Safari 原生三角 */
+}
+
+/* 年份标题本体：**完全使用主题 h2 样式**（字号 24px / 字重 / 前缀图标 / padding-left /
+   hover 行为全部由主题 headStyle 负责，与其他页面标题天然一致）。
+   此前自定义 font-size + padding:0 抹掉了主题给图标预留的 padding-left，
+   导致红色 fa-link 图标压在年份数字上（2026-09-17 截图实证），已整体删除。
+   仅保留 margin:0 —— 防主题 h2 默认外边距在 flex summary 里撑出不可控间距。 */
+#notes .qz-year-title {
+  margin: 0;
+}
+
+/* 折叠指示箭头：默认向下，展开时旋转向上（与 travel 一致，位于年份右侧） */
+#notes .qz-year > summary::after {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid currentColor;
+  opacity: 0.6;
+  transition: transform 0.2s ease;
+}
+
+#notes .qz-year[open] > summary::after {
+  transform: rotate(-180deg);
+}
+
+/* 已删除 `#notes h2,h3 { position: relative }`：主题全局
+   `h1,h2,h3,h4,h5,h6{position:relative}` 已提供，图标（::before 绝对定位）定位正常，属冗余声明。
+   与 travel.css 同步移除（2026-09-17 两页标题样式统一时一并清理）。 */
+
+/* ── 2. 单条说说卡片 ─────────────────────────────────────────────────────── */
+#notes .qz-item {
+  margin: 0 0 1.1rem;
+  padding: 1.1rem 1.25rem;
+  border-radius: var(--radius-card);
+  background: var(--card-bg);
+  border: 1px solid var(--tab-border-color);  /* 对齐 travel-card 同款主题边框变量（明暗自适应） */
+  box-shadow: var(--shadow-card);
+  transition: box-shadow 0.22s ease;
+}
+
+#notes .qz-item:hover {
+  /* 2026-09-17：改用主题悬停阴影；静止档 .qz-item 已是 var(--shadow-card)
+     （= 主题 --card-box-shadow），两档统一由主题提供 */
+  box-shadow: var(--card-hover-box-shadow);
+}
+
+/* 卡片头：仅日期小标题（h3，主题标题样式），对齐 travel-card-head；机型 / 位置已下线 */
+#notes .qz-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+#notes .qz-date {
+  /* 完全使用主题 h3 样式（20px / 前缀图标 / padding-left 均由主题负责），
+     仅锁 margin:0 防主题 h3 默认外边距在 flex 卡片头内撑高（travel .place 同款做法） */
+  margin: 0;
+}
+
+#notes .qz-text {
+  color: var(--font-color);
+  line-height: 1.9;
+  word-break: break-word;
+}
+
+/* ── 3. 配图网格 ─────────────────────────────────────────────────────────── */
+/* 固定 3 列：不论这条说说有 1 张还是 9 张图，每格宽度恒为容器的 1/3。
+   不再按图片数量切换列数（原 qz-n1~qz-n9 共 9 条规则已删除），
+   这样不同说说之间的缩略图宽度天然一致，CSS 也只剩一条规则。 */
+#notes .qz-grid {
+  display: grid;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+#notes .qz-lightbox {
+  display: block;
+  overflow: hidden;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--font-color) 6%, transparent);
+}
+
+/* 限高：aspect-ratio 4/3 即等比限高（高度 = 宽度 × 0.75，桌面约 200px 封顶）。
+   所有缩略图**外框**宽高完全一致（网格整齐），但 2026-09-19 起图片本身改为 **contain 不裁切**：
+   竖图 / 长图会**完整显示**（等比缩放进框内），空出的左右（或上下）留白由 .qz-lightbox 的
+   浅色底填充 —— 此前用 cover 会把竖图上下切掉，只剩中间一条。
+   代价：竖图在 4:3 框里偏小、留白较多（用户已确认接受，换取「不裁切」）。
+   完整大图仍由点击后的 Fancybox 灯箱呈现。 */
+#notes .qz-grid img {
+  display: block;
+  width: 100%;
+  margin: 0;
+  aspect-ratio: 4 / 3;
+  object-fit: contain; /* 不裁切：竖图上下完整可见（cover 会裁掉上下） */
+  transition: transform 0.35s ease;
+}
+
+#notes .qz-lightbox:hover img {
+  transform: scale(1.04);
+}
+
+/* ── 4. 响应式 ───────────────────────────────────────────────────────────── */
+@media (max-width: var(--bp-sm)) {
+  /* 窄屏改单列：每张图都是满宽，宽度同样完全一致，且不会出现半行空缺 */
+  #notes .qz-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #notes .qz-item {
+    padding: 0.9rem 1rem;
+  }
+}

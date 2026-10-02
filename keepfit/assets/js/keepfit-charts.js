@@ -3,7 +3,7 @@
  * -----------------------------------------------------------------------------
  * 数据：window.KEEPFIT_RECORDS（由 tools/gen_keepfit.py 从 运动记录.xlsx 生成）
  * 章节：
- *   1) 运动记录 —— 三项速率折线图（跑步/骑行=km/h，游泳=配速 min/100m，纵轴由大到小）
+ *   1) 运动记录 —— 三项速率折线图（跑步/骑行=km/h，游泳=配速 min/100m 且纵轴反向，统一「越靠上越快」）
  *   2) 累计趋势 —— 三项运动各自记录表（含累计距离 km）
  * 设计：主题色走 CSS 变量；三项运动各配一色（跑=主色/骑=绿/游=橙）；亮/暗/阅读模式经 MutationObserver 自动重绘。
  * ========================================================================== */
@@ -56,8 +56,13 @@
     setText('stat-hours', Math.round(totalH));
   }
 
-  /* ---------- 通用折线图（单系列，横轴按真实日期时间刻度，纵轴均匀整数） ---------- */
-  function drawLineChart(pts, yLo, yHi) {
+  /* ---------- 通用折线图（单系列，横轴按真实日期时间刻度，纵轴均匀整数） ----------
+   * opts.invert：反转纵轴方向（小值在上）。用于配速图 —— 配速越小越快，
+   * 反转后「越靠上越快」，和 km/h 图表的直观方向一致。
+   */
+  function drawLineChart(pts, yLo, yHi, opts) {
+    opts = opts || {};
+    var invert = !!opts.invert;
     var W = 1000, H = 340, mL = 64, mR = 20, mT = 24, mB = 50;
     var plotW = W - mL - mR, plotH = H - mT - mB;
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: '100%', style: 'max-width:1000px;margin:0 auto;display:block' });
@@ -72,7 +77,8 @@
     var ax = ChartAxis.niceScale(yLo, yHi, 5);
     var yTicks = Math.round((ax.top - ax.bottom) / ax.step);
     for (var t = 0; t <= yTicks; t++) {
-      var val = ax.bottom + ax.step * t;
+      // 反转时同一条网格线对应的数值也倒过来（最上面是最小值）
+      var val = ax.bottom + ax.step * (invert ? (yTicks - t) : t);
       var gy = mT + plotH - plotH * t / yTicks;
       svg.appendChild(el('line', { class: 'mc-grid', x1: mL, y1: gy, x2: W - mR, y2: gy }));
       var yt = el('text', { class: 'mc-axis-text', x: mL - 8, y: gy + 4, 'text-anchor': 'end' });
@@ -102,7 +108,10 @@
 
     // 折线 + 数据点（x 按真实日期定位）
     var cls = SPORT_CLASS[pts[0].sport];
-    function py(v) { return mT + plotH - (v - ax.bottom) / (ax.top - ax.bottom) * plotH; }
+    function py(v) {
+      var f = (v - ax.bottom) / (ax.top - ax.bottom);
+      return invert ? mT + plotH * f : mT + plotH - plotH * f;
+    }
     var parts = [];
     pts.forEach(function (p, i) { parts.push((i ? ' L ' : ' M ') + pxDate(p.date) + ' ' + py(p.v)); });
     svg.appendChild(el('path', { class: 'mc-line ' + cls, d: parts.join('') }));
@@ -119,7 +128,8 @@
     if (!pts.length) return null;
     var vs = pts.map(function (p) { return p.v; });
     var vmin = Math.min.apply(null, vs), vmax = Math.max.apply(null, vs);
-    return drawLineChart(pts, vmin, vmax);
+    // 配速图反转纵轴：小配速（快）在上，与 km/h 图一样「越靠上越快」
+    return drawLineChart(pts, vmin, vmax, { invert: isPace(sport) });
   }
 
   /* ---------- 2) 累计趋势：单项累计距离折线图（y 从 0 起） ---------- */

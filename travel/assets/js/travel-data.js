@@ -1,9 +1,10 @@
 /* =============================================================================
- * travel-data.js — 旅行足迹数据（由 hexo update-data 从 source/travel/_places.json 自动生成，请勿手改）
+ * travel-data.js — 旅行足迹数据（由 hexo update-data 自动生成，请勿手改）
  * -----------------------------------------------------------------------------
+ * 数据来源：source/travel/_places.json（行程 → 城市）+ source/travel/_cities.json（城市 → 省/坐标）
  * 三类数据：
  *   1) TRAVEL_PROVINCES —— 中国省份「到访城市数」，用于地图省份着色（热力）。
- *   2) TRAVEL_CITIES_CN —— 中国城市散点（带涟漪动画），coord 为 [经度, 纬度]。
+ *   2) TRAVEL_CITIES_CN —— 中国城市散点（带涟漪动画），coord 为 [经度, 纬度]（GCJ-02）。
  *   3) TRAVEL_CITIES_WORLD —— 境外城市散点；当前无境外足迹，留空；以后出国旅行时在此添加即可。
  *
  * 维护：改 source/travel/images/ 与 _places.json 后跑 hexo update-data，本文件自动重写。
@@ -13,7 +14,7 @@
 window.TRAVEL_PROVINCES = [
   { name: "广东省", value: 9 },         // 潮州 / 佛山 / 广州 / 惠州 / 清远 / 汕尾 / 深圳 / 中山 / 珠海
   { name: "河南省", value: 4 },         // 焦作 / 平顶山 / 三门峡 / 郑州
-  { name: "云南省", value: 3 },         // 大理 / 丽江 / 石林
+  { name: "云南省", value: 3 },         // 大理 / 昆明 / 丽江
   { name: "广西壮族自治区", value: 2 },         // 桂林 / 南宁
   { name: "湖北省", value: 2 },         // 武汉 / 宜昌
   { name: "陕西省", value: 2 },         // 渭南 / 西安
@@ -25,39 +26,39 @@ window.TRAVEL_PROVINCES = [
 /* 2) 中国城市散点：[经度, 纬度] 可在地图底图上精准落点 */
 window.TRAVEL_CITIES_CN = [
   /* ── 澳门特别行政区 ── */
-  { name: "澳门", value: 1, coord: [113.55, 22.2] },
+  { name: "澳门", value: 1, coord: [113.54909, 22.198951] },
   /* ── 广东省 ── */
-  { name: "潮州", value: 1, coord: [116.63, 23.66] },
-  { name: "佛山", value: 1, coord: [113.12, 23.02] },
-  { name: "广州", value: 1, coord: [113.26, 23.13] },
-  { name: "惠州", value: 1, coord: [114.42, 23.11] },
-  { name: "清远", value: 1, coord: [113.05, 23.68] },
-  { name: "汕尾", value: 1, coord: [115.36, 22.79] },
-  { name: "深圳", value: 1, coord: [114.06, 22.55] },
-  { name: "中山", value: 1, coord: [113.39, 22.52] },
-  { name: "珠海", value: 1, coord: [113.55, 22.27] },
+  { name: "潮州", value: 1, coord: [116.632301, 23.661701] },
+  { name: "佛山", value: 1, coord: [113.122717, 23.028762] },
+  { name: "广州", value: 1, coord: [113.280637, 23.125178] },
+  { name: "惠州", value: 1, coord: [114.412599, 23.079404] },
+  { name: "清远", value: 1, coord: [113.051227, 23.685022] },
+  { name: "汕尾", value: 1, coord: [115.364238, 22.774485] },
+  { name: "深圳", value: 1, coord: [114.085947, 22.547] },
+  { name: "中山", value: 1, coord: [113.382391, 22.521113] },
+  { name: "珠海", value: 1, coord: [113.553986, 22.224979] },
   /* ── 广西壮族自治区 ── */
-  { name: "桂林", value: 1, coord: [110.29, 25.27] },
-  { name: "南宁", value: 1, coord: [108.37, 22.82] },
+  { name: "桂林", value: 1, coord: [110.299121, 25.274215] },
+  { name: "南宁", value: 1, coord: [108.320004, 22.82402] },
   /* ── 河南省 ── */
-  { name: "焦作", value: 1, coord: [113.24, 35.24] },
-  { name: "平顶山", value: 1, coord: [113.19, 33.78] },
-  { name: "三门峡", value: 1, coord: [111.19, 34.78] },
-  { name: "郑州", value: 1, coord: [113.62, 34.75] },
+  { name: "焦作", value: 1, coord: [113.238266, 35.23904] },
+  { name: "平顶山", value: 1, coord: [113.307718, 33.735241] },
+  { name: "三门峡", value: 1, coord: [111.194099, 34.777338] },
+  { name: "郑州", value: 1, coord: [113.665412, 34.757975] },
   /* ── 湖北省 ── */
-  { name: "武汉", value: 1, coord: [114.31, 30.59] },
-  { name: "宜昌", value: 1, coord: [111.29, 30.69] },
+  { name: "武汉", value: 1, coord: [114.298572, 30.584355] },
+  { name: "宜昌", value: 1, coord: [111.290843, 30.702636] },
   /* ── 湖南省 ── */
-  { name: "长沙", value: 1, coord: [112.94, 28.23] },
+  { name: "长沙", value: 1, coord: [112.982279, 28.19409] },
   /* ── 陕西省 ── */
-  { name: "渭南", value: 1, coord: [109.5, 34.5] },
-  { name: "西安", value: 1, coord: [108.94, 34.34] },
+  { name: "渭南", value: 1, coord: [109.502882, 34.499381] },
+  { name: "西安", value: 1, coord: [108.948024, 34.263161] },
   /* ── 香港特别行政区 ── */
-  { name: "香港", value: 1, coord: [114.17, 22.28] },
+  { name: "香港", value: 1, coord: [114.173355, 22.320048] },
   /* ── 云南省 ── */
-  { name: "大理", value: 1, coord: [100.23, 25.59] },
-  { name: "丽江", value: 1, coord: [100.23, 26.87] },
-  { name: "石林", value: 1, coord: [103.27, 24.77] },
+  { name: "大理", value: 1, coord: [100.225668, 25.589449] },
+  { name: "昆明", value: 1, coord: [102.712251, 25.040609] },
+  { name: "丽江", value: 1, coord: [100.233026, 26.872108] },
 ];
 
 /* 3) 境外城市散点（世界地图用）；当前仅在中国境内活动，留空 */

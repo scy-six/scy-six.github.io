@@ -6,13 +6,15 @@
  *   · 配色统一走 Butterfly 主题变量（--card-bg / --font-color / --tab-border-color
  *     / --default-bg-color / --radius-card），亮 / 暗 / 阅读 三种模式自动适配
  *   · 卡片质感（圆角 / 细描边 / 微阴影 / 悬停浮起）与全站 .card 一致
- *   · 内容容器 max-width:1140px，与 travel / mountain 同宽
+ *   · 内容容器跟随主题 .container（与 travel / mountain 等标准页同宽）
  *   · 三项运动配色：跑步=主题主色，骑行=绿，游泳=橙（与图表、表格一致）
  * ========================================================================== */
 
-/* ── 0. 页面容器：居中、限定宽度，露出主题背景 ─────────────────────────────── */
+/* ── 0. 页面容器：跟随主题 .container（与 travel / mountain 等标准页同宽） ──────
+ * 原 max-width:1140px 会让本页在「侧栏关闭 + 宽屏」时比标准页窄一圈且居中偏移，
+ * 改为 100% 撑满父级 .container，与所有标准页主体宽度一致。 */
 .keepfit-page {
-  max-width: 1140px;
+  max-width: 100%;
   margin: 0 auto;
   padding: 1rem 1.2rem 3rem;
 }
@@ -22,17 +24,19 @@
   margin-bottom: 2.4rem;
 }
 
+/* 区块标题：**完全使用主题 h2 样式**（24px / 主题标题色 --text-highlight-color /
+   padding-left:26px 给 fa-link 图标留位 / font-weight:bold），与 travel、notes 三页一致。
+   审计（2026-09-17）已移除：font-size(--fs-section) 与 padding-left(0.7rem) 均为**死声明**
+   ——.keepfit-h2 特异性 (0,1,0) 低于主题 .container h2 (0,1,1)，从未生效；
+   font-weight:700 与主题 bold 重复；color 是生效的，但会把主题标题色改掉，故一并交还主题。
+   仅保留 margin —— 主题默认 margin:20px 0 14px 在本页区块间过松，属布局取舍。 */
 .keepfit-h2 {
-  font-size: 1.4rem;
-  font-weight: 700;
   margin: 0 0 1.1rem;
-  padding-left: 0.7rem;
-  color: var(--font-color);
 }
 
 .keepfit-section .hint {
   margin: -0.4rem 0 1rem;
-  font-size: 0.82rem;
+  font-size: var(--fs-meta);
   opacity: 0.6;
   line-height: 1.6;
 }
@@ -50,18 +54,18 @@
   border-radius: var(--radius-card);
   padding: 1.3rem 1rem;
   text-align: center;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  box-shadow: var(--card-box-shadow);
   transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .keepfit-stat-card:hover {
-  box-shadow: 0 10px 26px color-mix(in srgb, var(--font-color) 16%, transparent);
+  box-shadow: var(--card-hover-box-shadow);
   transform: translateY(-3px);
 }
 
 .keepfit-stat-card .num {
   display: block;
-  font-size: 2rem;
+  font-size: var(--fs-num);
   font-weight: 800;
   line-height: 1.1;
   color: var(--default-bg-color);
@@ -69,9 +73,10 @@
 }
 
 .keepfit-stat-card .lbl {
+  /* 2026-09-17：统计标签按「正文」14px（--fs-body），与 mountain 的 .lbl 对齐 */
   display: block;
   margin-top: 0.35rem;
-  font-size: 0.85rem;
+  font-size: var(--fs-body);
   opacity: 0.7;
 }
 
@@ -81,18 +86,18 @@
   border: 1px solid var(--tab-border-color);
   border-radius: var(--radius-card);
   padding: 1.2rem 1.3rem 1.4rem;
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--font-color) 8%, transparent);
+  box-shadow: var(--card-box-shadow);
 }
 
 .keepfit-chart-title {
-  font-size: 1.05rem;
+  font-size: var(--fs-card);
   font-weight: 700;
   margin: 0 0 0.3rem;
   color: var(--font-color);
 }
 
 .keepfit-chart-sub {
-  font-size: 0.8rem;
+  font-size: var(--fs-meta);
   opacity: 0.6;
   margin: 0 0 0.9rem;
 }
@@ -116,7 +121,7 @@
 .keepfit-page .mc-axis-text {
   fill: var(--font-color);
   opacity: 0.7;
-  font-size: 0.92rem;
+  font-size: var(--fs-body);
 }
 .keepfit-page .mc-line {
   fill: none;
@@ -161,7 +166,7 @@
 
 /* ── 4c. 趋势图块（每项独立一行） ───────────────────────────────────────── */
 .keepfit-h3 {
-  font-size: 1.12rem;
+  font-size: var(--fs-card);
   font-weight: 700;
   margin: 1.5rem 0 0.7rem;
 }
