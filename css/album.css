@@ -243,7 +243,11 @@
   margin: 0;
   padding: 1.7rem 0.75rem 0.6rem;
   background: linear-gradient(to top, rgba(0, 0, 0, 0.66), rgba(0, 0, 0, 0));
-  color: var(--font-color);
+  /* 文字必须浅色：底部是半透明黑渐变，用 --font-color 在亮色模式下解析为深灰
+     → 深字压深底、几乎看不清（注释早已写明「保证白字」，但值写成了 --font-color）。
+     统一改白字 + 文字阴影，与 travel.css 的 .travel-photo a::after 一致。 */
+  color: #fff;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
   font-size: var(--fs-card);
   font-weight: 600;
   line-height: 1.3;
@@ -454,17 +458,30 @@
   }
 }
 
-/* 8.6 窄屏：模块换行排列（不下滑、不裁下拉），按钮略收 */
+/* 8.6 窄屏：模块换行排列（不下滑、不裁下拉）
+ * 2026-10-03 手机端整改：
+ *   · 触发按钮原为 padding .3rem + 12px 字号 → 实际高仅约 30px，远低于 40px 触控下限，
+ *     而它是手机上切换子相册的唯一入口，容易点空。改为 .55rem 内边距 + 正文 14px（≈44px 高）。
+ *   · 下拉面板限宽到视口内，长子相册名允许折行 —— 原 nowrap + left:0 会让靠右模块的
+ *     下拉伸出视口右侧，导致整页横向滚动、右侧菜单项点不到。
+ *   · 下拉项同样加大内边距，避免密集误触。
+ */
 @media (max-width: 560px) {
   .album-menu-bar {
     gap: 0.35rem;
   }
   .album-menu-trigger {
-    padding: 0.3rem 0.7rem;
-    font-size: var(--fs-meta);
+    padding: 0.55rem 0.9rem;
+    font-size: var(--fs-body);
   }
   .album-menu-list {
     min-width: 7.5rem;
+    max-width: calc(100vw - 1.6rem);
+  }
+  .album-menu-item {
+    padding: 0.55rem 0.8rem;
+    white-space: normal;
+    word-break: break-word;
   }
 }
 

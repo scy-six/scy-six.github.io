@@ -172,15 +172,21 @@
 }
 .keepfit-trend-block .keepfit-h3:first-child { margin-top: 0; }
 
-/* ── 5. 响应式 ───────────────────────────────────────────────────────────── */
-@media (max-width: var(--bp-md)) {
+/* ── 5. 响应式 ─────────────────────────────────────────────────────────────
+ * ⚠ 断点写死 px：@media 条件里用 var() 会被浏览器整条丢弃（规则从未生效），
+ *   此处字面值与 custom.css 的 --bp-md(768) / --bp-sm(480) 保持一致。 */
+@media (max-width: 768px) {
   .keepfit-stats {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: var(--bp-sm)) {
+@media (max-width: 480px) {
   .keepfit-stats {
     grid-template-columns: 1fr;
+  }
+  /* 手机：收紧页面左右内边距，把宽度让给图表 */
+  .keepfit-page {
+    padding: 0.9rem 0.9rem 2.4rem;
   }
 }

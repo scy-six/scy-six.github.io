@@ -145,8 +145,18 @@
   transform: scale(1.04);
 }
 
-/* ── 4. 响应式 ───────────────────────────────────────────────────────────── */
-@media (max-width: var(--bp-sm)) {
+/* ── 4. 响应式 ─────────────────────────────────────────────────────────────
+ * ⚠ 断点写死 px：@media 条件里用 var() 会被浏览器整条丢弃（规则从未生效），
+ *   此处字面值与 custom.css 的 --bp-sm(480) 保持一致。 */
+/* 平板 / 大屏手机：三列改两列（与 travel.css 的照片网格同一档处理），
+   否则 481–768px 区间仍是三列，配图偏小。 */
+@media (max-width: 768px) {
+  #notes .qz-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
   /* 窄屏改单列：每张图都是满宽，宽度同样完全一致，且不会出现半行空缺 */
   #notes .qz-grid {
     grid-template-columns: 1fr;

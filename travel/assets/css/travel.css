@@ -278,19 +278,40 @@
   font-weight: 700;
 }
 
-/* ── 5. 响应式 ───────────────────────────────────────────────────────────── */
-  @media (max-width: var(--bp-md)) {
-    .travel-stats {
-      grid-template-columns: 1fr;
-    }
-    .travel-photos {
-      grid-template-columns: repeat(2, 1fr);
-    }
+/* ── 5. 响应式 ───────────────────────────────────────────────────────────────
+ * ⚠ 断点必须写死 px，不能写 var(--bp-md)：CSS 规范不允许在 @media 条件里使用
+ *   var()，浏览器会把整条规则丢弃 —— 此前本页所有窄屏规则因此**从未生效**，
+ *   手机上看旅行照片仍是三列、小到看不清。--bp-md/--bp-sm 仅作为文档性 token
+ *   保留在 custom.css（供人阅读），媒体查询一律用下列字面值（与主题 768/480 一致）。 */
+@media (max-width: 768px) {
+  .travel-stats {
+    grid-template-columns: 1fr;
   }
+  /* 平板 / 大屏手机：两列 */
+  .travel-photos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* 窄屏收紧页面与卡片内边距，把宽度让给照片 */
+  .travel-page {
+    padding: 0.9rem 0.9rem 2.4rem;
+  }
+  .travel-card {
+    padding: 1.1rem 1.1rem;
+  }
+}
 
-@media (max-width: var(--bp-sm)) {
+@media (max-width: 480px) {
+  /* 手机：单列满宽，照片最大化 */
   .travel-photos {
     grid-template-columns: 1fr;
+    gap: 0.7rem;
+  }
+  .travel-card {
+    padding: 1rem 0.9rem;
+  }
+  /* 单列后照片变大，说明文字适当加大以匹配视觉重量 */
+  .travel-photo a::after {
+    font-size: 0.82rem;
   }
 }
 

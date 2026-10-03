@@ -24,6 +24,11 @@
        兜底值为原来的自造阴影，主题未定义时回退。
        ⚠ 这会改变各页卡片的阴影观感（主题阴影更柔更扩散）——即「卡片观感」清单里的选项二。 */
   --shadow-card: var(--card-box-shadow, 0 4px 14px rgba(0, 0, 0, 0.08));
+  /* 断点 token：仅作**文档/备忘**用，记录本站三档宽度约定（与 Butterfly 主题一致）。
+     ⚠ 严禁在 @media 条件里引用：CSS 规范不允许 `max-width: var(--bp-md)`，
+     浏览器会整条丢弃该规则（2026-10-03 修复：travel / keepfit / mountain / notes
+     四个页面的窄屏规则曾因此全部失效，手机上旅行照片还是三列、过小）。
+     媒体查询请一律写死下列字面值：768px（--bp-md）、480px（--bp-sm）。 */
   --bp-sm: 480px;
   --bp-md: 768px;
   --bp-lg: 992px;
@@ -404,6 +409,25 @@ blockquote {
   border-radius: 999px;
   background: var(--default-bg-color);
   transition: width 0.4s ease; /* 改值时平滑过渡 */
+}
+
+/* 6.3b 窄屏（≤540px）：原「日期 | 进度条 | 日期」三列在 360px 下会挤爆 ——
+   两个日期各 min-width 92px 吃掉 184px + 36px 间距，进度条只剩约 80px，几乎看不出比例。
+   改为：两个日期并排占第一行，进度条整条独占第二行（order 把它排到日期之后）。
+   断点写死 px，不用 var()（@media 条件里 var() 会被浏览器整条丢弃）。 */
+@media (max-width: 540px) {
+  .ten-year__row {
+    flex-wrap: wrap;
+    gap: 10px 12px;
+  }
+  .ten-year__date {
+    flex: 1 1 40%;
+    min-width: 0;
+  }
+  .ten-year__progress {
+    flex: 1 1 100%;
+    order: 1; /* 排在两个日期之后 → 独占第二行 */
+  }
 }
 
 /* 6.5 数据行：三栏 */
@@ -822,7 +846,8 @@ html.with-fancybox body {
 /* 分页栏：居中、不被网格拆成 item */
 .bangumi-pagination{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:16px;width:100%;}
 .bangumi-view-grid .bangumi-pagination{grid-column:1/-1;margin-top:10px;}
-.bangumi-pagination .bangumi-button,.bangumi-pagination .bangumi-pagenum{display:inline-flex;align-items:center;justify-content:center;padding:6px 12px;border:1px solid var(--bangumi-border);border-radius:6px;background:var(--bangumi-bg);color:var(--bangumi-text);font-size: var(--fs-body);cursor:pointer;text-decoration:none;transition:all .2s ease;}
+/* 内边距 6px→10px：原按钮高约 32px，手机上翻页容易点空；加大到约 40px（触控下限） */
+.bangumi-pagination .bangumi-button,.bangumi-pagination .bangumi-pagenum{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border:1px solid var(--bangumi-border);border-radius:6px;background:var(--bangumi-bg);color:var(--bangumi-text);font-size: var(--fs-body);cursor:pointer;text-decoration:none;transition:all .2s ease;}
 .bangumi-pagination .bangumi-button:hover{background:var(--bangumi-accent-soft);color:var(--bangumi-accent-strong);}
 .bangumi-pagination .bangumi-pagenum{cursor:default;background:var(--bangumi-accent);color:var(--bangumi-on-accent);border-color:var(--bangumi-accent);}
 
@@ -884,6 +909,19 @@ html.with-fancybox body {
   line-height: 1;
   opacity: 0.6;
 }
+/* 窄屏：左内边距 48px（给大引号留位）在 360px 下吃掉约 15% 宽度，正文只剩 260px。
+   收到 22px，并把引号缩小、压低透明度——它只是装饰，不值得占掉正文宽度。 */
+@media (max-width: 480px) {
+  .page-subtitle {
+    padding: 14px 14px 14px 22px;
+  }
+  .page-subtitle::before {
+    left: 8px;
+    font-size: calc(var(--fs-card) * 1.8);
+    opacity: 0.45;
+  }
+}
+
 .page-subtitle > p {
   position: relative;
   margin: 0;
@@ -930,6 +968,28 @@ html.with-fancybox body {
    放在这里是因为 custom.css 在主题 index.css 之后加载，可稳定覆盖。 */
 [data-theme="dark"] {
   --default-bg-color: #40786b;
+}
+
+/* ── 首屏横幅上的导航文字可读性（2026-10-03）──────────────────────────────
+   主题给「透明导航态」（未 fixed，压在顶部壁纸上）的菜单链接只用 var(--light-grey)
+   （亮色 #EEE）且无阴影 —— 换上亮色壁纸（如樱花）后白字几乎不可读。
+   给链接 / 站名 / 博客名统一加一层深色描边式阴影：白字 + 暗晕，任何壁纸上都可读。
+   作用域用 :not(.nav-fixed):not(.fixed) 限定在透明态；fixed 态主题自带
+   半透明底 + text-shadow:none，不受影响。 */
+#page-header:not(.nav-fixed):not(.fixed) #nav a,
+#page-header:not(.nav-fixed):not(.fixed) #nav span.site-page,
+#page-header:not(.nav-fixed):not(.fixed) #nav #blog-info {
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.6),
+    0 0 6px rgba(0, 0, 0, 0.35);
+}
+
+/* ── 暗色模式壁纸遮罩减淡（2026-10-03）────────────────────────────────────
+   主题 darkmode.styl 给全屏壁纸 #web_bg 叠 rgba(0,0,0,.7)，暗色下壁纸只剩三成
+   亮度，用户反馈「太暗」。降到 .55（壁纸透出约 45%），仍保证暗色氛围与文字对比。
+   想再亮/再暗只调这一个 alpha（范围 0 ~ .7）。 */
+[data-theme="dark"] #web_bg:before {
+  background-color: rgba(0, 0, 0, 0.55);
 }
 
 /* 首页「置顶」图钉：主题在 index.styl 里硬编码了橙红 #FF7242（100% 饱和），
@@ -1187,8 +1247,13 @@ html.with-fancybox body {
   }
   .site-tree details > summary,
   .site-tree a {
-    padding: .4em .55em; /* 节点卡片缩小 */
+    /* 节点卡片缩小的同时保住可点面积：原 .4em 内边距 + 12px 字号 → 卡高仅约 28px，
+       远低于 40px 触控下限，手机上很容易点错节点。改为 .7em（约 36px 高）。
+       并放开 nowrap：长节点名允许折行，卡片反而更窄，避免把树撑宽触发整页横向滚动。 */
+    padding: .7em .8em;
     gap: .35em;
+    white-space: normal;
+    max-width: 100%;
   }
   .site-tree li li { padding-left: var(--h); }
   .site-tree .h-row {
