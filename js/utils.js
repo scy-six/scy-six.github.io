@@ -200,7 +200,7 @@
         })
 
         if (!window.fancyboxRun) {
-          let options = ''
+          let options
           if (Fancybox.version < '6') {
             options = {
               Hash: false,

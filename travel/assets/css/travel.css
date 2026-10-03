@@ -56,13 +56,13 @@
   z-index: 1000;
   padding: 0.35rem 0.6rem;
   font-size: var(--fs-badge);
-  line-height: 1.4;
+  line-height: var(--lh-base); /* 原 1.4 */
   /* 2026-09-17：三处写死颜色全部改为派生自主题变量 ——
      文字用站点 token --on-accent（= 主题 --white），底色由主题色 --default-bg-color 调透明度，
      阴影色由 --font-color 派生。改主题色时这里自动跟随，不再需要手改。 */
   color: var(--on-accent);
   background: color-mix(in srgb, var(--default-bg-color) 85%, transparent);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   pointer-events: none; /* 不挡地图交互 */
   display: none; /* 默认隐藏，锁定后由 JS 显示 */
   box-shadow: 0 2px 8px color-mix(in srgb, var(--font-color) 15%, transparent);
@@ -96,7 +96,7 @@
   display: block;
   font-size: var(--fs-num);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: var(--lh-tight); /* 原 1.1 */
   color: var(--default-bg-color);
   font-variant-numeric: tabular-nums;
 }
@@ -106,7 +106,7 @@
   display: block;
   margin-top: 0.35rem;
   font-size: var(--fs-body);
-  opacity: 0.7;
+  opacity: var(--opacity-secondary);
 }
 
 /* ── 4. 旅行日记：年份时间线 ─────────────────────────────────────────────── */
@@ -150,8 +150,8 @@
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   border-top: 8px solid currentColor;
-  opacity: 0.6;
-  transition: transform 0.2s ease;
+  opacity: var(--opacity-tertiary);
+  transition: transform var(--transition-base);
 }
 .travel-year[open] > summary.travel-year-summary::after {
   transform: rotate(-180deg);
@@ -202,7 +202,7 @@
 
 .travel-card-head .date {
   font-size: var(--fs-meta);
-  opacity: 0.6;
+  opacity: var(--opacity-tertiary);
   font-style: italic;
 }
 
@@ -217,7 +217,7 @@
 .travel-photo {
   position: relative;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   aspect-ratio: 4 / 3;
   background: color-mix(in srgb, var(--font-color) 6%, transparent);
 }
@@ -225,9 +225,11 @@
 .travel-photo img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* 2026-10-03 cover→contain：竖图/特殊构图不再被裁切，完整显示（与相册/笔记一致）；
+     留空区域露出容器的淡色占位底（见 .travel-photo 的 background） */
+  object-fit: contain;
   display: block;
-  transition: transform 0.35s ease;
+  transition: transform var(--transition-slow);
 }
 
 /* 图片名称：以伪元素贴在图片底部，不撑大图片框；从 data-caption 自动读取。
@@ -268,8 +270,8 @@
 
 .travel-text {
   color: var(--font-color);
-  opacity: 0.85;
-  line-height: 1.75;
+  opacity: var(--opacity-faint);
+  line-height: var(--lh-loose); /* 原 1.75 */
   margin: 0;
 }
 
@@ -368,7 +370,7 @@
   stroke: var(--prov-stroke);
   stroke-width: 0.5;
   stroke-linejoin: round;
-  transition: stroke 0.2s ease, opacity 0.2s ease;
+  transition: stroke var(--transition-base), opacity var(--transition-base);
 }
 .travel-page .province.visited {
   fill: url(#provVisitedGrad); /* 已访省份：主题色渐变 + 发光，突出足迹 */
@@ -377,12 +379,15 @@
 .travel-page .province:hover {
   stroke: var(--default-bg-color);
   stroke-width: 2;
-  opacity: 0.9;
+  opacity: var(--opacity-faint);
 }
 .travel-page .prov-unv-light { stop-color: var(--prov-unv-light); }
 .travel-page .prov-unv-dark  { stop-color: var(--prov-unv-dark); }
 .travel-page .prov-vis-light { stop-color: var(--prov-vis-light); }
 .travel-page .prov-vis-dark  { stop-color: var(--prov-vis-dark); }
+/* 2026-10-03 补注：province-label(12px)/city-label(6px) 刻意固定 px —— SVG viewBox
+   等比缩放体系下，px 是「地图坐标系单位」，标注随地图同步缩放；改 em 会退回被
+   页面字号污染的尺寸，地图缩放时标注比例错乱。 */
 .travel-page .province-label {
   fill: var(--prov-label);
   font-size: 12px;

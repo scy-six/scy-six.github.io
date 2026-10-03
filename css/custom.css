@@ -19,11 +19,9 @@
  * ========================================================================== */
 :root {
   --radius-card: 12px;
-  /* 2026-09-17：改为**派生自主题变量**，不再自造固定值。
-     - 阴影：直接引用主题的卡片阴影（明暗各一套），主题换风格时全站卡片同步；
-       兜底值为原来的自造阴影，主题未定义时回退。
-       ⚠ 这会改变各页卡片的阴影观感（主题阴影更柔更扩散）——即「卡片观感」清单里的选项二。 */
-  --shadow-card: var(--card-box-shadow, 0 4px 14px rgba(0, 0, 0, 0.08));
+  /* 2026-10-03：--shadow-card 别名已删除——其唯一使用者 notes.css 已改为直引
+     var(--card-box-shadow)，别名纯绕一层间接。（阴影派生自主题变量的决策见
+     2026-09-17 记录，未变。 */
   /* 断点 token：仅作**文档/备忘**用，记录本站三档宽度约定（与 Butterfly 主题一致）。
      ⚠ 严禁在 @media 条件里引用：CSS 规范不允许 `max-width: var(--bp-md)`，
      浏览器会整条丢弃该规则（2026-10-03 修复：travel / keepfit / mountain / notes
@@ -51,6 +49,37 @@
   --fs-meta: calc(var(--global-font-size) * 12 / 14); /* T5 12px 辅助 / 元信息 */
   --fs-badge: var(--fs-meta); /* T6 12px 微标签 / 角标（与 meta 同号；2026-09-13 就近取大合并） */
   --fs-num: calc(var(--global-font-size) * 32 / 14); /* D1 32px 数据强调（统计大数字） */
+
+  /* ── 圆角阶梯（2026-10-03 全站归档）─────────────────────────────
+     xs 按实际使用值 4px 定义（报告建议 6px，实际无 6px 使用）；50%/0 不入阶梯。 */
+  --radius-lg: 12px;   /* 卡片主容器（与 --radius-card 同值，二者并存，card 优先语义） */
+  --radius-md: 10px;   /* 图片框 / 网格单元 */
+  --radius-sm: 8px;    /* 代码块 / 引用块 / 副标题 */
+  --radius-xs: 4px;    /* 小元素 */
+  --radius-pill: 999px; /* 胶囊（进度条 / 徽章 / 按钮） */
+
+  /* ── 过渡阶梯（2026-10-03 全站归档；缓动全站均为 ease，令牌直接携带）── */
+  --transition-fast: 0.15s ease; /* 悬停色变 / 小元素 */
+  --transition-base: 0.22s ease; /* 卡片浮起 / 常规过渡 */
+  --transition-slow: 0.35s ease; /* 图片缩放 / 进度填充 */
+
+  /* ── opacity 三档（2026-10-03 就近收敛：原 0.45-0.9 共 9 种归入 3 档）── */
+  --opacity-tertiary: 0.6;   /* 辅助 / 提示（吸 0.65/0.45） */
+  --opacity-secondary: 0.75; /* 次要文字（吸 0.7/0.8） */
+  --opacity-faint: 0.85;     /* 弱化正文（吸 0.9/0.82） */
+
+  /* ── 行高四档（2026-10-03 就近归档；文章正文 2 在主题 var.styl，不入本体系）── */
+  --lh-tight: 1.1;   /* 数据大数字 / 紧凑标注（吸 1.3/1） */
+  --lh-base: 1.6;    /* 表格 / 代码（吸 1.4/1.5） */
+  --lh-loose: 1.8;   /* 卡片正文（吸 1.75/1.9） */
+  --lh-readable: 2;  /* 长文阅读（备用，暂无使用） */
+
+  /* ── 间距阶梯（2026-10-03 全站归档；rem/em 与 >36px 布局级尺寸不入阶梯）── */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
 }
 
 /* =============================================================================
@@ -73,7 +102,7 @@ html {
   margin: 0 0 1.2rem;
   overflow-x: auto; /* 内容过宽时横向滚动，而不是撑破布局 */
   border: 1px solid var(--light-grey); /* 细边框，与全站分割线一致 */
-  border-radius: 10px; /* 圆角，呼应卡片观感 */
+  border-radius: var(--radius-md); /* 圆角，呼应卡片观感 */
   background: var(--card-bg);
   box-shadow: var(--card-box-shadow); /* 复用主题卡片阴影 */
   scrollbar-width: thin; /* Firefox 细滚动条 */
@@ -84,7 +113,7 @@ html {
 }
 .table-wrap::-webkit-scrollbar-thumb {
   background: var(--light-grey);
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
 }
 
 /* 1.2 表格本体 */
@@ -92,38 +121,48 @@ html {
   width: 100%;
   border-collapse: collapse; /* 合并边框，避免双边线 */
   font-size: var(--fs-body);
-  line-height: 1.6;
+  line-height: var(--lh-base); /* 原 1.6 */
   color: var(--font-color);
   background: var(--card-bg);
   border: none; /* 边框交给外层 .table-wrap，避免重复 */
 }
 
-/* 1.3 表头：主题色渐变 + 白色文字 + 粘性定位（滚动时长表头常驻） */
+/* 1.3 表头：淡主色底 + 深字，粘性定位（滚动时长表头常驻）
+   2026-10-03 反向统一：原「渐变主题色 + 白字」改为与 mountain 数据表头同款
+   （用户选定 mountain 观感为全站表头基准）。淡底 color-mix 引用站点令牌，
+   暗色模式自动适配；sticky 滚动场景下不透明淡底不会遮挡数据行。 */
 .table-wrap thead th {
   position: sticky;
   top: 0;
   z-index: 2;
-  padding: 10px 16px;
-  font-weight: 600;
+  padding: var(--space-sm) var(--space-md);
+  font-weight: 700;
   text-align: left;
   white-space: nowrap;
   letter-spacing: 0.02em;
-  color: var(--on-accent); /* 表头文字固定在渐变主题色之上，保证可读性 */
-  border-bottom: 2px solid var(--default-bg-color);
-  /* 主题色 → 暗化方向的 135° 渐变，增强层次感 */
-  background: linear-gradient(
-    135deg,
-    var(--default-bg-color),
-    color-mix(in srgb, var(--default-bg-color) 65%, #000 35%)
-  );
+  color: var(--font-color);
+  border-bottom: 2px solid var(--tab-border-color);
+  background: color-mix(in srgb, var(--default-bg-color) 12%, var(--card-bg));
 }
 
 /* 1.4 单元格基础样式 */
 .table-wrap th,
 .table-wrap td {
-  padding: 9px 16px;
+  padding: var(--space-sm) var(--space-md);
   border: 1px solid var(--light-grey);
   vertical-align: middle;
+}
+
+/* 1.3b 文章内 Markdown 表头：与上/与 mountain 同款淡底深字
+   2026-10-03 补——文章正文表格是裸 <table>（无 .table-wrap 包裹），表头原本走主题默认
+   的灰蓝半透明底（rgba(153,169,191,.1)），与 mountain/.table-wrap 两个体系都不一致；
+   此处按用户决策统一为 mountain 观感。color-mix 引用令牌，暗色模式自动适配。 */
+#article-container table thead {
+  background: color-mix(in srgb, var(--default-bg-color) 12%, var(--card-bg));
+}
+#article-container table thead th {
+  color: var(--font-color);
+  font-weight: 700;
 }
 
 /* 1.5 斑马纹（偶数行淡色底），提升可读性 */
@@ -133,7 +172,7 @@ html {
 
 /* 1.6 行悬停高亮（主题色淡染），引导视线 */
 .table-wrap tbody tr {
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 .table-wrap tbody tr:hover {
   background: color-mix(in srgb, var(--default-bg-color) 12%, var(--card-bg));
@@ -149,7 +188,7 @@ html {
   .table-wrap thead th,
   .table-wrap th,
   .table-wrap td {
-    padding: 7px 10px;
+    padding: var(--space-sm) var(--space-sm);
   }
   .table-wrap table {
     font-size: var(--fs-meta);
@@ -163,7 +202,7 @@ html {
 /* 2.1 代码块容器：统一圆角与溢出裁剪 */
 figure.highlight,
 pre {
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   overflow: auto;
 }
 
@@ -173,7 +212,7 @@ li code,
 td code,
 a code {
   padding: 0.15em 0.4em;
-  border-radius: 4px;
+  border-radius: var(--radius-xs);
   /* 原 0.9em（12.6px）→ T5（12px）：等宽字体与正文同号会显得偏大，
      比正文小一档是通用做法（GitHub 85%、Ant 辅助 12），顺手并入阶梯。 */
   font-size: var(--fs-meta);
@@ -185,7 +224,7 @@ a code {
 blockquote {
   border-left: 4px solid var(--default-bg-color);
   background: color-mix(in srgb, var(--default-bg-color) 6%, var(--card-bg));
-  border-radius: 0 8px 8px 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
 }
 
 /* =============================================================================
@@ -200,10 +239,10 @@ blockquote {
 /* 4.1 分类列表整体：视作一张卡片（圆角 + 阴影），宽度与 about 页 .about-card 一致（占满内容栏，不限宽、不水平居中） */
 .category-lists {
   margin: 1.2rem 0; /* 与 .about-card 对齐：去除 720px 限宽与水平居中 */
-  padding: 18px 22px;
+  padding: var(--space-md) var(--space-lg);
   background: var(--card-bg);
   border: 1px solid var(--light-grey);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   box-shadow: var(--card-box-shadow);
 }
 
@@ -217,7 +256,7 @@ blockquote {
 .category-lists .category-list ul {
   list-style: none;
   margin: 0;
-  padding-left: 22px;
+  padding-left: var(--space-lg);
 }
 
 /* 4.3 每一项 = 一行「表格」：左分类名 / 右数量
@@ -227,11 +266,11 @@ blockquote {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-md);
   position: relative; /* ::before 绝对定位图标依赖此定位上下文 */
   padding: 10px 6px 10px 1.5em; /* 左侧留出图标空间（覆盖主题默认 1.4em） */
   border-bottom: 1px solid var(--light-grey); /* 行分隔线 → 形成表格观感 */
-  transition: background 0.2s ease;
+  transition: background var(--transition-base);
 }
 /* 末行去掉分隔线，避免与卡片底边重叠 */
 .category-lists .category-list > .category-list-item:last-child {
@@ -253,30 +292,31 @@ blockquote {
   color: var(--font-color);
   font-weight: 600;
   text-decoration: none;
-  transition: color 0.2s ease;
+  transition: color var(--transition-base);
 }
 .category-lists .category-list-link:hover {
   color: var(--default-bg-color);
 }
 
 /* 4.7 数量徽标：胶囊形 + 主题色淡染，推到右侧、字号与分类名一致 */
-.category-lists .category-list-count {
-  /* 主题 categories.styl 的 .category-lists .category-list .category-list-count 特异性为 (0,3,0)，
-     本规则仅 (0,2,0)、特异性更低，故必须靠 !important 覆盖主题的 margin-left: 8px。
-     若要去掉 !important，需先把本选择器补成同样 3 层（并确认加载顺序在主题之后）。勿随意删。 */
-  margin-left: auto !important; /* 推到行尾（右侧），与分类名左对齐形成两端分布 */
+/* 2026-10-03 特异性由 (0,2,0) 补齐到与主题 categories.styl 相同的 (0,3,0)，
+   custom.css 后加载即胜出，原 margin-left 的 !important 移除。
+   ⚠ 顺带修复：此前 color / content:none 也被主题 (0,3,0) 压掉——徽标文字色与
+   "(n)" 括号实际一直渲染的是主题旧样式，本改动使其按本节设计生效。 */
+.category-lists .category-list .category-list-count {
+  margin-left: auto; /* 推到行尾（右侧），与分类名左对齐形成两端分布 */
   flex: none; /* 不被压缩 */
-  padding: 1px 8px; /* 紧凑包裹数字 */
+  padding: var(--space-xs) var(--space-sm); /* 紧凑包裹数字 */
   text-align: center;
   font-size: 1em; /* 与分类名同字号（主题未对该元素设置 font-size，无需 !important） */
   font-weight: 600;
   color: var(--default-bg-color);
   background: color-mix(in srgb, var(--default-bg-color) 14%, var(--card-bg));
   border: 1px solid color-mix(in srgb, var(--default-bg-color) 35%, transparent);
-  border-radius: 999px; /* 胶囊形 */
+  border-radius: var(--radius-pill); /* 胶囊形 */
 }
-.category-lists .category-list-count::before,
-.category-lists .category-list-count::after {
+.category-lists .category-list .category-list-count::before,
+.category-lists .category-list .category-list-count::after {
   content: none; /* 覆盖主题默认的 "("、")" */
 }
 
@@ -285,10 +325,10 @@ blockquote {
    产物中 .tag-cloud-list 零渲染，属死代码。 */
 @media (max-width: 768px) {
   .category-lists {
-    padding: 14px;
+    padding: var(--space-md);
   }
   .category-lists .category-list-item {
-    padding: 8px 4px;
+    padding: var(--space-sm) var(--space-xs);
   }
 }
 
@@ -344,10 +384,10 @@ blockquote {
 /* 6.1 卡片容器：与全站卡片同款观感 */
 .ten-year {
   margin: 1.2rem 0;
-  padding: 20px 22px;
+  padding: var(--space-lg) var(--space-lg);
   background: var(--card-bg);
   border: 1px solid var(--light-grey);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   box-shadow: var(--card-box-shadow);
 }
 
@@ -355,26 +395,26 @@ blockquote {
 .ten-year__head {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
 }
 .ten-year__head h2 {
   margin: 0;
   font-size: var(--fs-card);
 }
 .ten-year__head span {
-  margin-left: 4px;
+  margin-left: var(--space-xs);
   font-size: var(--fs-body);
   color: var(--font-color);
-  opacity: 0.8;
+  opacity: var(--opacity-secondary);
 }
 
 /* 6.3 第一行：三列 [开始日期 | 进度条 | 目标日期] */
 .ten-year__row {
   display: flex;
   align-items: center;
-  gap: 18px;
-  margin-bottom: 14px;
+  gap: var(--space-md);
+  margin-bottom: var(--space-md);
 }
 .ten-year__date {
   flex: none;
@@ -385,7 +425,7 @@ blockquote {
   display: block;
   font-size: var(--fs-body);
   color: var(--font-color);
-  opacity: 0.75;
+  opacity: var(--opacity-secondary);
 }
 .ten-year__date strong {
   font-size: var(--fs-body);
@@ -399,16 +439,16 @@ blockquote {
 }
 .ten-year__bar {
   height: 10px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--default-bg-color) 12%, var(--card-bg));
   overflow: hidden;
 }
 .ten-year__bar i {
   display: block;
   height: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--default-bg-color);
-  transition: width 0.4s ease; /* 改值时平滑过渡 */
+  transition: width var(--transition-slow); /* 改值时平滑过渡 */
 }
 
 /* 6.3b 窄屏（≤540px）：原「日期 | 进度条 | 日期」三列在 360px 下会挤爆 ——
@@ -418,7 +458,7 @@ blockquote {
 @media (max-width: 540px) {
   .ten-year__row {
     flex-wrap: wrap;
-    gap: 10px 12px;
+    gap: var(--space-sm) var(--space-md);
   }
   .ten-year__date {
     flex: 1 1 40%;
@@ -433,22 +473,22 @@ blockquote {
 /* 6.5 数据行：三栏 */
 .ten-year__stat {
   display: flex;
-  gap: 12px;
-  margin-bottom: 6px;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
 }
 .ten-year__stat-item {
   flex: 1 1 0;
-  padding: 8px 6px;
+  padding: var(--space-sm) var(--space-sm);
   text-align: center;
   background: color-mix(in srgb, var(--card-bg) 82%, var(--light-grey) 18%);
   border: 1px solid var(--light-grey);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
 }
 .ten-year__stat-item span {
   display: block;
   font-size: var(--fs-body);
   color: var(--font-color);
-  opacity: 0.8;
+  opacity: var(--opacity-secondary);
 }
 .ten-year__stat-item strong {
   font-size: var(--fs-body);
@@ -460,7 +500,7 @@ blockquote {
   position: relative;
   display: flex;
   justify-content: space-between;
-  margin: 18px 0 14px;
+  margin: var(--space-md) 0 var(--space-md);
   padding: 0 4%;
 }
 .ten-year__milestone::before {
@@ -481,7 +521,7 @@ blockquote {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: var(--space-sm);
   width: 48px; /* 固定宽度：圆点居中，圆心稳定，连线端点可精确对齐 */
   font-size: var(--fs-body); /* 统一为标准正文 */
   color: var(--font-color);
@@ -532,8 +572,8 @@ blockquote {
 .skill-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 30px;
-  margin: 8px 0 18px;
+  gap: var(--space-xl);
+  margin: var(--space-sm) 0 var(--space-md);
   align-items: stretch;
 }
 
@@ -555,7 +595,7 @@ blockquote {
   min-width: 0;
 }
 .skill-group h3 {
-  margin: 0 0 10px;
+  margin: 0 0 var(--space-sm);
   font-size: var(--fs-card);
   font-weight: 600;
   color: var(--font-color);
@@ -564,7 +604,7 @@ blockquote {
 /* 7.3 列表：行纵向排列 */
 .skill-list {
   display: grid;
-  gap: 10px;
+  gap: var(--space-sm);
 }
 
 /* 7.4 单行：左技能名（固定宽）+ 右进度条，间距适中 */
@@ -572,7 +612,7 @@ blockquote {
   display: grid;
   grid-template-columns: 84px 1fr;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-md);
 }
 .skill-row__name {
   font-size: var(--fs-body);
@@ -585,7 +625,7 @@ blockquote {
 /* 7.5 进度条轨道：浅主题色底 */
 .skill-row__bar {
   height: 8px;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--light-grey) 55%, var(--card-bg));
   overflow: hidden;
 }
@@ -594,23 +634,23 @@ blockquote {
 .skill-row__bar > i {
   display: block;
   height: 100%;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: var(--default-bg-color);
-  transition: width 0.4s ease;
+  transition: width var(--transition-slow);
 }
 
 /* 7.7 窄屏：单列堆叠，左列恢复从头排列 */
 @media (max-width: 540px) {
   .skill-grid {
     grid-template-columns: 1fr;
-    gap: 22px;
+    gap: var(--space-lg);
   }
   .skill-col--left {
     justify-content: flex-start;
   }
   .skill-row {
     grid-template-columns: 76px 1fr;
-    gap: 10px;
+    gap: var(--space-sm);
   }
 }
 
@@ -623,10 +663,10 @@ blockquote {
  * ========================================================================== */
 .about-card {
   margin: 1.2rem 0;
-  padding: 18px 22px;
+  padding: var(--space-md) var(--space-lg);
   background: var(--card-bg);
   border: 1px solid var(--light-grey);
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   box-shadow: var(--card-box-shadow);
 }
 /* 防御性：若某章节内部已含 .ten-year 卡片（如十年之约），外层透明化避免双重边框 */
@@ -645,10 +685,10 @@ blockquote {
  * ========================================================================== */
 .site-data .site-data-item {
   display: table-cell;
-  transition: opacity 0.3s;
+  transition: opacity var(--transition-slow);
 }
 .site-data .site-data-item:hover {
-  opacity: 0.7;
+  opacity: var(--opacity-secondary);
 }
 
 /* =============================================================================
@@ -741,124 +781,130 @@ blockquote {
  * 修复策略：
  *   ① head.pug 给 fancybox.css 加 data-no-inline 阻止 critters 内联（保留完整异步加载）
  *   ② 本文件提供完整布局链兜底（即使部分内联也能正确显示）
+ *
+ * 2026-10-03 降级：data-no-inline 已根治 critters 内联，且实测 fancybox.css 完整、
+ *   先于本文件加载（fancybox 自带 !important 仅在 fullscreen/scrollbar 等无关属性），
+ *   同特异性下后加载即胜出 → 本节全部去掉 !important，靠加载顺序取胜。
+ *   ⚠ 兜底能力说明：若 critters 事故复发且内联 <style> 晚于本文件，本节普通规则
+ *   会被其平特异性覆盖——届时需恢复 !important。浏览器回归实测见 2026-10-03 记录。
  * ========================================================================== */
 
 /* ── 11.1 容器：fixed 全屏定位（脱离 body 透明背景影响） ── */
 .fancybox__container {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  z-index: 99999 !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999;
   /* 继承原设计的 flex 列布局 */
-  display: flex !important;
-  flex-direction: column !important;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ── 11.2 遮罩层：铺满容器 ── */
 .fancybox__backdrop {
-  position: absolute !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  z-index: -1 !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
 }
 
 /* ── 11.3 轮播容器：占满剩余空间 ── */
 .fancybox__carousel {
-  flex: 1 1 auto !important;
-  display: flex !important;
-  flex-direction: column !important;
-  min-height: 0 !important;
-  min-width: 0 !important;
-  position: relative !important;
-  overflow: hidden !important;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
 }
 
 /* ── 11.4 视口：占满轮播容器（grid 布局） ── */
 .fancybox__viewport {
-  flex: 1 1 auto !important;
-  min-height: 0 !important;
-  min-width: 0 !important;
-  position: relative !important;
-  display: grid !important;
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+  display: grid;
 }
 
 /* ── 11.5 幻灯片：grid 单元格 + flex 居中内容 ── */
 .fancybox__slide {
-  grid-area: 1 / 1 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  flex-direction: column !important;
-  width: 100% !important;
-  height: 100% !important;
-  max-width: 100% !important;
-  max-height: 100% !important;
-  overflow: hidden !important;
+  grid-area: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: hidden;
 }
 /* flex 居中辅助：::before/::after 撑开上下空间 */
 .fancybox__slide::before,
 .fancybox__slide::after {
-  content: "" !important;
-  display: block !important;
-  flex: 1 1 auto !important;
-  min-height: 0 !important;
+  content: "";
+  display: block;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 /* ── 11.6 内容区：图片/iframe/HTML 自适应不溢出 ── */
 .fancybox__content {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  max-width: 90vw !important;
-  max-height: 85vh !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90vw;
+  max-height: 85vh;
 }
 .fancybox__content img,
 .fancybox__content video,
 .fancybox__content iframe {
-  max-width: 100% !important;
-  max-height: 100% !important;
-  object-fit: contain !important;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
-/* ── 11.7 安全网：灯箱打开时禁止页面滚动 ── */
+/* ── 11.7 安全网：灯箱打开时禁止页面滚动 ──
+   （真正的锁滚由 fancybox 自己的 html.with-fancybox body.hide-scrollbar{overflow:hidden!important}
+     保证；本条降级后仅作无 hide-scrollbar 场景的普通兜底） */
 html.with-fancybox,
 html.with-fancybox body {
-  overflow: hidden !important;
+  overflow: hidden;
 }
 
 /* ── 12. 番剧页(bangumis) 网格视图（anilist 风格）──
    说明：样式放在 custom.css（主题编译为外部文件，不受 critters 关键 CSS 内联删除影响），
    不再通过构建脚本注入。交互 JS 见 source/js/bangumi-view.js（经 _config.yml inject 引入）。 */
 
-/* tab 过滤：插件 initPagination 给 #bangumi-itemN 加 .bangumi-hide/.bangumi-show */
-.bangumi-tabs{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:14px}
-/* 必须用 !important：网格视图 .bangumi-view-grid #bangumi-itemN{display:grid}(特异性1,1,0) 会压过普通 .bangumi-hide(0,1,0)，
-   导致隐藏分类仍被强制显示。插件原始即用 !important 正是为此。 */
-.bangumi-hide{display:none !important}
+/* tab 过滤：插件 initPagination 给 #bangumi-itemN 加 .bangumi-hide/.bangumi-show。
+   2026-10-03：.bangumi-hide 的隐藏（含 !important，用于压 ID 特异性的 grid 显示规则）
+   已由本地化插件 index.css 负责（templates/index.css L362），此处删除重复副本。 */
+.bangumi-tabs{display:flex;gap: var(--space-sm);align-items:center;flex-wrap:wrap;margin-bottom:14px}
 .bangumi-show{display:block}
 .bangumi-view-grid .bangumi-show{display:grid}
 .bangumi-tab.bangumi-active{color:var(--bangumi-accent-strong);background:var(--bangumi-bg);box-shadow:0 6px 16px var(--bangumi-shadow)}
 
 /* 分页栏：居中、不被网格拆成 item */
-.bangumi-pagination{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:16px;width:100%;}
-.bangumi-view-grid .bangumi-pagination{grid-column:1/-1;margin-top:10px;}
+.bangumi-pagination{display:flex;justify-content:center;gap: var(--space-sm);flex-wrap:wrap;margin-top: var(--space-md);width:100%;}
+.bangumi-view-grid .bangumi-pagination{grid-column:1/-1;margin-top: var(--space-sm);}
 /* 内边距 6px→10px：原按钮高约 32px，手机上翻页容易点空；加大到约 40px（触控下限） */
-.bangumi-pagination .bangumi-button,.bangumi-pagination .bangumi-pagenum{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border:1px solid var(--bangumi-border);border-radius:6px;background:var(--bangumi-bg);color:var(--bangumi-text);font-size: var(--fs-body);cursor:pointer;text-decoration:none;transition:all .2s ease;}
+.bangumi-pagination .bangumi-button,.bangumi-pagination .bangumi-pagenum{display:inline-flex;align-items:center;justify-content:center;padding: var(--space-sm) var(--space-md);border:1px solid var(--bangumi-border);border-radius:6px;background:var(--bangumi-bg);color:var(--bangumi-text);font-size: var(--fs-body);cursor:pointer;text-decoration:none;transition:all var(--transition-base);}
 .bangumi-pagination .bangumi-button:hover{background:var(--bangumi-accent-soft);color:var(--bangumi-accent-strong);}
 .bangumi-pagination .bangumi-pagenum{cursor:default;background:var(--bangumi-accent);color:var(--bangumi-on-accent);border-color:var(--bangumi-accent);}
 
 /* 网格视图：封面网格 + 卡片内边距留白（本站已移除列表视图，网格为唯一视图，见 bangumi-view.js） */
-/* 关键：网格规则只作用于 .bangumi-show 的容器，隐藏容器(.bangumi-hide)不匹配 → 自然被 display:none 隐藏，
-   避免 .bangumi-view-grid #bangumi-itemN{display:grid}(1,1,0) 压过隐藏类的矛盾。 */
-.bangumi-view-grid #bangumi-item1.bangumi-show,.bangumi-view-grid #bangumi-item2.bangumi-show,.bangumi-view-grid #bangumi-item3.bangumi-show{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px;}
-.bangumi-view-grid .bangumi-item{display:block;min-height:0;margin:0;padding:16px!important;overflow:hidden;border-radius:8px;background:var(--bangumi-bg);border:1px solid var(--bangumi-border);box-shadow:0 10px 28px var(--bangumi-shadow);}
-.bangumi-view-grid .bangumi-picture{flex:none;width:100%;margin:0;padding:0;aspect-ratio:2/3;overflow:hidden;border-radius:8px;background:var(--bangumi-accent-soft,#f0f0f0);}
-.bangumi-view-grid .bangumi-picture img{display:block;width:100%!important;height:100%!important;margin:0!important;object-fit:cover;object-position:center;border-radius:8px;box-shadow:none;}
-.bangumi-view-grid .bangumi-info{min-height:0;padding:10px 4px 0;text-align:center;}
+/* 2026-10-03 收编清理：.bangumi-item / .bangumi-picture(/img) 的卡片形态样式在插件本地化
+   （2026-09-15）时已收进 plugins/hexo-bilibili-bangumi/lib/templates/index.css（其中
+   img 的 !important 用于压插件自身的内联宽高，属三层规则第①类），此处旧副本值完全相同、
+   纯属冗余，删除。本文件只保留插件明确留给 custom.css 的多列网格列数与 info 区布局微调。 */
+.bangumi-view-grid #bangumi-item1.bangumi-show,.bangumi-view-grid #bangumi-item2.bangumi-show,.bangumi-view-grid #bangumi-item3.bangumi-show{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap: var(--space-md);}
+.bangumi-view-grid .bangumi-info{min-height:0;padding: var(--space-sm) var(--space-xs) 0;text-align:center;}
 /* font-size 已随标题 12px 一并回烤到插件 index.css（此处若保留 var(--fs-body) 会以更高特异性盖回 14px）。
    这里只留网格视图专属的排版：单行省略号 + 居中。 */
 .bangumi-view-grid .bangumi-title{margin-bottom:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;}
@@ -882,11 +928,11 @@ html.with-fancybox body {
 .page-subtitle {
   position: relative;
   overflow: hidden;
-  margin: 18px 0;
-  padding: 16px 18px 16px 48px;
+  margin: var(--space-md) 0;
+  padding: var(--space-md) var(--space-md) var(--space-md) 48px;
   border: 1px solid var(--light-grey);
   border-left: 4px solid var(--default-bg-color);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
   color: var(--font-color);
   background: linear-gradient(
     135deg,
@@ -906,19 +952,19 @@ html.with-fancybox body {
   color: var(--default-bg-color);
   font-size: calc(var(--fs-card) * 2.5);
   font-weight: 700;
-  line-height: 1;
-  opacity: 0.6;
+  line-height: var(--lh-tight); /* 原 1 */
+  opacity: var(--opacity-tertiary);
 }
 /* 窄屏：左内边距 48px（给大引号留位）在 360px 下吃掉约 15% 宽度，正文只剩 260px。
    收到 22px，并把引号缩小、压低透明度——它只是装饰，不值得占掉正文宽度。 */
 @media (max-width: 480px) {
   .page-subtitle {
-    padding: 14px 14px 14px 22px;
+    padding: var(--space-md) var(--space-md) var(--space-md) var(--space-lg);
   }
   .page-subtitle::before {
     left: 8px;
     font-size: calc(var(--fs-card) * 1.8);
-    opacity: 0.45;
+    opacity: var(--opacity-tertiary);
   }
 }
 
@@ -930,7 +976,7 @@ html.with-fancybox body {
      统一后两种写法外观一致，也都等于第三次元副标题的字号。 */
   font-size: var(--fs-card);
   font-weight: 600;
-  line-height: 1.8;
+  line-height: var(--lh-loose); /* 原 1.8 */
 }
 
 /* 副标题框内 h2 覆盖：与 bangumis 的 .bangumi-quote 内的 h2 字号/间距保持一致，
@@ -942,7 +988,7 @@ html.with-fancybox body {
   color: inherit;
   font-size: var(--fs-card);
   font-weight: 600;
-  line-height: 1.8;
+  line-height: var(--lh-loose); /* 原 1.8 */
   border: none;
   padding: 0;
 }
@@ -970,18 +1016,35 @@ html.with-fancybox body {
   --default-bg-color: #40786b;
 }
 
-/* ── 首屏横幅上的导航文字可读性（2026-10-03）──────────────────────────────
-   主题给「透明导航态」（未 fixed，压在顶部壁纸上）的菜单链接只用 var(--light-grey)
+/* ── 首屏横幅上的导航文字可读性（2026-10-03，同日修正作用域）──────────────
+   主题给「透明导航态」（压在顶部壁纸上）的菜单链接只用 var(--light-grey)
    （亮色 #EEE）且无阴影 —— 换上亮色壁纸（如樱花）后白字几乎不可读。
-   给链接 / 站名 / 博客名统一加一层深色描边式阴影：白字 + 暗晕，任何壁纸上都可读。
-   作用域用 :not(.nav-fixed):not(.fixed) 限定在透明态；fixed 态主题自带
-   半透明底 + text-shadow:none，不受影响。 */
-#page-header:not(.nav-fixed):not(.fixed) #nav a,
-#page-header:not(.nav-fixed):not(.fixed) #nav span.site-page,
-#page-header:not(.nav-fixed):not(.fixed) #nav #blog-info {
+   ⚠ 作用域修正（2026-10-03 二次修正）：全站页面头部都带 .fixed 类（full_page /
+   post-bg / not-home-page），旧写法 :not(.fixed) 导致本规则从未命中过任何页面。
+   透明态判据是「头部尚未获得 .nav-fixed 类」——⚠ 注意 .nav-fixed 加在
+   **#page-header** 上而非 #nav 上（编译产物 #page-header.nav-fixed #nav 可证），
+   第一次修正误写到 #nav 上，导致滚动后白色半透明底上仍叠暗晕（用户反馈「显脏」）。
+   现写 #page-header:not(.nav-fixed)，滚动后主题的深字 + text-shadow:none 接管。
+   阴影同时加强为三层：紧贴描边 + 中距投影 + 远距暗晕，高密度亮色壁纸上也可读。 */
+#page-header:not(.nav-fixed) #nav a,
+#page-header:not(.nav-fixed) #nav span.site-page,
+#page-header:not(.nav-fixed) #nav #blog-info {
   text-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.6),
-    0 0 6px rgba(0, 0, 0, 0.35);
+    0 1px 2px rgba(0, 0, 0, 0.75),
+    0 1px 8px rgba(0, 0, 0, 0.45),
+    0 0 14px rgba(0, 0, 0, 0.35);
+}
+
+/* ── 头图上的页面标题（about 等非首页的 #site-title）：加字重 + 深色描边 ──
+   主题只有 text-shadow: 2px 2px 4px rgba(0,0,0,.15)，白字压在花墙等 busy 背景上
+   几乎融入背景。字重 600 + 三层阴影，与导航同源的暗晕语言。首页大标题同样受益。 */
+#page-header #site-title {
+  text-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.6),
+    0 1px 14px rgba(0, 0, 0, 0.4);
+}
+#page-header #page-site-info #site-title {
+  font-weight: 600;
 }
 
 /* ── 暗色模式壁纸遮罩减淡（2026-10-03）────────────────────────────────────
@@ -1009,9 +1072,9 @@ html.with-fancybox body {
    卡片圆角 10px、阴影复用 --card-box-shadow、连线色 var(--hr-before-color) 明暗自适应。 */
 .site-tree {
   --tree-line: var(--hr-before-color, #bfe4fb);
-  --c-cat: #00c4b6;   /* 分类类节点 */
-  --c-album: #49b1f5; /* 相册类节点（主题主色） */
-  --c-page: #ff7242;  /* 单页类节点（按钮悬停色） */
+  --c-cat: #4a9a8f;   /* 分类类节点：2026-10-03 三色降饱和，向全站鼠尾草绿系靠拢 */
+  --c-album: #6a93b8; /* 相册类节点：降饱和蓝（原 #49b1f5 主题默认蓝） */
+  --c-page: #d08a5f;  /* 单页类节点：降饱和橙（原 #ff7242） */
   --h: 30px;          /* 横向连线长度（总干线/轨道 → 卡片；同时是子层 li 的左内边距） */
   --row-gap: 16px;    /* 同层节点纵向间距 */
   --bus-gap: 24px;    /* 水平干线到「横排子卡片」的垂直距离（连线层读此变量，勿在 JS 里写死） */
@@ -1029,7 +1092,7 @@ html.with-fancybox body {
 }
 /* 首页主内容卡片：主题 .layout > div:first-child 默认 padding:50px 40px（为文章流分页器预留），
    底部留白会让白色卡片比侧栏「网站信息」卡片低 70px。首页只放树状图，去掉底部留白使底边对齐。 */
-#recent-posts { padding-top: 27px; padding-bottom: 27px; }
+#recent-posts { padding-top: var(--space-lg); padding-bottom: var(--space-lg); }
 /* 树卡「底边对齐侧栏末卡」的纯 CSS 机制（**不依赖任何脚本**，仅桌面端）：
    实测：MAIN.layout 是 row flex，但主题给 #recent-posts 写了 align-self:flex-start，
    主列默认不参与拉伸、高度只等于自身内容 —— 必须先改回 stretch 才能与侧栏等高。
@@ -1062,9 +1125,13 @@ html.with-fancybox body {
 .site-tree details { display: contents; }
 /* ⚠ 但 display:contents 会让浏览器原生的「details 闭合时隐藏内容」失效（没有盒子可隐藏），
    表现为：点标题只有三角在转、内容根本不收，且连线层按「已收起」不画线 → 看起来就是「错乱」。
-   故必须显式补回隐藏规则；用 !important 是因为它要压过高特异性的
-   `.site-tree .cat-branch > details > ul { display:flex }`（分类行横排）。 */
-.site-tree details:not([open]) > ul { display: none !important; }
+   故必须显式补回隐藏规则。2026-10-03 去掉 !important：冲突规则
+   `.site-tree .cat-branch > details > ul{display:flex}` 为 (0,2,1)，此处首选择器 (0,3,2)、
+   兜底选择器 (0,2,2) 特异性均更高，普通声明即可取胜。 */
+.site-tree li.cat-branch > details:not([open]) > ul,
+.site-tree details:not([open]) > ul {
+  display: none;
+}
 
 /* 每一层：子节点纵向堆叠（同层上下排列）；节点在左、子树在右 */
 .site-tree ul {
@@ -1103,7 +1170,7 @@ html.with-fancybox body {
   align-items: center;
 }
 /* 分类节点：底部留出干线空间（这段间距由连线层补竖线，树状连贯） */
-.site-tree .cat-branch > details > summary { margin: 0 auto 28px; }
+.site-tree .cat-branch > details > summary { margin: 0 auto var(--space-xl); }
 /* 各分类横向一行：嵌套 ul 改为水平排列（覆盖默认的「父在左、子在右」竖列树） */
 .site-tree .cat-branch > details > ul {
   display: flex;
@@ -1158,12 +1225,12 @@ html.with-fancybox body {
   background: var(--card-bg, #fff);
   border: 1px solid var(--light-grey, #eee);
   border-left: 4px solid var(--default-bg-color, #49b1f5);
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   box-shadow: var(--card-box-shadow, 0 3px 8px 6px rgba(7,17,27,.05));
   color: var(--font-color, #4c4948);
   text-decoration: none;
-  transition: transform .16s ease, box-shadow .16s ease,
-              border-color .16s ease, color .16s ease, background .16s ease;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast),
+              border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
 }
 .site-tree a > span:first-of-type,
 .site-tree details > summary > span:first-of-type { font-weight: 500; }
@@ -1194,7 +1261,7 @@ html.with-fancybox body {
    只写 i.fas 会让 fab 与 fa 前缀的图标漏掉着色、回退成正文灰色（QQ、heartbeat 曾踩此坑）。 */
 .site-tree i[class*="fa-"] {
   width: 1.3em; text-align: center; flex: none;
-  transition: color .16s ease, transform .16s ease;
+  transition: color var(--transition-fast), transform var(--transition-fast);
 }
 .site-tree .t-cat   i[class*="fa-"] { color: var(--c-cat); }
 .site-tree .t-album i[class*="fa-"] { color: var(--c-album); }
@@ -1207,7 +1274,7 @@ html.with-fancybox body {
 .site-tree .leaf-count {
   margin-left: .35em;
   padding: 0 .45em;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--c-cat) 14%, var(--card-bg, #fff));
   color: var(--c-cat);
   font-size: var(--fs-badge);
@@ -1228,7 +1295,7 @@ html.with-fancybox body {
   margin-left: -.1em;
   margin-right: .1em;
   color: var(--default-bg-color, #49b1f5);
-  transition: transform .18s ease;
+  transition: transform var(--transition-fast);
 }
 .site-tree details[open] > summary::before { transform: rotate(90deg); }
 
@@ -1264,15 +1331,16 @@ html.with-fancybox body {
   .site-tree i[class*="fa-"] { width: 1.1em; }
 }
 
-/* 文章页顶图区域：保留 post-bg 布局（标题在 header 内），背景透明透出全站壁纸 */
+/* 文章页顶图区域：保留 post-bg 布局（标题在 header 内），背景透明透出全站壁纸
+   （特异性 (1,1,0) 高于主题 head.styl 的 #page-header (1,0,0)，且本文件后加载，
+   2026-10-03 起无需 !important） */
 #page-header.post-bg {
-  background-color: transparent !important;
+  background-color: transparent;
 }
 
-/* 文章末尾上下篇板块：背景改为与赞助按钮同色（var(--btn-bg)），暗色模式不再突兀亮蓝 */
-.pagination-post .pagination-related .cover {
-  background: var(--btn-bg) !important;
-}
+/* 文章末尾上下篇板块封面底色：2026-10-03 已收编进主题模板
+   （themes/butterfly/layout/includes/pagination.pug 内联直接输出 var(--btn-bg)），
+   本文件不再用 !important 压内联样式。 */
 
 /* =============================================================================
  * 十四、emoji 统一（.github-emoji）
@@ -1295,3 +1363,70 @@ html.with-fancybox body {
 #article-container .leaf-count .github-emoji,
 #page .badge .github-emoji,
 #article-container .badge .github-emoji { font-size: 1.05em; }
+
+/* =============================================================================
+ * 十五、404 页布局（error_404）
+ * -----------------------------------------------------------------------------
+ * 2026-10-03 重构：主题原布局是「左图右文」分栏卡片（_page/404.styl 的
+ * .error-content），现模板已改为「顶图横幅标题 + 居中 GIF + 副标题」
+ * （见 themes/butterfly/layout/includes/page/404.pug），这里定义新结构的样式。
+ *  · 标题「404」由主题 header 渲染在（透明的）顶图横幅上：generator 补了 title:'404'
+ *    且不再设 top_img:false，走 #page-site-info h1#site-title，与其它页面同款大字，
+ *    不在此重复定义；
+ *  · GIF 宽度 min(400px, 78vw)：桌面不超过 400px、窄屏按视口收缩，等比不裁切；
+ *  · 圆角 + 主题卡片阴影：与全站卡片观感统一，且随亮/暗模式自动切换；
+ *  · 旧 .error-content 分栏样式因模板不再输出该结构而自然失效，无需覆盖。
+ * ========================================================================== */
+.type-404 .error404 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-lg) 48px;
+  text-align: center;
+}
+
+/* 主题 .not-home-page 横幅固定 400px 高（标题 top:200px），是 404 内容被顶出
+ * 一屏的主因；这里压缩到 200px 并让标题在横幅内垂直居中（标题行高约 46px，
+ * (200-46)/2≈77，取 72 视觉居中）。仅在 .type-404 作用域内收窄，不影响其它页面。 */
+.type-404 #page-header.not-home-page {
+  height: 200px;
+}
+
+.type-404 #page-site-info {
+  top: 72px;
+}
+
+/* 主题给 .nc 的 margin-top:5% 对 404 太松，压成固定值 */
+.type-404 .nc {
+  margin-top: var(--space-xl);
+}
+
+.type-404 .error404-gif img {
+  display: block;
+  width: min(360px, 72vw);
+  height: auto;
+  border-radius: var(--radius-card, 12px);
+  box-shadow: var(--card-box-shadow, 0 4px 14px rgba(0, 0, 0, 0.08));
+}
+
+.type-404 .error404-sub {
+  font-size: var(--fs-section, 1.5714em);
+  color: var(--font-color);
+  opacity: var(--opacity-secondary);
+}
+
+/* 窄屏：横幅 150px、GIF 300px，保证一屏放完 */
+@media screen and (max-width: 768px) {
+  .type-404 #page-header.not-home-page {
+    height: 150px;
+  }
+
+  .type-404 #page-site-info {
+    top: 50px;
+  }
+
+  .type-404 .error404-gif img {
+    width: min(300px, 74vw);
+  }
+}

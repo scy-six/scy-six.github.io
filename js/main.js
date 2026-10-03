@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     $figureHighlight.forEach(item => {
-      let langName = ''
+      let langName
       if (isNotHighlightJs) {
         const newClassName = isPrismjs ? 'prismjs' : 'default'
         btf.wrap(item, 'figure', { class: `highlight ${newClassName}` })
@@ -1004,7 +1004,7 @@ document.addEventListener('DOMContentLoaded', () => {
   unRefreshFn()
 
   // 處理 hexo-blog-encrypt 事件
-  window.addEventListener('hexo-blog-decrypt', e => {
+  window.addEventListener('hexo-blog-decrypt', () => {
     forPostFn()
     window.translateFn.translateInitialization()
     Object.values(window.globalFn.encrypt).forEach(fn => {

@@ -1,4 +1,4 @@
-<!-- 侧栏默认折叠条件：① 全局 theme.aside.hide；② 单页 front-matter aside:false。--><!-- 注意：aside:false 时侧栏仍照常渲染（见下方 widget），仅默认折叠，右下角设置里的侧栏开关可手动展开。--><!-- 仅当全局关闭侧栏时给 .layout 加 hide-aside（窄化、无侧栏 DOM）；单页 aside:false 改由 html.hide-aside 处理--><!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>葬爱花园 | Scy's Blog</title><meta name="author" content="Scy"><meta name="copyright" content="Scy"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="ffffff"><meta name="description" content="养过的植物们，活着的与走了的">
+<!-- 侧栏默认折叠条件：① 全局 theme.aside.hide；② 单页 front-matter aside:false。--><!-- 注意：aside:false 时侧栏仍照常渲染（见下方 widget），仅默认折叠，右下角设置里的侧栏开关可手动展开。--><!-- 仅当全局关闭侧栏时给 .layout 加 hide-aside（窄化、无侧栏 DOM）；单页 aside:false 改由 html.hide-aside 处理--><!DOCTYPE html><html class="hide-aside" lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>葬爱花园 | Scy's Blog</title><meta name="author" content="Scy"><meta name="copyright" content="Scy"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="养过的植物们，活着的与走了的">
 <meta property="og:type" content="website">
 <meta property="og:title" content="葬爱花园">
 <meta property="og:url" content="https://scy-six.github.io/garden/index.html">
@@ -117,7 +117,7 @@
       const activateLightMode = () => {
         document.documentElement.dataset.theme = 'light'
         if (metaThemeColor !== null) {
-          metaThemeColor.setAttribute('content', 'ffffff')
+          metaThemeColor.setAttribute('content', '#ffffff')
         }
       }
 

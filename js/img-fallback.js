@@ -38,6 +38,9 @@
     img.removeAttribute("data-lazy-src");
     img.removeAttribute("data-src");
     img.removeAttribute("srcset");
+    // 2026-10-03：番剧页懒加载字段也要清——pagination.js 翻页会把 src 改回
+    // data-bangumi-src 的坏地址，不清则兜底图被覆盖回破图。
+    img.removeAttribute("data-bangumi-src");
     img.src = FALLBACK;
   }
 

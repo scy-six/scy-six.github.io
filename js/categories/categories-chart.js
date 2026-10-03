@@ -30,7 +30,7 @@
     try { data = raw ? JSON.parse(raw.textContent) : []; } catch (e) { data = []; }
 
     var maxVal = 1;
-    for (var i = 0; i < data.length; i++) {
+    for (let i = 0; i < data.length; i++) {
       if ((data[i].value || 0) > maxVal) maxVal = data[i].value;
     }
 
@@ -102,7 +102,7 @@
 
     /* ---------- 计算各顶点角度（从正上方开始顺时针） ---------- */
     var angles = [];
-    for (var i = 0; i < n; i++) {
+    for (let i = 0; i < n; i++) {
       angles.push(-Math.PI / 2 + (i * 2 * Math.PI) / n);
     }
 
@@ -134,8 +134,8 @@
       for (var lv = 1; lv <= LEVELS; lv++) {
         var r = (R * lv) / LEVELS;
         var points = [];
-        for (var i = 0; i < n; i++) {
-          var p = pt(angles[i], r);
+        for (let i = 0; i < n; i++) {
+          let p = pt(angles[i], r);
           points.push(p.x + ',' + p.y);
         }
         // 最外层加极淡主题蓝背景，形成深浅层次
@@ -156,8 +156,8 @@
       }
 
       /* --- 轴线（从圆心到各顶点） --- */
-      for (var i = 0; i < n; i++) {
-        var p = pt(angles[i], R);
+      for (let i = 0; i < n; i++) {
+        let p = pt(angles[i], R);
         svg.appendChild(el('line', {
           x1: CX, y1: CY, x2: p.x, y2: p.y,
           stroke: c.axis, 'stroke-width': '1'
@@ -167,8 +167,8 @@
       /* --- 数据多边形 --- */
       var dataPoints = [];
       var valRatio = data.map(function (d) { return (d.value || 0) / maxVal; });
-      for (var i = 0; i < n; i++) {
-        var p = pt(angles[i], R * valRatio[i]);
+      for (let i = 0; i < n; i++) {
+        let p = pt(angles[i], R * valRatio[i]);
         dataPoints.push(p.x + ',' + p.y);
       }
       // 半透明面积填充 + 主题蓝描边
@@ -181,8 +181,8 @@
       }));
 
       /* --- 数据点（卡片色描边圆） --- */
-      for (var i = 0; i < n; i++) {
-        var p = pt(angles[i], R * valRatio[i]);
+      for (let i = 0; i < n; i++) {
+        let p = pt(angles[i], R * valRatio[i]);
         svg.appendChild(el('circle', {
           cx: p.x, cy: p.y, r: 5,
           fill: c.dot,
@@ -192,8 +192,8 @@
       }
 
       /* --- 轴标签（分类名 + 数量） --- */
-      for (var i = 0; i < n; i++) {
-        var p = pt(angles[i], R + 22);
+      for (let i = 0; i < n; i++) {
+        let p = pt(angles[i], R + 22);
         // 根据角度调整文本锚点，避免贴边
         var cosA = Math.cos(angles[i]);
         var anchor = 'middle';

@@ -35,8 +35,8 @@
   /* 2026-09-18：这段是标题/图表上下的**说明正文**（不是注释），按正文档 14px（--fs-body），
      与同页 .mountain-chart-sub（图表上方说明）同号。此前按「注释 12px」处理过，现按用户口径更正。 */
   font-size: var(--fs-body);
-  opacity: 0.6;
-  line-height: 1.6;
+  opacity: var(--opacity-tertiary);
+  line-height: var(--lh-base); /* 原 1.6 */
 }
 
 /* ── 2. 概览统计卡 ─────────────────────────────────────────────────────── */
@@ -56,7 +56,7 @@
   padding: 1.3rem 1rem;
   text-align: center;
   box-shadow: var(--card-box-shadow);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: box-shadow var(--transition-slow), transform var(--transition-slow);
 }
 
 .mountain-stat-card:hover {
@@ -68,7 +68,7 @@
   display: block;
   font-size: var(--fs-num);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: var(--lh-tight); /* 原 1.1 */
   color: var(--default-bg-color);
   font-variant-numeric: tabular-nums;
 }
@@ -77,7 +77,7 @@
   display: block;
   margin-top: 0.35rem;
   font-size: var(--fs-body);
-  opacity: 0.7;
+  opacity: var(--opacity-secondary);
 }
 
 /* ── 3. 攀登记录列表（数据表） ───────────────────────────────────────────── */
@@ -131,7 +131,7 @@
 /* 「区域」列（深圳罗湖 / 香港中西区 等）：2026-09-15 由 --fs-meta(12px) 提到 --fs-body(14px)，
    与表格其余单元格同号；层级感改由 opacity 承担。 */
 .mountain-table .region {
-  opacity: 0.65;
+  opacity: var(--opacity-tertiary);
   font-size: var(--fs-body);
 }
 
@@ -145,8 +145,8 @@
   margin: 0.3rem 0 0;
   padding: 0.05rem 0.45rem;
   font-size: var(--fs-badge);
-  line-height: 1.4;
-  border-radius: 999px;
+  line-height: var(--lh-base); /* 原 1.4 */
+  border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--default-bg-color) 18%, transparent);
   color: var(--default-bg-color);
 }
@@ -169,7 +169,7 @@
 
 .mountain-chart-sub {
   font-size: var(--fs-body);
-  opacity: 0.6;
+  opacity: var(--opacity-tertiary);
   margin: 0 0 0.9rem;
 }
 
@@ -191,13 +191,13 @@
 }
 .mountain-page .mc-axis-text {
   fill: var(--font-color);
-  opacity: 0.7;
+  opacity: var(--opacity-secondary);
   font-size: var(--fs-body);
 }
 .mountain-page .mc-bar {
   fill: var(--default-bg-color);
-  opacity: 0.82;
-  transition: opacity 0.2s ease;
+  opacity: var(--opacity-faint);
+  transition: opacity var(--transition-base);
 }
 .mountain-page .mc-bar:hover {
   opacity: 1;

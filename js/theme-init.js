@@ -61,8 +61,8 @@
       "body{background:transparent!important}" +
       "#web_bg{position:fixed!important;z-index:-999!important;width:100%!important;height:100%!important;" +
       "background-attachment:local!important;background-position:center!important;background-size:cover!important;" +
-      "background-repeat:no-repeat!important;opacity:1!important;background-image:url(" + bgLight + ")!important}" +
-      "[data-theme=\"dark\"] #web_bg{background-image:url(" + bgDark + ")!important}" +
+      "background-repeat:no-repeat!important;opacity:1!important;background-image:url(\"" + bgLight + "\")!important}" +
+      "[data-theme=\"dark\"] #web_bg{background-image:url(\"" + bgDark + "\")!important}" +
       "#web_bg.bg-animation{animation:none!important}";
     var s = document.createElement("style");
     s.id = "web-bg-no-flash";
@@ -76,6 +76,9 @@
     document.documentElement.setAttribute("data-theme", theme);
     injectWallpaper(cfg);
   } catch (e) {
-    /* 静默失败，不影响首屏 */
+    /* 静默失败，不影响首屏；但开发时要能查到原因（?debug 或 localhost 视为开发环境） */
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || /[?&]debug\b/.test(location.search)) {
+      console.warn("[theme-init] 主题初始化失败：", e);
+    }
   }
 })();

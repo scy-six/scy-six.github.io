@@ -14,7 +14,7 @@
  * 设计原则（与 custom.css / album.css 保持一致）：
  *   - 颜色全部派生自 Butterfly 主题变量（--card-bg / --font-color / --card-meta /
  *     --default-bg-color），亮色 / 暗色 / 阅读模式自动适配，不维护第二套配色。
- *   - 圆角、阴影、断点统一引用 Design Token（--radius-card / --shadow-card /
+ *   - 圆角、阴影、断点统一引用 Design Token（--radius-card / --card-box-shadow /
  *     --bp-sm / --bp-lg），与站点相册等页面观感一致。
  *   - 全部选择器收敛在 #notes 内，不污染主题全局样式。
  * ========================================================================== */
@@ -57,8 +57,8 @@
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   border-top: 8px solid currentColor;
-  opacity: 0.6;
-  transition: transform 0.2s ease;
+  opacity: var(--opacity-tertiary);
+  transition: transform var(--transition-base);
 }
 
 #notes .qz-year[open] > summary::after {
@@ -76,13 +76,13 @@
   border-radius: var(--radius-card);
   background: var(--card-bg);
   border: 1px solid var(--tab-border-color);  /* 对齐 travel-card 同款主题边框变量（明暗自适应） */
-  box-shadow: var(--shadow-card);
-  transition: box-shadow 0.22s ease;
+  box-shadow: var(--card-box-shadow);  /* 2026-10-03：直引主题值，不再经 --shadow-card 别名绕一层 */
+  transition: box-shadow var(--transition-base);
 }
 
 #notes .qz-item:hover {
-  /* 2026-09-17：改用主题悬停阴影；静止档 .qz-item 已是 var(--shadow-card)
-     （= 主题 --card-box-shadow），两档统一由主题提供 */
+  /* 2026-09-17：改用主题悬停阴影；静止档 .qz-item 已是 var(--card-box-shadow)
+     两档统一由主题提供 */
   box-shadow: var(--card-hover-box-shadow);
 }
 
@@ -104,7 +104,7 @@
 
 #notes .qz-text {
   color: var(--font-color);
-  line-height: 1.9;
+  line-height: var(--lh-loose); /* 原 1.9 */
   word-break: break-word;
 }
 
@@ -122,7 +122,7 @@
 #notes .qz-lightbox {
   display: block;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: color-mix(in srgb, var(--font-color) 6%, transparent);
 }
 
@@ -138,7 +138,7 @@
   margin: 0;
   aspect-ratio: 4 / 3;
   object-fit: contain; /* 不裁切：竖图上下完整可见（cover 会裁掉上下） */
-  transition: transform 0.35s ease;
+  transition: transform var(--transition-slow);
 }
 
 #notes .qz-lightbox:hover img {

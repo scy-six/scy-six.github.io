@@ -19,6 +19,9 @@
 
   // 容器恒为网格视图（列表视图已随本地化移除）
   function ensureGridView() {
+    // 2026-10-03 短路：非番剧页直接返回，避免挂 15 秒的全站 MutationObserver 白等
+    // （观察目标 .bangumi-container 只在 /bangumis/ 出现，pjax 进入时本函数会被再次调用）。
+    if (location.pathname.indexOf("/bangumis") !== 0) return;
     var c = document.querySelector(".bangumi-container");
     if (c) {
       c.classList.add("bangumi-view-grid");
@@ -54,6 +57,8 @@
 
   // 插件可能异步渲染 .bangumi-info：存在则直接绑定，否则监听其出现后再绑定（仅一次）。
   function ensureTitleTooltip() {
+    // 同 ensureGridView：非番剧页短路，不挂 15 秒观察器
+    if (location.pathname.indexOf("/bangumis") !== 0) return;
     if (document.querySelector(".bangumi-info .bangumi-title")) {
       bindTitleTooltip();
       return;

@@ -281,9 +281,9 @@
       }
       if (!dragging || e.touches.length !== 1) return;
       e.preventDefault();
-      var rect = svg.getBoundingClientRect();
-      TX += (e.touches[0].clientX - lastX) / rect.width * VB_W;
-      TY += (e.touches[0].clientY - lastY) / rect.height * VB_H;
+      var rect2 = svg.getBoundingClientRect();
+      TX += (e.touches[0].clientX - lastX) / rect2.width * VB_W;
+      TY += (e.touches[0].clientY - lastY) / rect2.height * VB_H;
       lastX = e.touches[0].clientX; lastY = e.touches[0].clientY;
       applyTransform();
     }, { passive: false });

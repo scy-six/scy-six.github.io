@@ -37,8 +37,8 @@
 .keepfit-section .hint {
   margin: -0.4rem 0 1rem;
   font-size: var(--fs-meta);
-  opacity: 0.6;
-  line-height: 1.6;
+  opacity: var(--opacity-tertiary);
+  line-height: var(--lh-base); /* 原 1.6 */
 }
 
 /* ── 2. 概览统计卡（3 张：运动项目 / 次数 / 时长） ──────────────────────── */
@@ -55,7 +55,7 @@
   padding: 1.3rem 1rem;
   text-align: center;
   box-shadow: var(--card-box-shadow);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: box-shadow var(--transition-slow), transform var(--transition-slow);
 }
 
 .keepfit-stat-card:hover {
@@ -67,7 +67,7 @@
   display: block;
   font-size: var(--fs-num);
   font-weight: 800;
-  line-height: 1.1;
+  line-height: var(--lh-tight); /* 原 1.1 */
   color: var(--default-bg-color);
   font-variant-numeric: tabular-nums;
 }
@@ -77,7 +77,7 @@
   display: block;
   margin-top: 0.35rem;
   font-size: var(--fs-body);
-  opacity: 0.7;
+  opacity: var(--opacity-secondary);
 }
 
 /* ── 4. 图表卡片 ──────────────────────────────────────────────────────── */
@@ -98,7 +98,7 @@
 
 .keepfit-chart-sub {
   font-size: var(--fs-meta);
-  opacity: 0.6;
+  opacity: var(--opacity-tertiary);
   margin: 0 0 0.9rem;
 }
 
@@ -120,7 +120,7 @@
 }
 .keepfit-page .mc-axis-text {
   fill: var(--font-color);
-  opacity: 0.7;
+  opacity: var(--opacity-secondary);
   font-size: var(--fs-body);
 }
 .keepfit-page .mc-line {
@@ -147,6 +147,16 @@
 /* 质量监控：体重趋势（紫，区别于三项运动） */
 .keepfit-page .mc-dot.weight { fill: #a06cd5; }
 .keepfit-page .mc-line.weight { stroke: #a06cd5; }
+
+/* 2026-10-03 暗色适配：三项运动色明度中等，暗底（#0d0d0d 系卡片）上饱和色会显得发闷，
+   提供调亮版（明度 +12% 左右），亮色模式不受影响。
+   注意只改 dot 的 fill / line 的 stroke——dot 的 stroke 是卡片底色描边，不能覆盖。 */
+[data-theme="dark"] .keepfit-page .mc-dot.bike   { fill: #5fd0a0; }
+[data-theme="dark"] .keepfit-page .mc-line.bike  { stroke: #5fd0a0; }
+[data-theme="dark"] .keepfit-page .mc-dot.swim   { fill: #ffb066; }
+[data-theme="dark"] .keepfit-page .mc-line.swim  { stroke: #ffb066; }
+[data-theme="dark"] .keepfit-page .mc-dot.weight { fill: #b98fe8; }
+[data-theme="dark"] .keepfit-page .mc-line.weight{ stroke: #b98fe8; }
 
 /* ── 4b. 速率图网格（每项独立一行，整行宽度） ─────────────────────────── */
 .keepfit-rate-grid {

@@ -2,7 +2,7 @@
 
 > **站点**：Scy's Blog
 > **副标题**：For Devotion, Keep Passion
-> **线上地址**：https://scy-six.github.io （GitHub Pages 静态托管）
+> **线上地址**：https://scy-six.github.io（GitHub Pages 主站）｜ 镜像 https://www.scyx.fun（EdgeOne Pages，一年期别名）｜ 永久发布页 https://linkdd.cn/scy（随域名更新）
 > **源码仓库**：https://gitee.com/scy-six/Scy-Blog （Gitee，源码托管与版本管理）
 >
 > 本文介绍**发布的网页**：网页上有哪些栏目、每个页面展示什么内容、有什么交互效果。
@@ -11,8 +11,9 @@
 > ⚠️ **本文件位于 `source/` 下但已列入 `skip_render`**，不参与页面渲染，随 `npm run deploy` 原样发布为 `/README.md`。
 > 网页背后的项目结构、构建方式、技术细节见 `README.md`（项目说明）。
 
-> **架构说明**：源码托管在 Gitee、站点部署在 GitHub Pages，两者分离——
+> **架构说明**：源码托管在 Gitee、站点部署在 GitHub Pages（主站），两者分离；另经 EdgeOne Pages 发布 www.scyx.fun 镜像（一年期别名）——
 > `git push` 推 Gitee 只更新源码；发布站点需执行 `npm run deploy`（`hexo deploy` 推送 `public/` 到 GitHub Pages 仓库）。
+> 最后核对：2026-10-03（当日完成全量文档审查：页面清单 / 路径与实际产物逐条核对）。
 
 ---
 
@@ -42,7 +43,8 @@ Scy's Blog 网页
 │   ├── 文摘                          /categories/文摘/
 │   ├── 相机                          /categories/相机/
 │   ├── 诗记                          /categories/诗记/
-│   └── 学习                          /categories/学习/
+│   ├── 学习                          /categories/学习/
+│   └── 生活                          /categories/生活/          （健身笔记 / 健身方案）
 ├── 清单
 │   ├── 编外成员                      /pet/                      宠物照片（子相册在页面内切换，无独立网址）
 │   ├── 葬爱花园                      /garden/                   花园植物照片
