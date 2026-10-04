@@ -8,12 +8,12 @@
  * 设计：主题色走 CSS 变量；三项运动各配一色（跑=主色/骑=绿/游=橙）；亮/暗/阅读模式经 MutationObserver 自动重绘。
  * ========================================================================== */
 (function () {
-  'use strict';
+  "use strict";
 
-  var SVGNS = 'http://www.w3.org/2000/svg';
+  var SVGNS = "http://www.w3.org/2000/svg";
   var initialized = false;
-  var SPORT_ORDER = ['跑步', '骑行', '游泳'];
-  var SPORT_CLASS = { '跑步': 'run', '骑行': 'bike', '游泳': 'swim', '体重': 'weight' };
+  var SPORT_ORDER = ["跑步", "骑行", "游泳"];
+  var SPORT_CLASS = { 跑步: "run", 骑行: "bike", 游泳: "swim", 体重: "weight" };
 
   function el(tag, attrs) {
     var e = document.createElementNS(SVGNS, tag);
@@ -30,7 +30,9 @@
     return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
   }
 
-  function isPace(sport) { return sport === '游泳'; }
+  function isPace(sport) {
+    return sport === "游泳";
+  }
 
   // 单条记录的速率/配速：跑步/骑行取 km/h（缺则按 距离/时长 估算），游泳直接用 xlsx「配速（min/hm）」列（min/100m）
   function rateOf(rec) {
@@ -46,14 +48,15 @@
 
   /* ---------- 概览统计卡 ---------- */
   function fillStats(records) {
-    var sports = {}, totalH = 0;
+    var sports = {},
+      totalH = 0;
     records.forEach(function (r) {
       sports[r.sport] = 1;
       totalH += r.duration_h;
     });
-    setText('stat-sports', Object.keys(sports).length);
-    setText('stat-counts', records.length);
-    setText('stat-hours', Math.round(totalH));
+    setText("stat-sports", Object.keys(sports).length);
+    setText("stat-counts", records.length);
+    setText("stat-hours", Math.round(totalH));
   }
 
   /* ---------- 通用折线图（单系列，横轴按真实日期时间刻度，纵轴均匀整数） ----------
@@ -63,42 +66,69 @@
   function drawLineChart(pts, yLo, yHi, opts) {
     opts = opts || {};
     var invert = !!opts.invert;
-    var W = 1000, H = 340, mL = 64, mR = 20, mT = 24, mB = 50;
-    var plotW = W - mL - mR, plotH = H - mT - mB;
-    var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: '100%', style: 'max-width:1000px;margin:0 auto;display:block' });
+    var W = 1000,
+      H = 340,
+      mL = 64,
+      mR = 20,
+      mT = 24,
+      mB = 50;
+    var plotW = W - mL - mR,
+      plotH = H - mT - mB;
+    var svg = el("svg", {
+      viewBox: "0 0 " + W + " " + H,
+      width: "100%",
+      style: "max-width:1000px;margin:0 auto;display:block"
+    });
 
     // 横轴时间域：按真实日期时间戳定位（带 3% 余量，由共享 ChartAxis 计算）
-    var _dom = ChartAxis.timeDomain(pts.map(function (p) { return Date.parse(p.date); }));
-    var dom0 = _dom.dom0, dom1 = _dom.dom1;
-    function px(t) { return mL + plotW * (t - dom0) / (dom1 - dom0); }
-    function pxDate(s) { var t = Date.parse(s); return isNaN(t) ? mL : px(t); }
+    var _dom = ChartAxis.timeDomain(
+      pts.map(function (p) {
+        return Date.parse(p.date);
+      })
+    );
+    var dom0 = _dom.dom0,
+      dom1 = _dom.dom1;
+    function px(t) {
+      return mL + (plotW * (t - dom0)) / (dom1 - dom0);
+    }
+    function pxDate(s) {
+      var t = Date.parse(s);
+      return isNaN(t) ? mL : px(t);
+    }
 
     // 纵轴：均匀、尽量整数的刻度
     var ax = ChartAxis.niceScale(yLo, yHi, 5);
     var yTicks = Math.round((ax.top - ax.bottom) / ax.step);
     for (var t = 0; t <= yTicks; t++) {
       // 反转时同一条网格线对应的数值也倒过来（最上面是最小值）
-      var val = ax.bottom + ax.step * (invert ? (yTicks - t) : t);
-      var gy = mT + plotH - plotH * t / yTicks;
-      svg.appendChild(el('line', { class: 'mc-grid', x1: mL, y1: gy, x2: W - mR, y2: gy }));
-      var yt = el('text', { class: 'mc-axis-text', x: mL - 8, y: gy + 4, 'text-anchor': 'end' });
-      yt.textContent = (ax.step >= 1) ? Math.round(val) : (Math.round(val * 10) / 10);
+      var val = ax.bottom + ax.step * (invert ? yTicks - t : t);
+      var gy = mT + plotH - (plotH * t) / yTicks;
+      svg.appendChild(el("line", { class: "mc-grid", x1: mL, y1: gy, x2: W - mR, y2: gy }));
+      var yt = el("text", { class: "mc-axis-text", x: mL - 8, y: gy + 4, "text-anchor": "end" });
+      yt.textContent = ax.step >= 1 ? Math.round(val) : Math.round(val * 10) / 10;
       svg.appendChild(yt);
     }
-    svg.appendChild(el('line', { class: 'mc-axis', x1: mL, y1: mT, x2: mL, y2: mT + plotH }));
-    svg.appendChild(el('line', { class: 'mc-axis', x1: mL, y1: mT + plotH, x2: W - mR, y2: mT + plotH }));
+    svg.appendChild(el("line", { class: "mc-axis", x1: mL, y1: mT, x2: mL, y2: mT + plotH }));
+    svg.appendChild(
+      el("line", { class: "mc-axis", x1: mL, y1: mT + plotH, x2: W - mR, y2: mT + plotH })
+    );
 
     // 横轴时间刻度（约 6 个，真实时间位置均匀分布；短跨度自适应到日，相邻重复标签只留一个）
-    var xN = 6, spanMs = dom1 - dom0, lastXLabel = null;
+    var xN = 6,
+      spanMs = dom1 - dom0,
+      lastXLabel = null;
     for (var k = 0; k <= xN; k++) {
-      var tt = dom0 + spanMs * k / xN;
+      var tt = dom0 + (spanMs * k) / xN;
       var gx = px(tt);
-      svg.appendChild(el('line', { class: 'mc-grid', x1: gx, y1: mT, x2: gx, y2: mT + plotH }));
+      svg.appendChild(el("line", { class: "mc-grid", x1: gx, y1: mT, x2: gx, y2: mT + plotH }));
       var lab = ChartAxis.tickLabel(tt, spanMs);
       if (lab !== lastXLabel) {
-        var dt = el('text', {
-          class: 'mc-axis-text', x: gx, y: mT + plotH + 16,
-          'text-anchor': 'end', transform: 'rotate(-35 ' + gx + ' ' + (mT + plotH + 16) + ')'
+        var dt = el("text", {
+          class: "mc-axis-text",
+          x: gx,
+          y: mT + plotH + 16,
+          "text-anchor": "end",
+          transform: "rotate(-35 " + gx + " " + (mT + plotH + 16) + ")"
         });
         dt.textContent = lab;
         svg.appendChild(dt);
@@ -113,21 +143,33 @@
       return invert ? mT + plotH * f : mT + plotH - plotH * f;
     }
     var parts = [];
-    pts.forEach(function (p, i) { parts.push((i ? ' L ' : ' M ') + pxDate(p.date) + ' ' + py(p.v)); });
-    svg.appendChild(el('path', { class: 'mc-line ' + cls, d: parts.join('') }));
+    pts.forEach(function (p, i) {
+      parts.push((i ? " L " : " M ") + pxDate(p.date) + " " + py(p.v));
+    });
+    svg.appendChild(el("path", { class: "mc-line " + cls, d: parts.join("") }));
     pts.forEach(function (p) {
-      svg.appendChild(el('circle', { class: 'mc-dot ' + cls, cx: pxDate(p.date), cy: py(p.v), r: 4 }));
+      svg.appendChild(
+        el("circle", { class: "mc-dot " + cls, cx: pxDate(p.date), cy: py(p.v), r: 4 })
+      );
     });
     return svg;
   }
 
   /* ---------- 1) 速率/配速折线图（单系列，按日期） ---------- */
   function buildRateChart(sport, recs) {
-    var pts = recs.map(function (r) { return { sport: sport, date: r.date, v: rateOf(r) }; })
-                  .filter(function (p) { return p.v != null; });
+    var pts = recs
+      .map(function (r) {
+        return { sport: sport, date: r.date, v: rateOf(r) };
+      })
+      .filter(function (p) {
+        return p.v != null;
+      });
     if (!pts.length) return null;
-    var vs = pts.map(function (p) { return p.v; });
-    var vmin = Math.min.apply(null, vs), vmax = Math.max.apply(null, vs);
+    var vs = pts.map(function (p) {
+      return p.v;
+    });
+    var vmin = Math.min.apply(null, vs),
+      vmax = Math.max.apply(null, vs);
     // 配速图反转纵轴：小配速（快）在上，与 km/h 图一样「越靠上越快」
     return drawLineChart(pts, vmin, vmax, { invert: isPace(sport) });
   }
@@ -135,25 +177,38 @@
   /* ---------- 2) 累计趋势：单项累计距离折线图（y 从 0 起） ---------- */
   function buildTrendChart(sport, recs) {
     var rows = recs.slice().sort(byDate);
-    var cum = 0, pts = [];
+    var cum = 0,
+      pts = [];
     rows.forEach(function (r) {
       cum += r.dist;
       if (r.dist != null) pts.push({ sport: sport, date: r.date, v: cum });
     });
     if (!pts.length) return null;
-    var vmax = Math.max.apply(null, pts.map(function (p) { return p.v; }));
+    var vmax = Math.max.apply(
+      null,
+      pts.map(function (p) {
+        return p.v;
+      })
+    );
     return drawLineChart(pts, 0, vmax * 1.05 || 1);
   }
 
   /* ---------- 3) 质量监控：体重趋势折线图（y 自适应，单位 kg） ---------- */
   function buildWeightChart(records) {
     var pts = records
-      .map(function (r) { return { sport: '体重', date: r.date, v: r.weight }; })
-      .filter(function (p) { return p.v != null; })
+      .map(function (r) {
+        return { sport: "体重", date: r.date, v: r.weight };
+      })
+      .filter(function (p) {
+        return p.v != null;
+      })
       .sort(byDate);
     if (!pts.length) return null;
-    var vs = pts.map(function (p) { return p.v; });
-    var vmin = Math.min.apply(null, vs), vmax = Math.max.apply(null, vs);
+    var vs = pts.map(function (p) {
+      return p.v;
+    });
+    var vmin = Math.min.apply(null, vs),
+      vmax = Math.max.apply(null, vs);
     return drawLineChart(pts, vmin, vmax);
   }
 
@@ -164,17 +219,21 @@
     fillStats(records);
 
     SPORT_ORDER.forEach(function (sp) {
-      var recs = records.filter(function (r) { return r.sport === sp; }).sort(byDate);
-      var box = document.getElementById('rate-' + SPORT_CLASS[sp]);
+      var recs = records
+        .filter(function (r) {
+          return r.sport === sp;
+        })
+        .sort(byDate);
+      var box = document.getElementById("rate-" + SPORT_CLASS[sp]);
       if (box) {
-        box.innerHTML = '';
+        box.innerHTML = "";
         var svg = buildRateChart(sp, recs);
         if (svg) box.appendChild(svg);
         else box.innerHTML = '<p class="hint">暂无数据</p>';
       }
-      var tbox = document.getElementById('trend-' + SPORT_CLASS[sp]);
+      var tbox = document.getElementById("trend-" + SPORT_CLASS[sp]);
       if (tbox) {
-        tbox.innerHTML = '';
+        tbox.innerHTML = "";
         var tsvg = buildTrendChart(sp, recs);
         if (tsvg) tbox.appendChild(tsvg);
         else tbox.innerHTML = '<p class="hint">暂无数据</p>';
@@ -182,9 +241,9 @@
     });
 
     // 4) 质量监控：体重趋势
-    var wbox = document.getElementById('weight-chart');
+    var wbox = document.getElementById("weight-chart");
     if (wbox && window.KEEPFIT_WEIGHT) {
-      wbox.innerHTML = '';
+      wbox.innerHTML = "";
       var wsvg = buildWeightChart(window.KEEPFIT_WEIGHT);
       if (wsvg) wbox.appendChild(wsvg);
       else wbox.innerHTML = '<p class="hint">暂无数据</p>';
@@ -197,13 +256,14 @@
     initialized = true;
     render();
     if (window.MutationObserver) {
-      new MutationObserver(function () { render(); })
-        .observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      new MutationObserver(function () {
+        render();
+      }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
     }
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', start);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", start);
   } else {
     start();
   }

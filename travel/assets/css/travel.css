@@ -287,7 +287,7 @@
  *   保留在 custom.css（供人阅读），媒体查询一律用下列字面值（与主题 768/480 一致）。 */
 @media (max-width: 768px) {
   .travel-stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
   /* 平板 / 大屏手机：两列 */
   .travel-photos {
@@ -308,12 +308,15 @@
     grid-template-columns: 1fr;
     gap: 0.7rem;
   }
+  .travel-stats {
+    grid-template-columns: 1fr;
+  }
   .travel-card {
     padding: 1rem 0.9rem;
   }
-  /* 单列后照片变大，说明文字适当加大以匹配视觉重量 */
+  /* 单列后照片变大，说明文字与 album 同款字号（--fs-meta），不再写死 0.82rem */
   .travel-photo a::after {
-    font-size: 0.82rem;
+    font-size: var(--fs-meta);
   }
 }
 
@@ -360,9 +363,11 @@
   font-family: inherit;
   user-select: none;
   -webkit-user-select: none;
-  touch-action: none; /* 触屏拖拽不触发页面滚动 */
+  touch-action: pan-y; /* P1 修复：默认允许页面纵向滚动（地图占满卡片宽，none 会锁住整屏无法翻页）；
+                          解锁缩放态由 JS 添加的 .zoomable 类接管为 none（travel-map.js 维护该类） */
   cursor: default;     /* 始终默认箭头，不显示手型 */
 }
+.travel-page .travel-svg.zoomable { touch-action: none; }
 
 .travel-page .province {
   fill: url(#provUnvisitedGrad); /* 未访省份：微渐变模拟光照，增加立体感 */

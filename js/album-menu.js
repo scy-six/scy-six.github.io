@@ -49,14 +49,16 @@
     if (!menu) return;
     menu.classList.add("is-open");
     var trigger = triggerOf(menu);
-    if (trigger && trigger.hasAttribute("aria-expanded")) trigger.setAttribute("aria-expanded", "true");
+    if (trigger && trigger.hasAttribute("aria-expanded"))
+      trigger.setAttribute("aria-expanded", "true");
   }
 
   function closeList(menu) {
     if (!menu) return;
     menu.classList.remove("is-open");
     var trigger = triggerOf(menu);
-    if (trigger && trigger.hasAttribute("aria-expanded")) trigger.setAttribute("aria-expanded", "false");
+    if (trigger && trigger.hasAttribute("aria-expanded"))
+      trigger.setAttribute("aria-expanded", "false");
   }
 
   function closeAll(nav) {

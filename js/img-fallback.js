@@ -27,8 +27,9 @@
 
   function handled(img) {
     var src = img.getAttribute("src") || "";
-    return img.getAttribute("data-fallback") === "1" || src === FALLBACK ||
-      src.indexOf(FALLBACK) >= 0;
+    return (
+      img.getAttribute("data-fallback") === "1" || src === FALLBACK || src.indexOf(FALLBACK) >= 0
+    );
   }
 
   function onError(e) {

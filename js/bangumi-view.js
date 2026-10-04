@@ -37,7 +37,9 @@
         }
       });
       // 非番剧页上目标永不出现 → 观察器会一直挂着监听全站 DOM；15 秒后自动收工（插件渲染远快于此）
-      var tid = setTimeout(function () { obs.disconnect(); }, 15000);
+      var tid = setTimeout(function () {
+        obs.disconnect();
+      }, 15000);
       obs.observe(document.body, { childList: true, subtree: true });
     }
   }
@@ -72,7 +74,9 @@
         }
       });
       // 同上：15 秒未出现即收工，避免在非番剧页长期监听全站 DOM
-      var tid = setTimeout(function () { obs.disconnect(); }, 15000);
+      var tid = setTimeout(function () {
+        obs.disconnect();
+      }, 15000);
       obs.observe(document.body, { childList: true, subtree: true });
     }
   }

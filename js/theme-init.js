@@ -21,9 +21,11 @@
       try {
         var parsed = JSON.parse(raw);
         // 兼容 {value, expiry} 或直接存字符串的旧情况
-        return (parsed && (parsed.value === "dark" || parsed.value === "light")) ? parsed.value : null;
+        return parsed && (parsed.value === "dark" || parsed.value === "light")
+          ? parsed.value
+          : null;
       } catch (e) {
-        return (raw === "dark" || raw === "light") ? raw : null;
+        return raw === "dark" || raw === "light" ? raw : null;
       }
     } catch (e) {
       return null;
@@ -41,9 +43,9 @@
       var e = typeof cfg.end === "number" ? cfg.end : 22;
       // start <= h < end 为白天（light），否则夜间（dark）；支持跨午夜区间
       if (s < e) {
-        return (s <= h && h < e) ? "light" : "dark";
+        return s <= h && h < e ? "light" : "dark";
       } else {
-        return (h >= s || h < e) ? "light" : "dark";
+        return h >= s || h < e ? "light" : "dark";
       }
     }
 
@@ -54,6 +56,11 @@
     return "light";
   }
 
+  // 背景图 URL 注入到 url("...") 前，转义反斜杠与双引号，避免配置值里的引号/反斜杠「逃出」url()
+  function cssUrl(v) {
+    return String(v).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  }
+
   function injectWallpaper(cfg) {
     var bgLight = (cfg && cfg.bgLight) || "/img/wall/wallpaper.webp";
     var bgDark = (cfg && cfg.bgDark) || "/img/wall/wall.webp";
@@ -61,8 +68,12 @@
       "body{background:transparent!important}" +
       "#web_bg{position:fixed!important;z-index:-999!important;width:100%!important;height:100%!important;" +
       "background-attachment:local!important;background-position:center!important;background-size:cover!important;" +
-      "background-repeat:no-repeat!important;opacity:1!important;background-image:url(\"" + bgLight + "\")!important}" +
-      "[data-theme=\"dark\"] #web_bg{background-image:url(\"" + bgDark + "\")!important}" +
+      'background-repeat:no-repeat!important;opacity:1!important;background-image:url("' +
+      cssUrl(bgLight) +
+      '")!important}' +
+      '[data-theme="dark"] #web_bg{background-image:url("' +
+      cssUrl(bgDark) +
+      '")!important}' +
       "#web_bg.bg-animation{animation:none!important}";
     var s = document.createElement("style");
     s.id = "web-bg-no-flash";
@@ -77,7 +88,11 @@
     injectWallpaper(cfg);
   } catch (e) {
     /* 静默失败，不影响首屏；但开发时要能查到原因（?debug 或 localhost 视为开发环境） */
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1" || /[?&]debug\b/.test(location.search)) {
+    if (
+      location.hostname === "localhost" ||
+      location.hostname === "127.0.0.1" ||
+      /[?&]debug\b/.test(location.search)
+    ) {
       console.warn("[theme-init] 主题初始化失败：", e);
     }
   }

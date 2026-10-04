@@ -132,9 +132,6 @@ html {
    （用户选定 mountain 观感为全站表头基准）。淡底 color-mix 引用站点令牌，
    暗色模式自动适配；sticky 滚动场景下不透明淡底不会遮挡数据行。 */
 .table-wrap thead th {
-  position: sticky;
-  top: 0;
-  z-index: 2;
   padding: var(--space-sm) var(--space-md);
   font-weight: 700;
   text-align: left;
@@ -362,13 +359,8 @@ blockquote {
   box-sizing: border-box;
 }
 
-/* 5.2 移动端 / 窄屏：右侧栏折叠为抽屉，主栏占满宽度（主题负责收起 aside） */
-@media (max-width: 900px) {
-  #notes.notes-page {
-    flex: 1 1 100%;
-    min-width: 0;
-  }
-}
+/* 5.2 移动端 / 窄屏：右侧栏折叠为抽屉，主栏占满宽度（主题负责收起 aside）；
+   #notes.notes-page 在 ≤900px 强制满宽的覆盖块已删（侧栏收起后主栏本就占满，冗余）。 */
 
 /* =============================================================================
  * 六、十年之约 模块（模仿 yishu.pro 结构，主题化跟随亮/暗/阅读模式）
@@ -1073,6 +1065,10 @@ html.with-fancybox body {
 .site-tree {
   --tree-line: var(--hr-before-color, #bfe4fb);
   --c-cat: #4a9a8f;   /* 分类类节点：2026-10-03 三色降饱和，向全站鼠尾草绿系靠拢 */
+  /* 文字专用深色变体（GLM 报告 §3.2#5）：--c-cat 作文字压在 14% 淡 tint 底上仅约 3.3:1，
+     低于 WCAG AA 4.5:1；徽标数字与 hover 文字改用本值（对白 ≈5.5:1）。
+     图形元素（连线、图标、边框）不受影响，继续用 --c-cat。 */
+  --c-cat-ink: #2f6b60;
   --c-album: #6a93b8; /* 相册类节点：降饱和蓝（原 #49b1f5 主题默认蓝） */
   --c-page: #d08a5f;  /* 单页类节点：降饱和橙（原 #ff7242） */
   --h: 30px;          /* 横向连线长度（总干线/轨道 → 卡片；同时是子层 li 的左内边距） */
@@ -1276,9 +1272,14 @@ html.with-fancybox body {
   padding: 0 .45em;
   border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--c-cat) 14%, var(--card-bg, #fff));
-  color: var(--c-cat);
+  color: var(--c-cat-ink); /* GLM §3.2#5：数字文字用深色变体（--c-cat 仅 3.3:1 不达 AA） */
   font-size: var(--fs-badge);
   font-weight: 600;
+}
+
+/* 暗色模式：背景更深，文字专用色反向提亮（对卡片底 ≈8:1） */
+[data-theme="dark"] .site-tree {
+  --c-cat-ink: #86c4b6;
 }
 
 /* 折叠三角（替换默认 disclosure，主题主色） */

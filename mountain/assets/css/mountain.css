@@ -97,8 +97,6 @@
 }
 
 .mountain-table thead th {
-  position: sticky;
-  top: 0;
   background: color-mix(in srgb, var(--default-bg-color) 12%, var(--card-bg));
   color: var(--font-color);
   font-weight: 700;
@@ -239,6 +237,15 @@
 @media (max-width: 768px) {
   .mountain-stats {
     grid-template-columns: repeat(2, 1fr);
+  }
+  /* 2026-10-04（GLM 报告 P1-3）：同 keepfit —— 图表 viewBox 宽 1000，窄屏缩到
+     ~1/3 后轴文字约 4px 不可读；改为容器横滑 + svg 保底宽度。 */
+  .mountain-chart-card {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .mountain-chart-card svg {
+    min-width: 640px;
   }
 }
 

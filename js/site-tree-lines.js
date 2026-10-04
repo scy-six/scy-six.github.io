@@ -157,8 +157,19 @@
         }
         var p1 = { x: b.x + ((a.x - b.x) / inLen) * r, y: b.y + ((a.y - b.y) / inLen) * r };
         var p2 = { x: b.x + ((c.x - b.x) / outLen) * r, y: b.y + ((c.y - b.y) / outLen) * r };
-        d += " L" + fmt(p1.x) + " " + fmt(p1.y) +
-             " Q" + fmt(b.x) + " " + fmt(b.y) + " " + fmt(p2.x) + " " + fmt(p2.y);
+        d +=
+          " L" +
+          fmt(p1.x) +
+          " " +
+          fmt(p1.y) +
+          " Q" +
+          fmt(b.x) +
+          " " +
+          fmt(b.y) +
+          " " +
+          fmt(p2.x) +
+          " " +
+          fmt(p2.y);
       }
       var last = pts[pts.length - 1];
       return d + " L" + fmt(last.x) + " " + fmt(last.y);
@@ -167,11 +178,17 @@
     /* 每帧收集线段：H 水平、V 竖直（都是 x1/x2 或 y1/y2 的形式，方向自动归一） */
     function H(x1, x2, y) {
       if (Math.abs(x2 - x1) < 0.5) return;
-      parts.push([{ x: x1, y: y }, { x: x2, y: y }]);
+      parts.push([
+        { x: x1, y: y },
+        { x: x2, y: y }
+      ]);
     }
     function V(x, y1, y2) {
       if (Math.abs(y2 - y1) < 0.5) return;
-      parts.push([{ x: x, y: y1 }, { x: x, y: y2 }]);
+      parts.push([
+        { x: x, y: y1 },
+        { x: x, y: y2 }
+      ]);
     }
 
     /* ── 一条「父卡片 → 子面板」的连线 + 递归子树 ─────────────────────── */
@@ -193,22 +210,37 @@
         var rows = groupRows(rs);
         /* 单行：轨道就落在首卡片中心（= 干线两端对齐首末卡片中心，常规桌面形态）。
            换行：轨道必须挪到所有卡片之外，否则竖轨会从上一行卡片身上穿过去。 */
-        var railX = rows.length > 1
-          ? Math.min.apply(null, rs.map(function (r) {
-              return r.l;
-            })) - Math.min(14, bus)
-          : Math.min.apply(null, rows[0].map(function (r) {
-              return r.cx;
-            }));
+        var railX =
+          rows.length > 1
+            ? Math.min.apply(
+                null,
+                rs.map(function (r) {
+                  return r.l;
+                })
+              ) - Math.min(14, bus)
+            : Math.min.apply(
+                null,
+                rows[0].map(function (r) {
+                  return r.cx;
+                })
+              );
         var busYs = rows.map(function (row) {
-          return Math.min.apply(null, row.map(function (r) {
-            return r.t;
-          })) - bus;
+          return (
+            Math.min.apply(
+              null,
+              row.map(function (r) {
+                return r.t;
+              })
+            ) - bus
+          );
         });
         rows.forEach(function (row, i) {
-          var lastCx = Math.max.apply(null, row.map(function (r) {
-            return r.cx;
-          }));
+          var lastCx = Math.max.apply(
+            null,
+            row.map(function (r) {
+              return r.cx;
+            })
+          );
           H(railX, lastCx, busYs[i]);
           row.forEach(function (r) {
             V(r.cx, busYs[i], r.t); // 干线 → 卡片上边中点
@@ -216,16 +248,24 @@
         });
         if (rows.length > 1) V(railX, busYs[0], busYs[busYs.length - 1]);
         if (parentRect) {
-          var lastCx0 = Math.max.apply(null, rows[0].map(function (r) {
-            return r.cx;
-          }));
+          var lastCx0 = Math.max.apply(
+            null,
+            rows[0].map(function (r) {
+              return r.cx;
+            })
+          );
           V(Math.min(Math.max(parentRect.cx, railX), lastCx0), parentRect.b, busYs[0]);
         }
       } else {
         /* 子节点竖排（父在左、子在右）：父卡片右缘竖直轨道 + 横向短接线 */
-        var rail = parentRect ? parentRect.r : Math.min.apply(null, rs.map(function (r) {
-          return r.l;
-        })) - 20;
+        var rail = parentRect
+          ? parentRect.r
+          : Math.min.apply(
+              null,
+              rs.map(function (r) {
+                return r.l;
+              })
+            ) - 20;
         var ys = rs.map(function (r) {
           return r.cy;
         });
@@ -256,8 +296,13 @@
         open.push(d.open ? 1 : 0);
       });
       var ulBox = shown(topUl) ? topUl.getBoundingClientRect() : { width: 0, height: 0 };
-      var next = [Math.round(box.width), Math.round(box.height),
-                  Math.round(ulBox.width), Math.round(ulBox.height), open.join("")].join("|");
+      var next = [
+        Math.round(box.width),
+        Math.round(box.height),
+        Math.round(ulBox.width),
+        Math.round(ulBox.height),
+        open.join("")
+      ].join("|");
       if (next === sig) return;
       sig = next;
 
@@ -299,12 +344,23 @@
           .filter(shown)
           .map(rectOf);
         groupRows(pageRects).forEach(function (row) {
-          var busY = Math.max.apply(null, row.map(function (r) {
-            return r.b;
-          })) + drop;
-          H(spineX, Math.max.apply(null, row.map(function (r) {
-            return r.cx;
-          })), busY);
+          var busY =
+            Math.max.apply(
+              null,
+              row.map(function (r) {
+                return r.b;
+              })
+            ) + drop;
+          H(
+            spineX,
+            Math.max.apply(
+              null,
+              row.map(function (r) {
+                return r.cx;
+              })
+            ),
+            busY
+          );
           row.forEach(function (r) {
             V(r.cx, r.b, busY); // 卡片下边中点 → 干线
           });

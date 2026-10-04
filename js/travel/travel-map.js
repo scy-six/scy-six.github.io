@@ -201,16 +201,23 @@
     svg.addEventListener('mousedown', function (e) {
       if (locked) return;
       dragging = true; lastX = e.clientX; lastY = e.clientY;
+      // 拖拽期间才挂 window 监听，mouseup 即解绑，避免 window 监听泄漏/堆叠
+      function onMove(ev) {
+        if (!dragging) return;
+        var rect = svg.getBoundingClientRect();
+        TX += (ev.clientX - lastX) / rect.width * VB_W;
+        TY += (ev.clientY - lastY) / rect.height * VB_H;
+        lastX = ev.clientX; lastY = ev.clientY;
+        applyTransform();
+      }
+      function onUp() {
+        dragging = false;
+        window.removeEventListener('mousemove', onMove);
+        window.removeEventListener('mouseup', onUp);
+      }
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onUp);
     });
-    window.addEventListener('mousemove', function (e) {
-      if (!dragging) return;
-      var rect = svg.getBoundingClientRect();
-      TX += (e.clientX - lastX) / rect.width * VB_W;
-      TY += (e.clientY - lastY) / rect.height * VB_H;
-      lastX = e.clientX; lastY = e.clientY;
-      applyTransform();
-    });
-    window.addEventListener('mouseup', function () { dragging = false; });
 
     // 点击地图 → 解锁缩放/拖拽（阻止冒泡，避免触发外部复位）
     svg.addEventListener('click', function (e) {
@@ -412,8 +419,12 @@
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
       .then(build)
       .catch(function (err) {
-        box.innerHTML = '<p style="padding:2rem;text-align:center;opacity:.6">' +
-          '中国地图数据加载失败（china-geo.json）：' + err.message + '</p>';
+        // 改用 textContent，避免 err.message（含路径/参数）被当作 HTML 注入（XSS 卫生）
+        var p = document.createElement('p');
+        p.style.cssText = 'padding:2rem;text-align:center;opacity:.6';
+        p.textContent = '中国地图数据加载失败（china-geo.json）：' + err.message;
+        box.innerHTML = '';
+        box.appendChild(p);
       });
   }
 
