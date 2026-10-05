@@ -1,0 +1,815 @@
+<!-- 侧栏默认折叠条件：① 全局 theme.aside.hide；② 单页 front-matter aside:false。--><!-- 注意：aside:false 时侧栏仍照常渲染（见下方 widget），仅默认折叠，右下角设置里的侧栏开关可手动展开。--><!-- 仅当全局关闭侧栏时给 .layout 加 hide-aside（窄化、无侧栏 DOM）；单页 aside:false 改由 html.hide-aside 处理--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>常用语法合集 | Scy's Blog</title><meta name="author" content="Scy"><meta name="copyright" content="Scy"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="Markdown &#x2F; Hexo &#x2F; Git &#x2F; 终端 &#x2F; CMD &#x2F; HTML &#x2F; CSS &#x2F; JavaScript &#x2F; Python &#x2F; C 常用语法速查 + 学习站点导航">
+<meta property="og:type" content="article">
+<meta property="og:title" content="常用语法合集">
+<meta property="og:url" content="https://www.scyx.fun/2023/09/chang-yong-yu-fa-he-ji/index.html">
+<meta property="og:site_name" content="Scy&#39;s Blog">
+<meta property="og:description" content="Markdown &#x2F; Hexo &#x2F; Git &#x2F; 终端 &#x2F; CMD &#x2F; HTML &#x2F; CSS &#x2F; JavaScript &#x2F; Python &#x2F; C 常用语法速查 + 学习站点导航">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.scyx.fun/img/avatar.webp">
+<meta property="article:published_time" content="2023-09-06T16:43:00.000Z">
+<meta property="article:modified_time" content="2026-10-05T13:25:26.747Z">
+<meta property="article:author" content="Scy">
+<meta property="article:tag" content="scy, blog, life">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.scyx.fun/img/avatar.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "常用语法合集",
+  "url": "https://www.scyx.fun/2023/09/chang-yong-yu-fa-he-ji/",
+  "image": "https://www.scyx.fun/img/avatar.webp",
+  "datePublished": "2023-09-06T16:43:00.000Z",
+  "dateModified": "2026-10-05T13:25:26.747Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Scy",
+      "url": "https://www.scyx.fun"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/logo.webp"><link rel="canonical" href="https://www.scyx.fun/2023/09/chang-yong-yu-fa-he-ji/index.html"><link rel="preconnect"/><link rel="preconnect" href="https://events.vercount.one"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css"><link rel="preload" href="/pluginsSrc/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/pluginsSrc/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/pluginsSrc/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><!--  Fancybox 是按需组件（点击才展示），非首屏关键路径；--><!--  critters 只内联 ~5% 的规则，导致 95% 布局/交互样式丢失、灯箱错位。--><!--  保留原始 link 让浏览器在 onload 后以 <link media=all> 完整加载。--><link rel="stylesheet" href="/pluginsSrc/@fancyapps/ui/dist/fancybox/fancybox.css" data-no-inline media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const hour = new Date().getHours()
+          const start = 8
+          const end = 22
+          const isNight =
+            start < end
+                ? hour < start || hour >= end
+                : hour >= start || hour < end
+          if (theme === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else theme === 'light' ? activateLightMode() : activateDarkMode()
+        
+      
+      // 每页独立记忆：以 pathname 区分不同页面的侧栏开合状态
+      const asideKey = 'aside-status-' + location.pathname
+      const asideStatus = saveToLocal.get(asideKey)
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: true,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false,
+  darkmode: {
+    enable: true,
+    autoChangeMode: 2,
+    start: 8,
+    end: 22,
+    bgLight: "/img/wall/wallpaper.webp",
+    bgDark: "/img/wall/wall.webp"
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '常用语法合集',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/theme-init.js"></script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/album.css"><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="bg-animation" id="web_bg"></div><script>(() => {
+  const arr = ["background-image: url(/img/wall/wallpaper.webp);"]
+  const webBgDiv = document.getElementById('web_bg')
+
+  const setRandomBg = () => {
+    webBgDiv.style = arr[Math.floor(Math.random() * arr.length)]
+    requestAnimationFrame(() => webBgDiv.classList.add('bg-animation'))
+  }
+
+  document.addEventListener('pjax:send', () => {
+    webBgDiv.style = ''
+    webBgDiv.classList.remove('bg-animation')
+  })
+
+  document.addEventListener('pjax:complete', setRandomBg)
+  document.addEventListener('DOMContentLoaded', setRandomBg)
+})()
+</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.webp" onerror="this.onerror=null;this.src='/img/error.gif'" alt="avatar"/></div><div class="site-data text-center"><div class="site-data-item"><div class="headline">文章</div><div class="length-num">14</div></div><div class="site-data-item"><div class="headline">分类</div><div class="length-num">6</div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E7%94%B5%E8%84%91/index.html"><i class="fa-fw fas fa-computer"></i><span> 电脑</span></a></li><li><a class="site-page child" href="/categories/%E5%AD%A6%E4%B9%A0/index.html"><i class="fa-fw fas fa-book"></i><span> 学习</span></a></li><li><a class="site-page child" href="/categories/%E7%94%9F%E6%B4%BB/index.html"><i class="fa-fw fas fa-mug-hot"></i><span> 生活</span></a></li><li><a class="site-page child" href="/categories/%E7%9B%B8%E6%9C%BA/index.html"><i class="fa-fw fas fa-camera-retro"></i><span> 相机</span></a></li><li><a class="site-page child" href="/categories/%E8%AF%97%E8%AE%B0/index.html"><i class="fa-fw fas fa-scroll"></i><span> 诗记</span></a></li><li><a class="site-page child" href="/categories/%E6%96%87%E6%91%98/index.html"><i class="fa-fw fas fa-quote-left"></i><span> 文摘</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/pet/index.html"><i class="fa-fw fas fa-cat"></i><span> 编外成员</span></a></li><li><a class="site-page child" href="/garden/index.html"><i class="fa-fw fas fa-seedling"></i><span> 葬爱花园</span></a></li><li><a class="site-page child" href="/diy/index.html"><i class="fa-fw fas fa-gears"></i><span> 手作 DIY</span></a></li><li><a class="site-page child" href="/bird/index.html"><i class="fa-fw fas fa-camera"></i><span> 捕光捉影</span></a></li><li><a class="site-page child" href="/angling/index.html"><i class="fa-fw fas fa-fish"></i><span> 永不空军</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-film"></i><span> 第三次元</span></a></div><div class="menus_item"><a class="site-page" href="/notes/index.html"><i class="fa-fw fas fa-feather-pointed"></i><span> 此去经年</span></a></div><div class="menus_item"><a class="site-page" href="/keepfit/index.html"><i class="fa-fw fas fa-person-running"></i><span> 修身养性</span></a></div><div class="menus_item"><a class="site-page" href="/mountain/index.html"><i class="fa-fw fas fa-mountain"></i><span> 十万大山</span></a></div><div class="menus_item"><a class="site-page" href="/travel/index.html"><i class="fa-fw fas fa-person-walking-luggage"></i><span> 到此一游</span></a></div><div class="menus_item"><a class="site-page" href="/about/index.html"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo.webp" alt="Logo"><span class="site-name">Scy's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E7%94%B5%E8%84%91/index.html"><i class="fa-fw fas fa-computer"></i><span> 电脑</span></a></li><li><a class="site-page child" href="/categories/%E5%AD%A6%E4%B9%A0/index.html"><i class="fa-fw fas fa-book"></i><span> 学习</span></a></li><li><a class="site-page child" href="/categories/%E7%94%9F%E6%B4%BB/index.html"><i class="fa-fw fas fa-mug-hot"></i><span> 生活</span></a></li><li><a class="site-page child" href="/categories/%E7%9B%B8%E6%9C%BA/index.html"><i class="fa-fw fas fa-camera-retro"></i><span> 相机</span></a></li><li><a class="site-page child" href="/categories/%E8%AF%97%E8%AE%B0/index.html"><i class="fa-fw fas fa-scroll"></i><span> 诗记</span></a></li><li><a class="site-page child" href="/categories/%E6%96%87%E6%91%98/index.html"><i class="fa-fw fas fa-quote-left"></i><span> 文摘</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/pet/index.html"><i class="fa-fw fas fa-cat"></i><span> 编外成员</span></a></li><li><a class="site-page child" href="/garden/index.html"><i class="fa-fw fas fa-seedling"></i><span> 葬爱花园</span></a></li><li><a class="site-page child" href="/diy/index.html"><i class="fa-fw fas fa-gears"></i><span> 手作 DIY</span></a></li><li><a class="site-page child" href="/bird/index.html"><i class="fa-fw fas fa-camera"></i><span> 捕光捉影</span></a></li><li><a class="site-page child" href="/angling/index.html"><i class="fa-fw fas fa-fish"></i><span> 永不空军</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/index.html"><i class="fa-fw fas fa-film"></i><span> 第三次元</span></a></div><div class="menus_item"><a class="site-page" href="/notes/index.html"><i class="fa-fw fas fa-feather-pointed"></i><span> 此去经年</span></a></div><div class="menus_item"><a class="site-page" href="/keepfit/index.html"><i class="fa-fw fas fa-person-running"></i><span> 修身养性</span></a></div><div class="menus_item"><a class="site-page" href="/mountain/index.html"><i class="fa-fw fas fa-mountain"></i><span> 十万大山</span></a></div><div class="menus_item"><a class="site-page" href="/travel/index.html"><i class="fa-fw fas fa-person-walking-luggage"></i><span> 到此一游</span></a></div><div class="menus_item"><a class="site-page" href="/about/index.html"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">常用语法合集</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2023-09-06T16:43:00.000Z" title="发表于 2023-09-07 00:43:00">2023-09-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-05T13:25:26.747Z" title="更新于 2026-10-05 21:25:26">2026-10-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%AD%A6%E4%B9%A0/index.html">学习</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="一、Markdown-常用语法"><a href="#一、Markdown-常用语法" class="headerlink" title="一、Markdown 常用语法"></a>一、Markdown 常用语法</h1><table>
+<thead>
+<tr>
+<th align="left">功能</th>
+<th align="left">语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">标题</td>
+<td align="left"><code># 一级</code> ~ <code>###### 六级</code></td>
+</tr>
+<tr>
+<td align="left">粗体</td>
+<td align="left"><code>**文字**</code></td>
+</tr>
+<tr>
+<td align="left">斜体</td>
+<td align="left"><code>*文字*</code></td>
+</tr>
+<tr>
+<td align="left">删除线</td>
+<td align="left"><code>~~文字~~</code></td>
+</tr>
+<tr>
+<td align="left">无序列表</td>
+<td align="left"><code>- 项目</code></td>
+</tr>
+<tr>
+<td align="left">有序列表</td>
+<td align="left"><code>1. 项目</code></td>
+</tr>
+<tr>
+<td align="left">任务列表</td>
+<td align="left"><code>- [x]</code> / <code>- [ ]</code></td>
+</tr>
+<tr>
+<td align="left">链接</td>
+<td align="left"><code>[文字](地址)</code></td>
+</tr>
+<tr>
+<td align="left">图片</td>
+<td align="left"><code>![说明](地址)</code></td>
+</tr>
+<tr>
+<td align="left">引用</td>
+<td align="left"><code>&gt; 文字</code></td>
+</tr>
+<tr>
+<td align="left">行内代码</td>
+<td align="left"><code>`代码`</code></td>
+</tr>
+<tr>
+<td align="left">代码块</td>
+<td align="left"><code>```语言</code> 包裹</td>
+</tr>
+<tr>
+<td align="left">分割线</td>
+<td align="left"><code>---</code></td>
+</tr>
+<tr>
+<td align="left">表格</td>
+<td align="left"><code>| 表头 | 表头 |</code></td>
+</tr>
+<tr>
+<td align="left">换行</td>
+<td align="left">行末两空格 或 <code>&lt;br&gt;</code></td>
+</tr>
+<tr>
+<td align="left">转义</td>
+<td align="left"><code>\符号</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="二、Hexo"><a href="#二、Hexo" class="headerlink" title="二、Hexo"></a>二、Hexo</h1><h2 id="1-文章-Front-Matter（本项目实际在用）"><a href="#1-文章-Front-Matter（本项目实际在用）" class="headerlink" title="1. 文章 Front-Matter（本项目实际在用）"></a>1. 文章 Front-Matter（本项目实际在用）</h2><figure class="highlight yaml"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">文章标题</span>             <span class="comment"># 必填</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">描述文字</span>        <span class="comment"># 列表页摘要</span></span><br><span class="line"><span class="attr">categories:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">学习</span>                    <span class="comment"># 分类（平铺一个；多个就多行）</span></span><br><span class="line"><span class="attr">date:</span> <span class="number">2026-08-31 21:26:00</span>  <span class="comment"># 发布时间</span></span><br><span class="line"><span class="attr">comments:</span> <span class="literal">false</span>            <span class="comment"># 可选，关闭评论（独立页常用）</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="2-Butterfly-标签插件（文中插入特殊块）"><a href="#2-Butterfly-标签插件（文中插入特殊块）" class="headerlink" title="2. Butterfly 标签插件（文中插入特殊块）"></a>2. Butterfly 标签插件（文中插入特殊块）</h2><table>
+<thead>
+<tr>
+<th align="left">写法</th>
+<th align="left">效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>{% note info %}提示内容{% endnote %}</code></td>
+<td align="left">彩色提示块，颜色可换 <code>primary</code> / <code>success</code> / <code>warning</code> / <code>danger</code></td>
+</tr>
+<tr>
+<td align="left"><code>{% btn 'https://example.com', 按钮文字 %}</code></td>
+<td align="left">渲染成可点击按钮</td>
+</tr>
+</tbody></table>
+<p>选项卡（折叠展示多份内容）：</p>
+<figure class="highlight md"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">{% tabs 示例 %}</span><br><span class="line">&lt;!-- tab 第一个 --&gt;</span><br><span class="line">内容 A</span><br><span class="line">&lt;!-- tab 第二个 --&gt;</span><br><span class="line">内容 B</span><br><span class="line">{% endtabs %}</span><br></pre></td></tr></tbody></table></figure>
+
+<p>更多写法见文末导航里 Butterfly 官方文档。</p>
+<hr>
+<h1 id="三、Git"><a href="#三、Git" class="headerlink" title="三、Git"></a>三、Git</h1><h2 id="1-工作流程"><a href="#1-工作流程" class="headerlink" title="1. 工作流程"></a>1. 工作流程</h2><figure class="highlight text"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">【工作区】 --git add--&gt; 【暂存区】 --git commit--&gt; 【本地仓库】 --git push--&gt; 【远程仓库】</span><br><span class="line">(你改的文件)             (准备提交)               (正式存档)              (GitHub 上)</span><br></pre></td></tr></tbody></table></figure>
+
+<h2 id="2-常用操作句式"><a href="#2-常用操作句式" class="headerlink" title="2. 常用操作句式"></a>2. 常用操作句式</h2><table>
+<thead>
+<tr>
+<th align="left">句式</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>git clone &lt;url&gt;</code></td>
+<td align="left">克隆远端仓库到本地</td>
+</tr>
+<tr>
+<td align="left"><code>git switch -c &lt;name&gt;</code></td>
+<td align="left">创建并切换到新分支</td>
+</tr>
+<tr>
+<td align="left"><code>git merge &lt;branch&gt;</code></td>
+<td align="left">把指定分支合并进当前分支</td>
+</tr>
+<tr>
+<td align="left"><code>git push -u origin main</code></td>
+<td align="left">首次推送并建立跟踪（之后 <code>git push</code> 即可）</td>
+</tr>
+<tr>
+<td align="left"><code>git restore &lt;file&gt;</code></td>
+<td align="left">丢弃工作区改动（<code>checkout --</code> 的新写法）</td>
+</tr>
+<tr>
+<td align="left"><code>git log --oneline --graph</code></td>
+<td align="left">图形化查看提交历史</td>
+</tr>
+<tr>
+<td align="left"><code>git tag v1.0</code></td>
+<td align="left">给当前提交打标签</td>
+</tr>
+</tbody></table>
+<h2 id="3-gitignore-语法"><a href="#3-gitignore-语法" class="headerlink" title="3. .gitignore 语法"></a>3. .gitignore 语法</h2><table>
+<thead>
+<tr>
+<th align="left">写法</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>node_modules/</code></td>
+<td align="left">忽略该目录</td>
+</tr>
+<tr>
+<td align="left"><code>*.log</code></td>
+<td align="left">忽略所有 .log 文件</td>
+</tr>
+<tr>
+<td align="left"><code>!keep.log</code></td>
+<td align="left"><code>!</code> = 例外，不忽略</td>
+</tr>
+<tr>
+<td align="left"><code>/dist</code></td>
+<td align="left">只忽略仓库根目录下的 dist</td>
+</tr>
+<tr>
+<td align="left"><code>**/temp</code></td>
+<td align="left">忽略任意层级的 temp</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="四、终端-Linux-语法（Git-Bash-通用）"><a href="#四、终端-Linux-语法（Git-Bash-通用）" class="headerlink" title="四、终端 / Linux 语法（Git Bash 通用）"></a>四、终端 / Linux 语法（Git Bash 通用）</h1><table>
+<thead>
+<tr>
+<th align="left">写法</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>命令1 &amp;&amp; 命令2</code></td>
+<td align="left">前者成功才执行后者</td>
+</tr>
+<tr>
+<td align="left"><code>命令1 || 命令2</code></td>
+<td align="left">前者失败才执行后者</td>
+</tr>
+<tr>
+<td align="left"><code>命令 &gt; 文件</code></td>
+<td align="left">输出重定向（覆盖写入）</td>
+</tr>
+<tr>
+<td align="left"><code>命令 &gt;&gt; 文件</code></td>
+<td align="left">输出重定向（追加）</td>
+</tr>
+<tr>
+<td align="left"><code>命令1 | 命令2</code></td>
+<td align="left">管道：前者输出交给后者处理</td>
+</tr>
+<tr>
+<td align="left"><code>命令 2&gt;&amp;1</code></td>
+<td align="left">错误输出并入标准输出</td>
+</tr>
+<tr>
+<td align="left"><code>chmod 755 x.sh</code></td>
+<td align="left">权限数字：所有者/组/其他 = 7/5/5（r=4、w=2、x=1 相加）</td>
+</tr>
+<tr>
+<td align="left"><code>sudo &lt;命令&gt;</code></td>
+<td align="left">以管理员权限执行</td>
+</tr>
+<tr>
+<td align="left"><code>tar -czvf a.tar.gz dir/</code></td>
+<td align="left">打包压缩（<code>-x</code> 换成解包）</td>
+</tr>
+<tr>
+<td align="left"><code>apt install &lt;pkg&gt;</code></td>
+<td align="left">Debian/Ubuntu 装包（CentOS 用 <code>yum</code>）</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="五、CMD（Windows-原生）"><a href="#五、CMD（Windows-原生）" class="headerlink" title="五、CMD（Windows 原生）"></a>五、CMD（Windows 原生）</h1><table>
+<thead>
+<tr>
+<th align="left">命令</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>dir</code></td>
+<td align="left">列目录（相当于 Git Bash 的 <code>ls</code>）</td>
+</tr>
+<tr>
+<td align="left"><code>cd /d E:\path</code></td>
+<td align="left">切换目录（<code>/d</code> 连盘符一起切）</td>
+</tr>
+<tr>
+<td align="left"><code>md &lt;dir&gt;</code> / <code>rd &lt;dir&gt;</code></td>
+<td align="left">建目录 / 删空目录</td>
+</tr>
+<tr>
+<td align="left"><code>del &lt;file&gt;</code></td>
+<td align="left">删除文件</td>
+</tr>
+<tr>
+<td align="left"><code>copy</code> / <code>move</code> / <code>ren</code></td>
+<td align="left">复制 / 移动 / 重命名</td>
+</tr>
+<tr>
+<td align="left"><code>type &lt;file&gt;</code></td>
+<td align="left">查看文本内容（相当于 <code>cat</code>）</td>
+</tr>
+<tr>
+<td align="left"><code>tree /f</code></td>
+<td align="left">树状列出目录结构</td>
+</tr>
+<tr>
+<td align="left"><code>ipconfig /all</code></td>
+<td align="left">查看网络配置</td>
+</tr>
+<tr>
+<td align="left"><code>ping &lt;host&gt; -t</code></td>
+<td align="left">持续 ping（<code>Ctrl + C</code> 停止）</td>
+</tr>
+<tr>
+<td align="left"><code>shutdown -s -t 600</code></td>
+<td align="left">600 秒后关机（<code>shutdown -a</code> 取消）</td>
+</tr>
+<tr>
+<td align="left"><code>systeminfo</code></td>
+<td align="left">查看系统信息</td>
+</tr>
+<tr>
+<td align="left"><code>cls</code></td>
+<td align="left">清屏</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="六、HTML"><a href="#六、HTML" class="headerlink" title="六、HTML"></a>六、HTML</h1><table>
+<thead>
+<tr>
+<th align="left">标签</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>&lt;h1&gt;</code> ~ <code>&lt;h6&gt;</code></td>
+<td align="left">标题（一级到六级）</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;p&gt;</code></td>
+<td align="left">段落</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;a href="https://..."&gt;文字&lt;/a&gt;</code></td>
+<td align="left">链接</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;img src="图片地址" alt="说明"&gt;</code></td>
+<td align="left">图片</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;div&gt;</code> / <code>&lt;span&gt;</code></td>
+<td align="left">块级容器 / 行内容器</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;ul&gt;&lt;li&gt;</code> / <code>&lt;ol&gt;&lt;li&gt;</code></td>
+<td align="left">无序 / 有序列表</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;table&gt;&lt;tr&gt;&lt;th&gt;&lt;td&gt;</code></td>
+<td align="left">表格（行 / 表头 / 单元格）</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;form&gt;</code> / <code>&lt;input&gt;</code></td>
+<td align="left">表单 / 输入框</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;button&gt;</code></td>
+<td align="left">按钮</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;br&gt;</code> / <code>&lt;hr&gt;</code></td>
+<td align="left">换行 / 分隔线</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;!-- 注释 --&gt;</code></td>
+<td align="left">注释</td>
+</tr>
+<tr>
+<td align="left"><code>&lt;header&gt; &lt;nav&gt; &lt;main&gt; &lt;footer&gt;</code></td>
+<td align="left">语义结构标签（替代满屏 div）</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="七、CSS"><a href="#七、CSS" class="headerlink" title="七、CSS"></a>七、CSS</h1><h2 id="1-选择器"><a href="#1-选择器" class="headerlink" title="1. 选择器"></a>1. 选择器</h2><table>
+<thead>
+<tr>
+<th align="left">写法</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>p</code></td>
+<td align="left">标签选择器</td>
+</tr>
+<tr>
+<td align="left"><code>.class</code></td>
+<td align="left">类选择器（最常用）</td>
+</tr>
+<tr>
+<td align="left"><code>#id</code></td>
+<td align="left">ID 选择器</td>
+</tr>
+<tr>
+<td align="left"><code>div p</code></td>
+<td align="left">后代选择器（div 里的 p）</td>
+</tr>
+<tr>
+<td align="left"><code>a:hover</code></td>
+<td align="left">伪类（悬停状态）</td>
+</tr>
+<tr>
+<td align="left"><code>li:first-child</code></td>
+<td align="left">第一个子元素</td>
+</tr>
+</tbody></table>
+<h2 id="2-常用写法（改主题高频）"><a href="#2-常用写法（改主题高频）" class="headerlink" title="2. 常用写法（改主题高频）"></a>2. 常用写法（改主题高频）</h2><figure class="highlight css"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 变量：定义一次、全站引用（本项目 custom.css 大量使用） */</span></span><br><span class="line"><span class="selector-pseudo">:root</span> { <span class="attr">--main-color</span>: <span class="number">#49b1f5</span>; }</span><br><span class="line"><span class="selector-tag">a</span> { <span class="attribute">color</span>: <span class="built_in">var</span>(--main-color); }</span><br><span class="line"></span><br><span class="line"><span class="comment">/* Flex 布局：一行搞定居中 / 分散 */</span></span><br><span class="line"><span class="selector-class">.box</span> {</span><br><span class="line">  <span class="attribute">display</span>: flex;</span><br><span class="line">  <span class="attribute">justify-content</span>: space-between;  <span class="comment">/* 两端对齐 */</span></span><br><span class="line">  <span class="attribute">align-items</span>: center;             <span class="comment">/* 垂直居中 */</span></span><br><span class="line">  <span class="attribute">gap</span>: <span class="number">10px</span>;                       <span class="comment">/* 子元素间距 */</span></span><br><span class="line">}</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 盒模型 */</span></span><br><span class="line"><span class="selector-class">.card</span> { <span class="attribute">margin</span>: <span class="number">10px</span>; <span class="attribute">padding</span>: <span class="number">16px</span>; <span class="attribute">border</span>: <span class="number">1px</span> solid <span class="number">#eee</span>; <span class="attribute">border-radius</span>: <span class="number">8px</span>; }</span><br><span class="line"></span><br><span class="line"><span class="comment">/* 绝对定位：父相子绝 */</span></span><br><span class="line"><span class="selector-class">.parent</span> { <span class="attribute">position</span>: relative; }</span><br><span class="line"><span class="selector-class">.child</span>  { <span class="attribute">position</span>: absolute; <span class="attribute">top</span>: <span class="number">0</span>; <span class="attribute">right</span>: <span class="number">0</span>; }</span><br></pre></td></tr></tbody></table></figure>
+
+<hr>
+<h1 id="八、JavaScript"><a href="#八、JavaScript" class="headerlink" title="八、JavaScript"></a>八、JavaScript</h1><table>
+<thead>
+<tr>
+<th align="left">语法</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>let x = 1</code> / <code>const y = 2</code></td>
+<td align="left">变量 / 常量</td>
+</tr>
+<tr>
+<td align="left"><code>`共 ${n} 篇`</code></td>
+<td align="left">模板字符串（变量直接嵌进文字）</td>
+</tr>
+<tr>
+<td align="left"><code>const add = (a, b) =&gt; a + b</code></td>
+<td align="left">箭头函数</td>
+</tr>
+<tr>
+<td align="left"><code>arr.map(x =&gt; x * 2)</code></td>
+<td align="left">数组逐项变换</td>
+</tr>
+<tr>
+<td align="left"><code>arr.filter(x =&gt; x &gt; 0)</code></td>
+<td align="left">数组筛选</td>
+</tr>
+<tr>
+<td align="left"><code>arr.forEach(x =&gt; console.log(x))</code></td>
+<td align="left">数组遍历</td>
+</tr>
+<tr>
+<td align="left"><code>document.querySelector('.cls')</code></td>
+<td align="left">查找元素</td>
+</tr>
+<tr>
+<td align="left"><code>el.addEventListener('click', fn)</code></td>
+<td align="left">绑定事件</td>
+</tr>
+<tr>
+<td align="left"><code>document.createElement('div')</code></td>
+<td align="left">创建元素</td>
+</tr>
+<tr>
+<td align="left"><code>JSON.parse(s)</code> / <code>JSON.stringify(o)</code></td>
+<td align="left">JSON 字符串 ↔ 对象</td>
+</tr>
+<tr>
+<td align="left"><code>setTimeout(fn, 1000)</code></td>
+<td align="left">1 秒后执行一次</td>
+</tr>
+<tr>
+<td align="left"><code>try { ... } catch (e) { ... }</code></td>
+<td align="left">异常捕获</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="九、Python"><a href="#九、Python" class="headerlink" title="九、Python"></a>九、Python</h1><table>
+<thead>
+<tr>
+<th align="left">语法</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><code>print(f"共 {n} 篇")</code></td>
+<td align="left">f-string 格式化输出</td>
+</tr>
+<tr>
+<td align="left"><code>nums = [1, 2, 3]</code> / <code>d = {"a": 1}</code></td>
+<td align="left">列表 / 字典</td>
+</tr>
+<tr>
+<td align="left"><code>nums[0]</code> / <code>nums[1:3]</code></td>
+<td align="left">取元素 / 切片</td>
+</tr>
+<tr>
+<td align="left"><code>for i in range(10):</code></td>
+<td align="left">循环 0~9</td>
+</tr>
+<tr>
+<td align="left"><code>def add(a, b=1): return a + b</code></td>
+<td align="left">函数（带默认参数）</td>
+</tr>
+<tr>
+<td align="left"><code>with open("f.txt", encoding="utf-8") as f:</code></td>
+<td align="left">读文件（自动关闭，防乱码）</td>
+</tr>
+<tr>
+<td align="left"><code>try: ... except Exception as e:</code></td>
+<td align="left">异常捕获</td>
+</tr>
+<tr>
+<td align="left"><code>if __name__ == "__main__":</code></td>
+<td align="left">被直接运行时才执行的入口</td>
+</tr>
+<tr>
+<td align="left"><code>pip install -r requirements.txt</code></td>
+<td align="left">按清单装依赖</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="十、C"><a href="#十、C" class="headerlink" title="十、C"></a>十、C</h1><figure class="highlight c"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdio.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">int</span> <span class="title function_">main</span><span class="params">(<span class="type">void</span>)</span> {</span><br><span class="line">    <span class="type">int</span> n = <span class="number">10</span>;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">"n = %d\n"</span>, n);        <span class="comment">/* %d 整数、%f 浮点、%s 字符串 */</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; n; i++) { <span class="comment">/* 循环体 */</span> }</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">}</span><br></pre></td></tr></tbody></table></figure>
+
+<table>
+<thead>
+<tr>
+<th align="left">要点</th>
+<th align="left">写法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">编译运行</td>
+<td align="left"><code>gcc hello.c -o hello</code> 然后 <code>./hello</code></td>
+</tr>
+<tr>
+<td align="left">格式符</td>
+<td align="left"><code>%d</code> 整数、<code>%f</code> 浮点、<code>%s</code> 字符串、<code>%c</code> 字符</td>
+</tr>
+<tr>
+<td align="left">指针</td>
+<td align="left"><code>int *p = &amp;n;</code> —— <code>&amp;</code> 取地址、<code>*</code> 取内容</td>
+</tr>
+<tr>
+<td align="left">注释</td>
+<td align="left"><code>/* 块注释 */</code> 与 <code>// 行注释</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="十一、学习站点导航"><a href="#十一、学习站点导航" class="headerlink" title="十一、学习站点导航"></a>十一、学习站点导航</h1><table>
+<thead>
+<tr>
+<th align="left">分类</th>
+<th align="left">站点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Markdown</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/markdown/md-tutorial.html">菜鸟教程</a></td>
+</tr>
+<tr>
+<td align="left">Markdown</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.typora.net/382.html">Markdown 参考文档-Typora中文网</a></td>
+</tr>
+<tr>
+<td align="left">Markdown</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.typora.net/1606.html">Typora – Markdown 语法说明-Typora中文网</a></td>
+</tr>
+<tr>
+<td align="left">Typora</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.typora.net/1329.html">基本功能介绍</a>、<a target="_blank" rel="noopener" href="https://www.typora.net/691.html">使用功能介绍</a>、<a target="_blank" rel="noopener" href="https://www.typora.net/661.html">快速上手</a>、<a target="_blank" rel="noopener" href="https://www.typora.net/630.html">常用快捷键</a>、<a target="_blank" rel="noopener" href="https://www.typora.net/527.html">使用教程</a>、<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/636007909">Typora使用教程-知乎</a></td>
+</tr>
+<tr>
+<td align="left">Hexo</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://hexo.io/zh-cn/docs/">Hexo文档</a></td>
+</tr>
+<tr>
+<td align="left">Hexo</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.fomal.cc/posts/e593433d.html">Hexo博客搭建基础教程-Fomalhaut🥝</a>、<a target="_blank" rel="noopener" href="https://blog.csdn.net/liudonglovehemin/category_12345252.html">Hexo建站-korgs CSDN</a>、<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_58608526/article/details/129651733">个人小站折腾后记-LeoToJavaer</a>、<a target="_blank" rel="noopener" href="https://www.siax.cn/posts/54683/">hexo备忘录-Siax’s Blog</a></td>
+</tr>
+<tr>
+<td align="left">Butterfly</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://butterfly.js.org/pages/5092/">主题文档-标签插件</a></td>
+</tr>
+<tr>
+<td align="left">CMD</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://learn.microsoft.com/zh-cn/windows-server/administration/windows-commands/windows-commands">Windows 命令-Microsoft</a></td>
+</tr>
+<tr>
+<td align="left">Git</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/git/git-tutorial.html">菜鸟教程</a></td>
+</tr>
+<tr>
+<td align="left">Linux</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/linux/linux-tutorial.html">菜鸟教程</a></td>
+</tr>
+<tr>
+<td align="left">HTML</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/html/html-tutorial.html">菜鸟教程</a></td>
+</tr>
+<tr>
+<td align="left">CSS / JS</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/css/css-tutorial.html">CSS 教程</a>、<a target="_blank" rel="noopener" href="https://www.runoob.com/js/js-tutorial.html">JavaScript 教程</a></td>
+</tr>
+<tr>
+<td align="left">C\C++</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/cprogramming/c-tutorial.html">C 语言教程-菜鸟教程</a>、<a target="_blank" rel="noopener" href="https://www.runoob.com/cplusplus/cpp-tutorial.html">C++ 教程-菜鸟教程</a></td>
+</tr>
+<tr>
+<td align="left">Python</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/python3/python3-tutorial.html">菜鸟教程</a></td>
+</tr>
+<tr>
+<td align="left">Android</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/android-tutorial-intro.html">菜鸟教程</a></td>
+</tr>
+<tr>
+<td align="left">Arduino</td>
+<td align="left"><a target="_blank" rel="noopener" href="http://www.taichi-maker.com/">Arduino, ESP8266物联网的应用-太极创客</a></td>
+</tr>
+<tr>
+<td align="left">Blinker</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://diandeng.tech/doc">点灯开发文档</a></td>
+</tr>
+<tr>
+<td align="left">ESP32</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://www.xutoubee.cn/">小电视-🐸</a></td>
+</tr>
+<tr>
+<td align="left">综合</td>
+<td align="left"><a target="_blank" rel="noopener" href="https://yuyuanweb.feishu.cn/wiki/KSrdwPbuPiVjuvkPvd6cWLKgnCg">编程 求职指南-鱼皮</a></td>
+</tr>
+</tbody></table>
+</article><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/2023/08/shi-ji/index.html" title="诗记"><div class="cover" style="background: var(--btn-bg)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">诗记</div></div><div class="info-2"><div class="info-item-1">真知灼见志合者，不以山河为远；道乖者，不以咫尺为近。 九层之台，起于累土，千里之行，始于足下。 淡泊以明志，宁静以致远。 故天将降大任于斯人矣，必先苦其心志，劳其筋骨，饿其体肤，空乏其身，行拂乱其所为。 纸上学来终觉浅，绝知此事要躬行。 树欲静而风不止，子欲养而亲不待。 以铜为鉴，可以正衣冠；以人为鉴，可以明得失；以史为鉴，可以知兴替。 火形严而人鲜灼，水形懦而人多溺。 穷则独善其身，达则兼济天下。 阡陌葳蕤动天地而泣鬼神，和四时而育万物。 沾衣欲湿杏花雨，吹面不寒杨柳风。 夕阳无限好，只是近黄昏。 铁马冰河纵一苇之所如，凌万顷之茫然。 浩浩乎如冯虚御风，而不知其所止，飘飘乎如遗世独立，羽化而登仙。 举世皆浊我独清，众人皆醉我独醒。 长风破浪会有时，直挂云帆济沧海。 海阔凭鱼跃，天高任鸟飞。 双鬓多年作雪，寸心至死如丹。 落红不是无情物，化作春泥更护花。 苟利国家生死以，岂因祸福避趋之。 各人自扫门前雪，哪管他人瓦上霜。 为天下立心，为生民立命，为往事继绝学，为万世开太平。 逝者如斯今人不见古时月，今月曾经照古人。古人今人若流水，共看明月皆如此。 江畔何人初见月？江月何年初照人？...</div></div></div></a><a class="pagination-related" href="/2023/09/dian-nao-pei-zhi-intel/index.html" title="电脑配置Intel"><div class="cover" style="background: var(--btn-bg)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">电脑配置Intel</div></div><div class="info-2"><div class="info-item-1">电脑配置IntelCPUi5 12490f 散片  主板华硕 H610M-A MATX 2*M2 PCIE4 M2网口  显卡盈通 RTX4060 大地之神 8G  内存科赋 DDR4 3200MHZ 16G*2  储存西数 1TB M2 PCIe4*4  长城 GT6 1TB SATA3.0  电源鑫谷 GM650 金牌全模组 650W  机箱先马 趣造 22L 散热利民  网卡AX210 PCIe卡槽  风扇利民 TL-C12C 黑-无光×2  冰蝶 8015 黑-无光  价格   CPU＋主板 显卡 内存 固态 电源 机箱 散热 风扇 网卡 ==合计==    1449 2098 459 389+269 359 200 89 30+17 88 ==5447==   功率   CPU 显卡 ==合计==    117 115 ==232==   参考文献中端CPU大乱斗，谁才是性价比之王？UP：天才赵德柱 document.getElementById("video").style.height=document.getElementById("video").scrollW...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81Markdown-%E5%B8%B8%E7%94%A8%E8%AF%AD%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">一、Markdown 常用语法</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81Hexo"><span class="toc-number">2.</span> <span class="toc-text">二、Hexo</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E6%96%87%E7%AB%A0-Front-Matter%EF%BC%88%E6%9C%AC%E9%A1%B9%E7%9B%AE%E5%AE%9E%E9%99%85%E5%9C%A8%E7%94%A8%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">1. 文章 Front-Matter（本项目实际在用）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-Butterfly-%E6%A0%87%E7%AD%BE%E6%8F%92%E4%BB%B6%EF%BC%88%E6%96%87%E4%B8%AD%E6%8F%92%E5%85%A5%E7%89%B9%E6%AE%8A%E5%9D%97%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">2. Butterfly 标签插件（文中插入特殊块）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81Git"><span class="toc-number">3.</span> <span class="toc-text">三、Git</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">3.1.</span> <span class="toc-text">1. 工作流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B8%B8%E7%94%A8%E6%93%8D%E4%BD%9C%E5%8F%A5%E5%BC%8F"><span class="toc-number">3.2.</span> <span class="toc-text">2. 常用操作句式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#3-gitignore-%E8%AF%AD%E6%B3%95"><span class="toc-number">3.3.</span> <span class="toc-text">3. .gitignore 语法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E7%BB%88%E7%AB%AF-Linux-%E8%AF%AD%E6%B3%95%EF%BC%88Git-Bash-%E9%80%9A%E7%94%A8%EF%BC%89"><span class="toc-number">4.</span> <span class="toc-text">四、终端 &#x2F; Linux 语法（Git Bash 通用）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%94%E3%80%81CMD%EF%BC%88Windows-%E5%8E%9F%E7%94%9F%EF%BC%89"><span class="toc-number">5.</span> <span class="toc-text">五、CMD（Windows 原生）</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AD%E3%80%81HTML"><span class="toc-number">6.</span> <span class="toc-text">六、HTML</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%83%E3%80%81CSS"><span class="toc-number">7.</span> <span class="toc-text">七、CSS</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%80%89%E6%8B%A9%E5%99%A8"><span class="toc-number">7.1.</span> <span class="toc-text">1. 选择器</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E5%B8%B8%E7%94%A8%E5%86%99%E6%B3%95%EF%BC%88%E6%94%B9%E4%B8%BB%E9%A2%98%E9%AB%98%E9%A2%91%EF%BC%89"><span class="toc-number">7.2.</span> <span class="toc-text">2. 常用写法（改主题高频）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%85%AB%E3%80%81JavaScript"><span class="toc-number">8.</span> <span class="toc-text">八、JavaScript</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B9%9D%E3%80%81Python"><span class="toc-number">9.</span> <span class="toc-text">九、Python</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%81%E3%80%81C"><span class="toc-number">10.</span> <span class="toc-text">十、C</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%8D%81%E4%B8%80%E3%80%81%E5%AD%A6%E4%B9%A0%E7%AB%99%E7%82%B9%E5%AF%BC%E8%88%AA"><span class="toc-number">11.</span> <span class="toc-text">十一、学习站点导航</span></a></li></ol></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2023.07 - 2026 By Scy</span></div><div class="footer_custom_text">在这个智商过剩，利益至上的年代；<br/>💖💖💖诚挚和走心显得格外有质感！💖💖💖</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/pluginsSrc/@fancyapps/ui/dist/fancybox/fancybox.umd.js"></script><script src="/pluginsSrc/instant.page/instantpage.js" type="module"></script><script src="/pluginsSrc/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/pluginsSrc/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script src="/js/bangumi-view.js"></script><script src="/js/album-menu.js"></script><script src="/js/toc-details.js"></script><script src="/js/img-fallback.js"></script><script async data-pjax src="https://events.vercount.one/js"></script></div></body></html>

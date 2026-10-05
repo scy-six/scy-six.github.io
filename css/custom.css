@@ -706,6 +706,93 @@ blockquote {
 }
 
 /* =============================================================================
+ * 九、友情链接（about 页「十年之约」下方）
+ * -----------------------------------------------------------------------------
+ * 分组标题 + 头像卡片网格（圆形头像 / 名称 / 简介）。数据源 source/about/data.yml 的
+ * friend_links（增删只动该文件）。配色全部走主题变量（--card-bg / --light-grey /
+ * --default-bg-color / --font-color），与 .ten-year / .about-card 观感统一，
+ * 自动适配亮色 / 暗色 / 阅读模式。
+ * ========================================================================== */
+.friend-links__group + .friend-links__group {
+  margin-top: var(--space-lg);
+}
+.friend-links__title {
+  margin: 0 0 var(--space-md);
+  font-size: var(--fs-body);
+  font-weight: 600;
+  color: var(--font-color);
+  opacity: var(--opacity-secondary);
+}
+.friend-links__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: var(--space-md);
+}
+.friend-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-md) var(--space-sm);
+  text-decoration: none;
+  background: color-mix(in srgb, var(--card-bg) 88%, var(--light-grey) 12%);
+  border: 1px solid var(--light-grey);
+  border-radius: var(--radius-lg);
+  transition: transform var(--transition-slow), box-shadow var(--transition-slow);
+}
+.friend-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+.friend-card__avatar {
+  position: relative; /* 供 img 绝对定位铺满 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  background: var(--light-grey);
+  border: 1px solid var(--light-grey);
+  border-radius: 50%;
+  color: var(--font-color);
+  font-size: var(--fs-card);
+  font-weight: 600;
+  transition: transform var(--transition-slow);
+}
+.friend-card:hover .friend-card__avatar {
+  transform: scale(1.08);
+}
+.friend-card__avatar img {
+  /* 绝对定位 + inset:0 强制盒子恒等于圆圈：不受主题全局 img 规则与图片原始
+     尺寸/比例影响，再由 object-fit:cover 始终居中裁剪——
+     杜绝「显示不全 / 靠上 / 没居中」。 */
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.friend-card__name {
+  margin-top: var(--space-sm);
+  font-size: var(--fs-card);
+  font-weight: 600;
+  color: var(--default-bg-color);
+}
+.friend-card__desc {
+  margin-top: 2px;
+  font-size: var(--fs-body);
+  color: var(--font-color);
+  opacity: var(--opacity-secondary);
+  /* 简介最多两行，超出省略，保证所有卡片等高 */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* =============================================================================
  * 十、个人介绍卡片（card-info）去链接化
  * 文章数/分类改为纯文本（不再跳转），标签项已从模板移除。
  * .site-data-item 替代原 <a>，保持 table-cell 布局观感。
@@ -719,22 +806,64 @@ blockquote {
 }
 
 /* =============================================================================
- * 第八节：页脚半透明（Butterfly 5 兼容）
- * Butterfly 5 已移除 footer_bg 配置键，页脚回退为默认实色（蓝）。
- * 此处令 #footer 背景透明，露出站点壁纸；配合 _config.butterfly.yml 的
- * mask.footer:true 半透遮罩，还原升级前「半透明底栏」效果。
+ * 第八节：页脚（主题青绿半透明 + 白字，与导航栏同款「半透 + 毛玻璃」）
+ * 2026-10-05 起曾把页脚做成 rgba(255,255,255,.45) 半透明白底，意图与顶部导航栏统一；
+ *   但该底既不透明也无模糊，背后花哨壁纸直接透出、混成脏灰，对比度低、小字发虚
+ *   （2026-10-06 反馈「太亮、没质感、字看不清」） → 先改主题青绿实底 + 白字。
+ * 实底与导航栏（rgba(255,255,255,.7)+blur 的半透）反差过大，同日再调为「青绿半透明 + 轻模糊」：
+ *   background 用 color-mix(主题主色 64% + 透明)，跟随 theme_color.main 且明暗同色；
+ *   backdrop-filter blur(8px) 与导航栏同语言，透出壁纸但糊成柔和青绿雾面，上下呼应。
+ *   白/浅色字（对比度仍达 AA）保证小字清晰；顶部发丝线 + 上投影保留「收尾压条」质感。
+ *   mask.footer 仍关（见 _config.butterfly.yml），不叠主题黑色 ::before 遮罩。
  * ========================================================================== */
-/* Butterfly 5 已移除 footer_bg 配置键，页脚回退为默认实色（蓝）。
- * 改为深色半透明背景，露出站点壁纸，还原升级前的「暗调毛玻璃底栏」效果。
- * 亮/暗模式均用深色基底 + 不同不透明度。 */
-#footer {
-  background: rgba(0, 0, 0, 0.35);
-  font-size: var(--fs-body);
+
+/* 导航栏降不透明度（覆盖主题 head.styl，选择器同特异性、本文件后加载取胜）：
+   固定态亮 .7→.55 / 暗 .8→.65；无头图页顶栏亮 .8→.6 */
+#page-header.nav-fixed #nav {
+  background: rgba(255, 255, 255, 0.55);
+}
+#page-header.not-top-img #nav {
+  background: rgba(255, 255, 255, 0.6);
+}
+[data-theme="dark"] #page-header.nav-fixed > #nav,
+[data-theme="dark"] #page-header.not-top-img > #nav {
+  background: rgba(18, 18, 18, 0.65);
 }
 
-[data-theme="dark"] #footer,
-.theme-dark #footer {
-  background: rgba(0, 0, 0, 0.55);
+#footer {
+  /* 主题主色半透明 + 轻模糊：与顶部导航栏同一套「半透 + 毛玻璃」配方（导航栏 rgba(255,255,255,.7)+blur），
+     上下呼应、反差收敛；color-mix 让透明度跟随主题色变化（fallback 退实底）。 */
+  background: var(--default-bg-color); /* fallback：不支持 color-mix 时用实底 */
+  background: color-mix(in srgb, var(--default-bg-color) 50%, transparent);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 -2px 12px -4px rgba(0, 0, 0, 0.28);
+  font-size: var(--fs-body);
+  color: var(--white, #fff);
+}
+
+/* 高度自适应：主题 .footer-flex / .footer-other 写死 40px 上下内边距把底栏撑高，
+   收小后高度随内容走（2026-10-05 用户要求去掉固定感；本段保留，与底色改动无关） */
+#footer .footer-flex {
+  padding: 16px 20px;
+}
+#footer .footer-other {
+  padding: 16px 20px;
+}
+
+#footer .copyright,
+#footer .framework-info,
+#footer .footer_custom_text,
+#footer a {
+  /* 深青绿底上用浅色字：.92 白保证小字清晰，字重 500 提一档存在感 */
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 500;
+}
+
+#footer a:hover {
+  /* 主题原 hover 是同底青绿（$light-blue），在青绿底上会消失；改为纯白提亮 */
+  color: #fff;
 }
 
 #footer .copyright,
@@ -1102,9 +1231,9 @@ html.with-fancybox body {
   padding: 8px .2em;
   font-size: var(--fs-body);
   min-height: 723px;   /* 桌面端（≥900px）高度由下方「主列 flex 填充」结构决定；此下限供 769–899px 等无侧栏并排的场景维持「展开/折叠两态高度一致」 */
-  display: flex;       /* 让 min-height 撑出的余量上下均分，折叠态上下留白仍对称 */
+  display: flex;       /* 树贴卡片顶部对齐：撑出的余量全部落在底部 */
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   position: relative;  /* 承载连线层 SVG（绝对定位覆盖整棵树） */
 }
 /* 首页主内容卡片：主题 .layout > div:first-child 默认 padding:50px 40px（为文章流分页器预留），
