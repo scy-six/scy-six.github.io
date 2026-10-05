@@ -75,12 +75,19 @@
       return b.bestDist - a.bestDist;
     });
     var W = 1000;
-    var padL = 150; // 左侧山峰名
-    var padR = 70; // 右侧数值
     var padT = 10;
     var padB = 20;
     var rowH = 30;
     var H = padT + padB + data.length * rowH;
+    // GLM 反馈（2026-10-05）：原 padL=150 写死，山名普遍只有 3-4 字，左侧空隙过大、
+    // 柱区比下方「累计攀登」折线图（mL=56/mR=24，绘图区占 92%）窄一圈。改为按最长
+    // 山名自适应（CJK 字形宽 ≈ 1em = 字号 15），与折线图两侧空隙尽量视觉对齐。
+    var maxNameLen = 0;
+    data.forEach(function (d) {
+      maxNameLen = Math.max(maxNameLen, String(d.name || "").length);
+    });
+    var padL = Math.max(56, Math.min(150, maxNameLen * 15 + 14)); // 15=字号单位宽，14=名字与柱的间距
+    var padR = 70; // 右侧数值
     var barX0 = padL;
     var barMax = W - padL - padR;
     var maxDist = 0;
@@ -237,15 +244,26 @@
       var cx = px(k),
         cyv = py(cum[k]);
       var isLast = k === n - 1;
-      svg.appendChild(
-        el("circle", {
-          class: isLast ? "mc-dot-last" : "mc-dot",
-          cx: cx,
-          cy: cyv,
-          r: isLast ? 6 : 4
-        })
-      );
+      var dot = el("circle", {
+        class: isLast ? "mc-dot-last" : "mc-dot",
+        cx: cx,
+        cy: cyv,
+        r: isLast ? 6 : 4
+      });
+      dot.setAttribute("data-tip", data[k].bestDate + " · 累计 " + fmt(cum[k]) + " km");
+      svg.appendChild(dot);
+      // 命中放大：叠一个透明 r=10 命中区（仅承接悬浮，不显示）
+      var hit = el("circle", { class: "mc-hit", cx: cx, cy: cyv, r: 10 });
+      hit.setAttribute("data-tip", data[k].bestDate + " · 累计 " + fmt(cum[k]) + " km");
+      svg.appendChild(hit);
     }
+    // 悬浮说明气泡：mousemove 委托到 SVG 根（每张图一个监听，非逐点监听）
+    svg.addEventListener("mousemove", function (e) {
+      var t = e.target && e.target.getAttribute ? e.target.getAttribute("data-tip") : null;
+      if (t) ChartAxis.showTip(e.clientX, e.clientY, t);
+      else ChartAxis.hideTip();
+    });
+    svg.addEventListener("mouseleave", ChartAxis.hideTip);
 
     // 横轴：6 个均匀时间刻度 + 竖直网格线（短跨度自适应到日，相邻重复标签只留一个）
     var xN = 6,
@@ -365,11 +383,8 @@
     if (!window.MOUNTAIN_RECORDS || !window.MOUNTAIN_RECORDS.length) return;
     initialized = true;
     render();
-    if (window.MutationObserver) {
-      new MutationObserver(function () {
-        render();
-      }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    }
+    /* GLM 报告 §3.2#15：原「监听 data-theme 变化整图重绘」已删除——
+       图表颜色全部走 CSS 变量，主题切换自动变色，重绘产物与旧 DOM 完全相同。 */
   }
 
   if (document.readyState === "loading") {

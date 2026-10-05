@@ -30,6 +30,41 @@
   --bp-sm: 480px;
   --bp-md: 768px;
   --bp-lg: 992px;
+
+/* travel 页目录（TOC）隐藏自动编号（2026-10-04）：
+   主题 toc.number 会给目录加「4.」「4.1.」这类前缀，对旅行页是纯噪音——
+   一级本就是年份、二级改为「月份 名称」。用 body:has(#travel-page-marker)
+   把规则限定在 travel 页（页面正文放了隐藏标记元素）；其他页面编号不受影响。
+   ⚠ 不能把这条规则写进 travel/index.html 的 <style>：实测 Hexo 渲染 .html 页面
+   时正文里的 <style> 块会被丢弃（<script> 可存活），故必须放在本文件。 */
+body:has(#travel-page-marker) .toc .toc-number {
+  display: none;
+}
+
+/* ── 十四、图表悬浮说明气泡（keepfit / mountain 手绘 SVG 共用）──
+   单实例浮层：数据点带 data-tip，图表容器 mousemove 委托显示（见 charts-axis.js）。
+   fixed 定位跟随鼠标；pointer-events:none 使浮层永不挡住鼠标。 */
+.mc-tooltip {
+  position: fixed;
+  z-index: 1001;
+  display: none;
+  max-width: 260px;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--tab-border-color);
+  border-radius: var(--radius-sm);
+  background: var(--card-bg);
+  color: var(--font-color);
+  font-size: var(--fs-meta);
+  box-shadow: var(--card-box-shadow);
+  pointer-events: none;
+  white-space: nowrap;
+}
+/* 数据点的透明命中区：r=4 的点难点准，叠 r=10 的透明圆承接悬浮 */
+.keepfit-page .mc-hit,
+.mountain-page .mc-hit {
+  fill: transparent;
+  pointer-events: all;
+}
   /* 主题色（--default-bg-color）之上的前景文字色。表头渐变、徽章等
      以主题色为底的容器都应引用它，而不是直接写 #fff。
      2026-09-17：改用主题 --white（亮色 #fff / 暗色 rgba(255,255,255,.9)），随明暗自动切换。 */
@@ -964,25 +999,11 @@ html.with-fancybox body {
   position: relative;
   margin: 0;
   color: inherit;
-  /* 与框内 h2 同号（T3 16px）：此去经年的副标题写的是 <p>，其余页写 <h2>，
-     统一后两种写法外观一致，也都等于第三次元副标题的字号。 */
+  /* 全站副标题统一写 <p>（2026-10-05：原部分页写 <h2>，h2 会被统计进目录 TOC，
+     改为文本后不再进目录；字号沿用原 h2 覆盖值 T3 16px，外观不变）。 */
   font-size: var(--fs-card);
   font-weight: 600;
   line-height: var(--lh-loose); /* 原 1.8 */
-}
-
-/* 副标题框内 h2 覆盖：与 bangumis 的 .bangumi-quote 内的 h2 字号/间距保持一致，
- * 使全站副标题框（包括「第三次元」番剧页）视觉高度统一。
- * 显式覆盖主题默认 h2 的 margin / font-weight / line-height，避免全站 h2 样式污染。 */
-.page-subtitle > h2 {
-  position: relative;
-  margin: 0;
-  color: inherit;
-  font-size: var(--fs-card);
-  font-weight: 600;
-  line-height: var(--lh-loose); /* 原 1.8 */
-  border: none;
-  padding: 0;
 }
 
 /* 追番页「第三次元」副标题框（.bangumi-quote）：外观已回烤到插件 index.css，

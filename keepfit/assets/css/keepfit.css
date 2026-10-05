@@ -36,7 +36,7 @@
 
 .keepfit-section .hint {
   margin: -0.4rem 0 1rem;
-  font-size: var(--fs-meta);
+  font-size: var(--fs-body); /* GLM 报告 §3.2#12：与 mountain 页 .hint 统一为正文 14px */
   opacity: var(--opacity-tertiary);
   line-height: var(--lh-base); /* 原 1.6 */
 }
@@ -97,7 +97,7 @@
 }
 
 .keepfit-chart-sub {
-  font-size: var(--fs-meta);
+  font-size: var(--fs-body); /* GLM 报告 §3.2#12：与 mountain 页 .mountain-chart-sub 统一为正文 14px */
   opacity: var(--opacity-tertiary);
   margin: 0 0 0.9rem;
 }
@@ -121,7 +121,8 @@
 .keepfit-page .mc-axis-text {
   fill: var(--font-color);
   opacity: var(--opacity-secondary);
-  font-size: var(--fs-body);
+  /* SVG viewBox 宽 1000、实际渲染更窄 → 缩放 ≈0.93；+1px 补偿缩放（与 mountain 页一致） */
+  font-size: calc(var(--fs-body) + 1px);
 }
 .keepfit-page .mc-line {
   fill: none;
@@ -159,10 +160,10 @@
 [data-theme="dark"] .keepfit-page .mc-line.weight{ stroke: #b98fe8; }
 
 /* ── 4b. 速率图网格（每项独立一行，整行宽度） ─────────────────────────── */
-.keepfit-rate-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.4rem;
+.keepfit-h3 {
+  /* 运动名小标题（容器外）：字号/图标走主题 .container h3 元素样式，
+     这里只收紧与上下容器的间距 */
+  margin: 1.6rem 0 1rem;
 }
 
 /* 运动项着色（用于图表标题 / 趋势子标题，与图表三色一致） */
@@ -183,13 +184,10 @@
 [data-theme="dark"] .keepfit-h3.sport-swim { color: #ff9f43; }
 [data-theme="dark"] .keepfit-chart-title.sport-weight { color: #a06cd5; }
 
-/* ── 4c. 趋势图块（每项独立一行） ───────────────────────────────────────── */
-.keepfit-h3 {
-  font-size: var(--fs-card);
-  font-weight: 700;
-  margin: 1.5rem 0 0.7rem;
+/* ── 4c. 距离明细表（速率图下方，按日期降序） ───────────────────────────── */
+.keepfit-dist-chart {
+  margin-top: 1rem;
 }
-.keepfit-trend-block .keepfit-h3:first-child { margin-top: 0; }
 
 /* ── 5. 响应式 ─────────────────────────────────────────────────────────────
  * ⚠ 断点写死 px：@media 条件里用 var() 会被浏览器整条丢弃（规则从未生效），

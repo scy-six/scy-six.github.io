@@ -10,6 +10,7 @@
  *   - timeDomain(times)         真实时间戳域（带 3% 余量），用于横轴时间刻度
  *   - tickLabel(ts, spanMs)     时间刻度标签：跨度大 YY.MM；短跨度（≤90 天）YY.MM.DD
  *   - dMonth(ts)                时间戳 → YY.MM（保留兼容）
+ *   - showTip(x, y, text) / hideTip()  数据点悬浮说明气泡（全页单实例，fixed 跟随鼠标）
  * ========================================================================== */
 (function () {
   "use strict";
@@ -64,11 +65,38 @@
     return base + "." + dd;
   }
 
+  /* ── 悬浮说明气泡：全页单实例浮层，数据点带 data-tip，图表容器 mousemove 委托调用 ──
+   * 性能：无逐点监听（每张 SVG 图一个 mousemove + 一个 mouseleave），
+   *      浮层只创建一次、纯 textContent 更新、fixed 定位 —— 开销可忽略。 */
+  var tipEl = null;
+  function ensureTip() {
+    if (tipEl) return tipEl;
+    tipEl = document.createElement("div");
+    tipEl.className = "mc-tooltip";
+    document.body.appendChild(tipEl);
+    return tipEl;
+  }
+  function showTip(x, y, text) {
+    var t = ensureTip();
+    t.textContent = text;
+    t.style.display = "block";
+    var left = Math.min(x + 12, window.innerWidth - t.offsetWidth - 8);
+    var top = y - t.offsetHeight - 12;
+    if (top < 8) top = y + 16;
+    t.style.left = left + "px";
+    t.style.top = top + "px";
+  }
+  function hideTip() {
+    if (tipEl) tipEl.style.display = "none";
+  }
+
   window.ChartAxis = {
     niceScale: niceScale,
     niceAxis: niceAxis,
     timeDomain: timeDomain,
     tickLabel: tickLabel,
-    dMonth: dMonth
+    dMonth: dMonth,
+    showTip: showTip,
+    hideTip: hideTip
   };
 })();

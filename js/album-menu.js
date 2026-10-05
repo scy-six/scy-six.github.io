@@ -196,9 +196,6 @@
       document.addEventListener("click", onClick);
       document.addEventListener("keydown", onKeydown);
       window.addEventListener("hashchange", activateFromHash);
-      document.addEventListener("pjax:end", function () {
-        if (!activateFromHash()) activateDefault();
-      });
       window.__albumMenuBound = true;
     }
     if (!activateFromHash()) activateDefault();

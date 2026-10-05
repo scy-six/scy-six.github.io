@@ -190,7 +190,9 @@
 .mountain-page .mc-axis-text {
   fill: var(--font-color);
   opacity: var(--opacity-secondary);
-  font-size: var(--fs-body);
+  /* SVG viewBox 宽 1000、实际渲染约 930px → 缩放 ≈0.93，14px 实际只有 ~13px；
+     +1px 补偿缩放（2026-10-05 用户反馈图表文字偏小） */
+  font-size: calc(var(--fs-body) + 1px);
 }
 .mountain-page .mc-bar {
   fill: var(--default-bg-color);
@@ -202,12 +204,12 @@
 }
 .mountain-page .mc-bar-label {
   fill: var(--font-color);
-  font-size: var(--fs-body);
+  font-size: calc(var(--fs-body) + 1px); /* 同上：SVG 缩放补偿 */
   font-weight: 600;
 }
 .mountain-page .mc-name-label {
   fill: var(--font-color);
-  font-size: var(--fs-body);
+  font-size: calc(var(--fs-body) + 1px); /* 同上：SVG 缩放补偿 */
   font-weight: 500;
 }
 .mountain-page .mc-line {

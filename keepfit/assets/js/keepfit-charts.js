@@ -4,7 +4,7 @@
  * 数据：window.KEEPFIT_RECORDS（由 tools/gen_keepfit.py 从 运动记录.xlsx 生成）
  * 章节：
  *   1) 运动记录 —— 三项速率折线图（跑步/骑行=km/h，游泳=配速 min/100m 且纵轴反向，统一「越靠上越快」）
- *   2) 累计趋势 —— 三项运动各自记录表（含累计距离 km）
+ *   2) 每项运动：速率折线图（跑步/骑行 km/h、游泳配速 min/100m 且纵轴反向） + 距离折线图（km）
  * 设计：主题色走 CSS 变量；三项运动各配一色（跑=主色/骑=绿/游=橙）；亮/暗/阅读模式经 MutationObserver 自动重绘。
  * ========================================================================== */
 (function () {
@@ -28,6 +28,12 @@
 
   function byDate(a, b) {
     return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
+  }
+
+  function fmt(n) {
+    // 保留两位小数，去掉多余的 .00（与 mountain-charts 同口径）
+    var s = n.toFixed(2);
+    return s.replace(/\.00$/, "").replace(/(\.\d)0$/, "$1");
   }
 
   function isPace(sport) {
@@ -148,18 +154,37 @@
     });
     svg.appendChild(el("path", { class: "mc-line " + cls, d: parts.join("") }));
     pts.forEach(function (p) {
-      svg.appendChild(
-        el("circle", { class: "mc-dot " + cls, cx: pxDate(p.date), cy: py(p.v), r: 4 })
-      );
+      var dot = el("circle", { class: "mc-dot " + cls, cx: pxDate(p.date), cy: py(p.v), r: 4 });
+      if (p.tip) dot.setAttribute("data-tip", p.tip);
+      svg.appendChild(dot);
+      // 命中放大：r=4 的点难点准，叠一个透明 r=10 命中区（仅承接悬浮，不显示）
+      var hit = el("circle", { class: "mc-hit", cx: pxDate(p.date), cy: py(p.v), r: 10 });
+      if (p.tip) hit.setAttribute("data-tip", p.tip);
+      svg.appendChild(hit);
     });
+    // 悬浮说明气泡：mousemove 委托到 SVG 根（每张图一个监听，非逐点监听）
+    svg.addEventListener("mousemove", function (e) {
+      var t = e.target && e.target.getAttribute ? e.target.getAttribute("data-tip") : null;
+      if (t) ChartAxis.showTip(e.clientX, e.clientY, t);
+      else ChartAxis.hideTip();
+    });
+    svg.addEventListener("mouseleave", ChartAxis.hideTip);
     return svg;
   }
 
   /* ---------- 1) 速率/配速折线图（单系列，按日期） ---------- */
   function buildRateChart(sport, recs) {
+    var unit = isPace(sport) ? "min/100m" : "km/h";
+    var label = isPace(sport) ? "配速" : "速率";
     var pts = recs
       .map(function (r) {
-        return { sport: sport, date: r.date, v: rateOf(r) };
+        var v = rateOf(r);
+        return {
+          sport: sport,
+          date: r.date,
+          v: v,
+          tip: v == null ? null : fmt(v) + " " + unit
+        };
       })
       .filter(function (p) {
         return p.v != null;
@@ -174,15 +199,20 @@
     return drawLineChart(pts, vmin, vmax, { invert: isPace(sport) });
   }
 
-  /* ---------- 2) 累计趋势：单项累计距离折线图（y 从 0 起） ---------- */
-  function buildTrendChart(sport, recs) {
-    var rows = recs.slice().sort(byDate);
-    var cum = 0,
-      pts = [];
-    rows.forEach(function (r) {
-      cum += r.dist;
-      if (r.dist != null) pts.push({ sport: sport, date: r.date, v: cum });
-    });
+  /* ---------- 2) 距离折线图（与速率图同款，y 从 0 起，按日期升序） ---------- */
+  function buildDistChart(sport, recs) {
+    var pts = recs
+      .filter(function (r) {
+        return r.dist != null;
+      })
+      .map(function (r) {
+        return {
+          sport: sport,
+          date: r.date,
+          v: r.dist,
+          tip: fmt(r.dist) + " km"
+        };
+      });
     if (!pts.length) return null;
     var vmax = Math.max.apply(
       null,
@@ -197,7 +227,12 @@
   function buildWeightChart(records) {
     var pts = records
       .map(function (r) {
-        return { sport: "体重", date: r.date, v: r.weight };
+        return {
+          sport: "体重",
+          date: r.date,
+          v: r.weight,
+          tip: (r.weight != null ? fmt(r.weight) : "—") + " kg"
+        };
       })
       .filter(function (p) {
         return p.v != null;
@@ -231,12 +266,12 @@
         if (svg) box.appendChild(svg);
         else box.innerHTML = '<p class="hint">暂无数据</p>';
       }
-      var tbox = document.getElementById("trend-" + SPORT_CLASS[sp]);
-      if (tbox) {
-        tbox.innerHTML = "";
-        var tsvg = buildTrendChart(sp, recs);
-        if (tsvg) tbox.appendChild(tsvg);
-        else tbox.innerHTML = '<p class="hint">暂无数据</p>';
+      var dbox = document.getElementById("dist-" + SPORT_CLASS[sp]);
+      if (dbox) {
+        dbox.innerHTML = "";
+        var dsvg = buildDistChart(sp, recs);
+        if (dsvg) dbox.appendChild(dsvg);
+        else dbox.innerHTML = '<p class="hint">暂无数据</p>';
       }
     });
 
@@ -255,11 +290,9 @@
     if (!window.KEEPFIT_RECORDS || !window.KEEPFIT_RECORDS.length) return;
     initialized = true;
     render();
-    if (window.MutationObserver) {
-      new MutationObserver(function () {
-        render();
-      }).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    }
+    /* GLM 报告 §3.2#15：原「监听 data-theme 变化整图重绘」已删除——
+       图表颜色早已全部走 CSS 类/变量（.mc-line/.mc-dot 等），主题切换自动变色，
+       重绘产物与旧 DOM 完全相同，纯属每次切换白画一遍。 */
   }
 
   if (document.readyState === "loading") {
