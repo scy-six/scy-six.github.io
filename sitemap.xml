@@ -247,13 +247,6 @@
 
   
   <url>
-    <loc>https://www.scyx.fun/categories/%E5%AD%A6%E4%B9%A0/</loc>
-    <lastmod>2026-10-06</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://www.scyx.fun/categories/%E7%94%9F%E6%B4%BB/</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
@@ -261,7 +254,7 @@
   </url>
   
   <url>
-    <loc>https://www.scyx.fun/categories/%E7%94%B5%E8%84%91/</loc>
+    <loc>https://www.scyx.fun/categories/%E5%AD%A6%E4%B9%A0/</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
@@ -269,6 +262,13 @@
   
   <url>
     <loc>https://www.scyx.fun/categories/%E6%96%87%E6%91%98/</loc>
+    <lastmod>2026-10-06</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.scyx.fun/categories/%E7%94%B5%E8%84%91/</loc>
     <lastmod>2026-10-06</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
