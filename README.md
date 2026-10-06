@@ -2,18 +2,15 @@
 
 > **站点**：Scy's Blog
 > **副标题**：For Devotion, Keep Passion
-> **线上地址**：https://scy-six.github.io（GitHub Pages 主站）｜ 镜像 https://www.scyx.fun（EdgeOne Pages，一年期别名）｜ 永久发布页 https://linkdd.cn/scy（随域名更新）
+> **发布页**：https://linkdd.cn/scy（点点链接 ddlink.cc 托管）
 > **源码仓库**：https://gitee.com/scy-six/Scy-Blog （Gitee，源码托管与版本管理）
->
-> 本文介绍**发布的网页**：网页上有哪些栏目、每个页面展示什么内容、有什么交互效果。
-> 📌 **本文是访客向文档**（随部署发布到线上），**不承载维护细节**；维护者看 `README.md` 及根目录四份规范。文末「维护文档索引」仅作导航，已标注「不随站点发布」。
->
-> ⚠️ **本文件位于 `source/` 下但已列入 `skip_render`**，不参与页面渲染，随 `npm run deploy` 原样发布为 `/README.md`。
+> 
+>📌 本文介绍**发布的网页**：网页上有哪些栏目、每个页面展示什么内容、有什么交互效果。
+> **本文是访客向文档**（随部署发布到线上），**不承载维护细节**；
+> 
+>⚠️ **本文件位于 `source/` 下但已列入 `skip_render`**，不参与页面渲染，随 `npm run deploy` 原样发布为 `/README.md`。
 > 网页背后的项目结构、构建方式、技术细节见 `README.md`（项目说明）。
-
-> **架构说明**：源码托管在 Gitee、站点部署在 GitHub Pages（主站），两者分离；另经 EdgeOne Pages 发布 www.scyx.fun 镜像（一年期别名）——
-> `git push` 推 Gitee 只更新源码；发布站点需执行 `npm run deploy`（`hexo deploy` 推送 `public/` 到 GitHub Pages 仓库）。
-> 最后核对：2026-10-03（当日完成全量文档审查：页面清单 / 路径与实际产物逐条核对）。
+> 🔃 最后核对：2026-10-06（据当日调整：主站改 GitHub Pages、新增 Cloudflare Pages 备用、scyx.fun 为一年期自有域）。
 
 ---
 
@@ -23,8 +20,8 @@ Scy's Blog 是一个个人静态博客，承载三方面内容：
 
 | 板块 | 内容 |
 | ---- | ---- |
-| **博客文章** | 电脑配置、装机清单等文章 |
-| **兴趣记录** | 追番列表、QQ 空间说说档案、运动记录、登山记录、旅行相册 |
+| **博客文章** | 电脑、文摘、摄影、学习、生活 等 |
+| **兴趣记录** | 追番列表、生活记录、运动记录、旅行相册 等 |
 | **照片相册** | 宠物、花园、DIY、观鸟、钓鱼 等相册 |
 
 网页为纯静态页面，所有图片、脚本、样式均**自托管同源可用**（第三方库由 `hexo-butterfly-extjs` 从 `node_modules` 生成到 `public/pluginsSrc/` 同源加载，不依赖 jsDelivr 等外部 CDN），无外部统计与评论服务。
