@@ -1,5 +1,5 @@
 /* =============================================================================
- * 五相册统一网格样式（garden / angling / bird / diy / pet 共用）
+ * 五相册统一网格样式（garden / angling / camera / diy / pet 共用）
  * -----------------------------------------------------------------------------
  * 各相册脚本各自输出带本相册前缀的类名（garden-* / angling-* / … / pet-*），
  * 本文件用「分组选择器」一次性覆盖五套前缀，保证五相册视觉与交互完全一致，
@@ -25,7 +25,7 @@
  * ───────────────────────────────────────────────────────────────────────── */
 .garden-grid,
 .angling-grid,
-.bird-grid,
+.camera-grid,
 .diy-grid,
 .pet-grid {
   display: grid;
@@ -36,7 +36,7 @@
 /* ── 2. 单张卡片 ─────────────────────────────────────────────────────────── */
 .garden-card,
 .angling-card,
-.bird-card,
+.camera-card,
 .diy-card,
 .pet-card {
   display: flex;
@@ -55,7 +55,7 @@
 
 .garden-card:hover,
 .angling-card:hover,
-.bird-card:hover,
+.camera-card:hover,
 .diy-card:hover,
 .pet-card:hover {
   transform: translateY(-3px);
@@ -67,7 +67,7 @@
    图片用 contain 完整显示——横竖混排绝不裁切，多余空间留浅色背景。 */
 .garden-media,
 .angling-media,
-.bird-media,
+.camera-media,
 .diy-media,
 .pet-media {
   display: block;
@@ -78,7 +78,7 @@
 
 .garden-media img,
 .angling-media img,
-.bird-media img,
+.camera-media img,
 .diy-media img,
 .pet-media img {
   width: 100%;
@@ -94,7 +94,7 @@
 
 .garden-card:hover .garden-media img,
 .angling-card:hover .angling-media img,
-.bird-card:hover .bird-media img,
+.camera-card:hover .camera-media img,
 .diy-card:hover .diy-media img,
 .pet-card:hover .pet-media img {
   transform: scale(1.05);
@@ -108,7 +108,7 @@
  * 真实文字在 .*-filename（下方规则，继承此处白字）。 */
 .garden-info,
 .angling-info,
-.bird-info,
+.camera-info,
 .diy-info,
 .pet-info {
   position: absolute;
@@ -127,7 +127,7 @@
 
 .garden-filename,
 .angling-filename,
-.bird-filename,
+.camera-filename,
 .diy-filename,
 .pet-filename {
   display: block;
@@ -159,7 +159,7 @@
 /* ── 5. 空态 ────────────────────────────────────────────────────────────── */
 .garden-empty,
 .angling-empty,
-.bird-empty,
+.camera-empty,
 .diy-empty,
 .pet-empty {
   padding: 2rem 1rem;
@@ -181,7 +181,7 @@
  * 空 <a>（原靠主题 CSS 撑成整卡热区）塌陷 → 卡片看得见却点不动。
  * 故此处自建整套样式，与上面照片卡片风格一致，且不再依赖主题。
  * 适用：目前仅 pet（树状多地点相册）落地页仍出导航卡；
- *      angling / bird / diy 一直是单分组直出网格；
+ *      angling / camera / diy 一直是单分组直出网格；
  *      garden 自 2026-09-04 起也改为落地页直出网格，不再出导航卡。
  * 卡片结构（由 navCardHTML 输出，勿擅自加回名称/张数）：
  *      figure.gallery-group > img.gallery-group-img(alt 必须为空)
