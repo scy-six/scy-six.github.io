@@ -1231,5 +1231,37 @@ window.KEEPFIT_RECORDS = [
     "duration_h": 1.95,
     "speed": 16.92,
     "pace": null
+  },
+  {
+    "sport": "游泳",
+    "date": "2026-10-04",
+    "dist": 1.8,
+    "duration_h": 0.042,
+    "speed": null,
+    "pace": 2.5
+  },
+  {
+    "sport": "游泳",
+    "date": "2026-10-06",
+    "dist": 1.0,
+    "duration_h": 0.035,
+    "speed": null,
+    "pace": 2.0833
+  },
+  {
+    "sport": "骑行",
+    "date": "2026-10-06",
+    "dist": 60.19,
+    "duration_h": 3.3,
+    "speed": 18.24,
+    "pace": null
+  },
+  {
+    "sport": "骑行",
+    "date": "2026-10-10",
+    "dist": 29.92,
+    "duration_h": 1.75,
+    "speed": 17.1,
+    "pace": null
   }
 ];

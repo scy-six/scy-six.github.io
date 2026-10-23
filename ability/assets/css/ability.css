@@ -1,0 +1,332 @@
+/* =============================================================
+ * ability.css — 「能力水平达标」页样式
+ * -------------------------------------------------------------
+ * 设计语言：完全对齐 mountain.css（十万大山）/ keepfit.css 的主题卡片风格
+ *   · 全部以 .ability-page 前缀限定作用域，不污染全站其它页面
+ *   · 配色统一走 Butterfly 主题变量（--card-bg / --font-color / --tab-border-color
+ *     / --default-bg-color / --radius-card），亮 / 暗 / 阅读 三种模式自动适配
+ *   · 卡片质感（圆角 / 细描边 / 微阴影 / 悬停浮起）与全站 .card 一致
+ *   · 底色一律用 color-mix(in srgb, …) 派生，**不写死 rgba**（明暗自动适配）
+ *   · 字号 / 圆角 / 过渡 / 不透明度 / 行高 全部引用 custom.css 的 Design Token
+ *   · 内容容器跟随主题 .container（与 mountain / travel / 标准页同宽）
+ * =========================================================== */
+
+.ability-page {
+  /* 状态 / 档位取色：沿用首页树状图降饱和自然系（见《样式配置说明》§3.5） */
+  --ab-excellent: #4a9a8f;
+  --ab-advancing: #d08a5f;
+  --ab-weak: #bd6b6b;
+  --ab-tier-high: #4a9a8f;
+  --ab-tier-mid: #6a93b8;
+  --ab-tier-low: #d08a5f;
+  --ab-tier-none: #9aa3ab;
+
+  max-width: 100%;
+  margin: 0 auto;
+  /* 与 mountain.css 同：撑满父级 .container，左右内边距同标准页
+     （原 1rem 0 3rem 会让本页比标准页窄一圈且居中偏移） */
+  padding: 1rem 1.2rem 3rem;
+  color: var(--font-color);
+}
+
+/* ── 1. 区块与标题（与 mountain / keepfit 统一：标题样式交还主题，本文件只管间距） ── */
+.ability-section {
+  margin-bottom: 2.4rem;
+}
+
+/* 区块标题：**完全使用主题 h2 样式**（同 mountain / keepfit / travel），
+   只保留 margin 作布局取舍；改字号 / 颜色会让本页脱离主题标题色。 */
+.ability-h2 {
+  margin: 0 0 1.1rem;
+}
+
+.ability-section .ability-hint {
+  margin: -0.4rem 0 1rem;
+  font-size: var(--fs-body);
+  opacity: var(--opacity-tertiary);
+  line-height: var(--lh-base);
+}
+
+/* ── 2. 顶部「总览卡」（ability_overview） ─────────────────── */
+.ability-overview {
+  margin-bottom: 2.4rem;
+  padding: 1.2rem 1.3rem 1.4rem;
+  background: var(--card-bg);
+  border: 1px solid var(--tab-border-color);
+  border-radius: var(--radius-card);
+  box-shadow: var(--card-box-shadow);
+}
+
+/* 已填 x/y 个达标项 汇总行。
+   弱化用 color 带 alpha（而非 opacity）——否则会连累 <b> 一起变淡、大数字发灰。 */
+.ability-ov-summary {
+  margin: 0 0 1.1rem;
+  font-size: var(--fs-body);
+  color: color-mix(in srgb, var(--font-color) 75%, transparent);
+}
+
+/* 统计大数字：按数据页统一落点 --fs-num（同 mountain .num） */
+.ability-ov-summary b {
+  font-size: var(--fs-num);
+  font-weight: 800;
+  line-height: var(--lh-tight);
+  color: var(--default-bg-color);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 类别得分网格：所有类别铺成一个网格，用颜色区分所属大项（无文字标注） */
+.ability-ov-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+  gap: 0.6rem;
+}
+
+.ability-ov-card {
+  padding: 0.6rem 0.6rem 0.7rem;
+  background: var(--card-bg);
+  border: 1px solid var(--tab-border-color);
+  /* 左色条 = 所属大项（配色由渲染期 --big-color 提供） */
+  border-left: 3px solid var(--big-color, var(--tab-border-color));
+  border-radius: calc(var(--radius-card) * 0.7);
+  text-align: center;
+  box-shadow: var(--card-box-shadow);
+  transition: box-shadow var(--transition-slow), transform var(--transition-slow);
+}
+
+.ability-ov-card:hover {
+  box-shadow: var(--card-hover-box-shadow);
+  transform: translateY(-3px);
+}
+
+.ability-ov-card__name {
+  font-size: var(--fs-body);
+  font-weight: 500;
+}
+
+/* 类别得分：数据强调，按 --fs-num（同 mountain .num） */
+.ability-ov-card__score {
+  margin: 0.15rem 0 0.35rem;
+  font-size: var(--fs-num);
+  font-weight: 800;
+  line-height: var(--lh-tight);
+  color: var(--default-bg-color);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 进度条：轨道底色由主题文字色派生；填充色 = 所属大项色 */
+.ability-ov-card__bar {
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: color-mix(in srgb, var(--font-color) 12%, transparent);
+  overflow: hidden;
+}
+
+.ability-ov-card__bar > i {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--big-color, var(--ab-tier-mid));
+}
+
+/* ── 3. 大项 / 类别 / 项目 明细 ─────────────────────────────── */
+/* 说明：顶部总览卡（已填统计 + 类别得分）由 ability_overview 单独渲染；
+   这里只保留 大项 → 类别 → 项目 → 达标项 的三级明细。 */
+
+.ability-cat {
+  margin-bottom: 1.2rem;
+  padding: 0.9rem 1rem 1rem;
+  background: var(--card-bg);
+  border: 1px solid var(--tab-border-color);
+  border-radius: var(--radius-card);
+  box-shadow: var(--card-box-shadow);
+  transition: box-shadow var(--transition-slow);
+}
+
+.ability-cat:hover {
+  box-shadow: var(--card-hover-box-shadow);
+}
+
+.ability-cat__title {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0 0 0.7rem;
+  font-size: var(--fs-card);
+  font-weight: 700;
+  color: var(--font-color);
+}
+
+/* 达标状态徽章：仅保留「业余优秀」成就标记（进阶中 / 需补强不再显示） */
+.ability-cat__status {
+  font-size: var(--fs-badge);
+  padding: 0.05rem 0.5rem;
+  border-radius: var(--radius-pill);
+  color: var(--ab-excellent);
+  background: color-mix(in srgb, var(--ab-excellent) 16%, transparent);
+}
+
+.ability-cat__score {
+  margin-left: auto;
+  font-size: var(--fs-card);
+  font-weight: 700;
+  color: var(--default-bg-color);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 项目层：类别卡内的二级分组，权重写在项目名右侧 */
+.ability-proj {
+  margin-bottom: 0.8rem;
+}
+
+.ability-proj:last-child {
+  margin-bottom: 0;
+}
+
+.ability-proj__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 0.35rem;
+  font-size: var(--fs-card);
+  font-weight: 600;
+  color: var(--font-color);
+}
+
+.ability-proj__w {
+  font-size: var(--fs-meta);
+  font-weight: 400;
+  opacity: var(--opacity-tertiary);
+}
+
+/* ── 4. 达标项明细表（与 mountain-table 同款：表头淡底 + 居中 + 悬停淡底） ── */
+.ability-table {
+  width: 100%;
+  /* 定宽布局：配合 colgroup 的百分比宽度，各列比例固定、跨表格对齐 */
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: var(--fs-body);
+  color: var(--font-color);
+  line-height: var(--lh-base);
+}
+
+.ability-table th,
+.ability-table td {
+  padding: 0.5rem 0.7rem;
+  text-align: center;
+  border-bottom: 1px solid var(--tab-border-color);
+  /* 定宽后允许长内容换行，绝不截断/遮挡显示 */
+  overflow-wrap: break-word;
+}
+
+.ability-table th {
+  background: color-mix(in srgb, var(--default-bg-color) 12%, var(--card-bg));
+  color: var(--font-color);
+  font-size: var(--fs-meta);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.ability-table tbody td {
+  font-variant-numeric: tabular-nums;
+}
+
+.ability-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.ability-table tbody tr:hover {
+  background: color-mix(in srgb, var(--default-bg-color) 7%, transparent);
+}
+
+/* 未填写：整行弱化，明确区分"还没评"与"评了得 0 分" */
+.ability-row.is-unfilled td {
+  opacity: var(--opacity-secondary);
+}
+
+.ability-row__name {
+  font-weight: 500;
+  font-variant-numeric: normal;
+}
+
+.ability-row__actual,
+.ability-row__score {
+  white-space: nowrap;
+}
+
+.ability-row__actual {
+  font-weight: 600;
+}
+
+.ability-row__score {
+  font-weight: 700;
+  color: var(--default-bg-color);
+}
+
+/* 档位徽章：胶囊 + 极淡底色（底色由档位色 color-mix 派生，明暗自动适配） */
+.ability-badge {
+  display: inline-block;
+  padding: 0.05rem 0.5rem;
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-badge);
+  line-height: var(--lh-base);
+  white-space: nowrap;
+}
+
+.ability-badge.tier-high {
+  color: var(--ab-tier-high);
+  background: color-mix(in srgb, var(--ab-tier-high) 16%, transparent);
+}
+
+.ability-badge.tier-mid {
+  color: var(--ab-tier-mid);
+  background: color-mix(in srgb, var(--ab-tier-mid) 16%, transparent);
+}
+
+.ability-badge.tier-low {
+  color: var(--ab-tier-low);
+  background: color-mix(in srgb, var(--ab-tier-low) 16%, transparent);
+}
+
+.ability-badge.tier-none {
+  color: var(--ab-tier-none);
+  background: color-mix(in srgb, var(--ab-tier-none) 16%, transparent);
+}
+
+/* ── 5. 空数据 / 未生成占位 ─────────────────────────────── */
+.ability-empty {
+  padding: 1rem 1.2rem;
+  background: var(--card-bg);
+  border: 1px solid var(--tab-border-color);
+  border-radius: var(--radius-card);
+  font-size: var(--fs-body);
+}
+
+/* ── 6. 响应式 ─────────────────────────────────────────────
+ * ⚠ 断点写死 px：@media 条件里用 var() 会被浏览器整条丢弃（规则从未生效），
+ *   此处字面值与 custom.css 的 --bp-md(768) / --bp-sm(480) 保持一致（同 mountain.css）。 */
+@media screen and (max-width: 768px) {
+  .ability-table th,
+  .ability-table td {
+    padding: 0.45rem 0.5rem;
+  }
+
+  /* 表格列多时允许横滑，避免挤压换行导致行高爆炸（同 mountain 处理思路） */
+  .ability-cat {
+    overflow-x: auto;
+  }
+
+  /* 定宽比例在极窄屏仍保持可读：给表格最小宽度，由外层横滑兜底，
+     既不挤压换行、也不会裁掉内容（档位徽章不会被挤溢出）。
+     注：这里**沿用横滑**而非 mountain 的「≤480 转块级堆叠」——本页表头即列含义，
+     堆叠会丢失列名，与"固定列宽对齐 + 不遮挡"的既定要求冲突。 */
+  .ability-table {
+    min-width: 440px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  /* 手机：收紧页面左右内边距（同 mountain.css），把宽度让给表格 */
+  .ability-page {
+    padding: 0.9rem 0.9rem 2.4rem;
+  }
+}

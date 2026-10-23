@@ -1,0 +1,2023 @@
+<!-- 侧栏默认折叠条件：① 全局 theme.aside.hide；② 单页 front-matter aside:false。--><!-- 注意：aside:false 时侧栏仍照常渲染（见下方 widget），仅默认折叠，右下角设置里的侧栏开关可手动展开。--><!-- 仅当全局关闭侧栏时给 .layout 加 hide-aside（窄化、无侧栏 DOM）；单页 aside:false 改由 html.hide-aside 处理--><!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>摄影知识浓缩手册 | Scy's Blog</title><meta name="author" content="Scy"><meta name="copyright" content="Scy"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="从入门到精通，分四篇二十二节，覆盖曝光、对焦、构图、光线、滤镜、后期与实战，每节配图讲解。  第一篇：入门基础第1节：认识相机1.1 相机类别     类别 特点 适用人群    微单（无反） 电子取景、体积小、实时预览、视频强 主流首选，日常&#x2F;旅行&#x2F;视频   单反（DSLR） 光学取景、相位对焦快、镜头群丰富 传统摄影、运动抓拍   卡片机 不可换镜头、极致便携 随身记录   手机 计算摄影、">
+<meta property="og:type" content="article">
+<meta property="og:title" content="摄影知识浓缩手册">
+<meta property="og:url" content="https://www.scyx.fun/2026/10/she-ying/she-ying-zhi-shi-shou-ce/index.html">
+<meta property="og:site_name" content="Scy&#39;s Blog">
+<meta property="og:description" content="从入门到精通，分四篇二十二节，覆盖曝光、对焦、构图、光线、滤镜、后期与实战，每节配图讲解。  第一篇：入门基础第1节：认识相机1.1 相机类别     类别 特点 适用人群    微单（无反） 电子取景、体积小、实时预览、视频强 主流首选，日常&#x2F;旅行&#x2F;视频   单反（DSLR） 光学取景、相位对焦快、镜头群丰富 传统摄影、运动抓拍   卡片机 不可换镜头、极致便携 随身记录   手机 计算摄影、">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.scyx.fun/img/avatar.webp">
+<meta property="article:published_time" content="2026-10-13T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-10-17T06:21:04.776Z">
+<meta property="article:author" content="Scy">
+<meta property="article:tag" content="scy, blog, life">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.scyx.fun/img/avatar.webp"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "摄影知识浓缩手册",
+  "url": "https://www.scyx.fun/2026/10/she-ying/she-ying-zhi-shi-shou-ce/",
+  "image": "https://www.scyx.fun/img/avatar.webp",
+  "datePublished": "2026-10-13T04:00:00.000Z",
+  "dateModified": "2026-10-17T06:21:04.776Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "Scy",
+      "url": "https://www.scyx.fun"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/logo.webp"><link rel="canonical" href="https://www.scyx.fun/2026/10/she-ying/she-ying-zhi-shi-shou-ce/index.html"><link rel="preconnect"/><link rel="preconnect" href="https://events.vercount.one"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="/pluginsSrc/@fortawesome/fontawesome-free/css/all.min.css"><link rel="preload" href="/pluginsSrc/@fortawesome/fontawesome-free/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin><link rel="preload" href="/pluginsSrc/@fortawesome/fontawesome-free/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin><link rel="stylesheet" href="/pluginsSrc/node-snackbar/dist/snackbar.min.css" media="print" onload="this.media='all'"><!--  Fancybox 是按需组件（点击才展示），非首屏关键路径；--><!--  critters 只内联 ~5% 的规则，导致 95% 布局/交互样式丢失、灯箱错位。--><!--  保留原始 link 让浏览器在 onload 后以 <link media=all> 完整加载。--><link rel="stylesheet" href="/pluginsSrc/@fancyapps/ui/dist/fancybox/fancybox.css" data-no-inline media="print" onload="this.media='all'"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        const data = { value }
+
+        if (ttl != null) {
+          data.expiry = Date.now() + ttl * 86400000
+        }
+
+        localStorage.setItem(key, JSON.stringify(data))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return
+
+        try {
+          const data = JSON.parse(itemStr)
+
+          if (data.expiry && Date.now() > data.expiry) {
+            localStorage.removeItem(key)
+            return
+          }
+
+          return data.value
+        } catch {
+          localStorage.removeItem(key)
+        }
+      }
+    }
+
+    const scriptCache = new Map()
+    const cssCache = new Map()
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => {
+        if (scriptCache.has(url)) {
+          return scriptCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const script = document.createElement('script')
+
+          script.src = url
+          script.async = true
+
+          for (const key in attr) {
+            script.setAttribute(key, attr[key])
+          }
+
+          script.onload = resolve
+          script.onerror = reject
+
+          document.head.appendChild(script)
+        })
+
+        scriptCache.set(url, promise)
+
+        return promise
+      },
+      getCSS: (url, id) => {
+        if (cssCache.has(url)) {
+          return cssCache.get(url)
+        }
+
+        const promise = new Promise((resolve, reject) => {
+          const link = document.createElement('link')
+
+          link.rel = 'stylesheet'
+          link.href = url
+
+          if (id) {
+            link.id = id
+          }
+
+          link.onload = resolve
+          link.onerror = reject
+
+          document.head.appendChild(link)
+        })
+
+        cssCache.set(url, promise)
+
+        return promise
+      },
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const metaThemeColor = document.querySelector('meta[name="theme-color"]')
+      const activateDarkMode = () => {
+        document.documentElement.dataset.theme = 'dark'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.dataset.theme = 'light'
+        if (metaThemeColor !== null) {
+          metaThemeColor.setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          const hour = new Date().getHours()
+          const start = 8
+          const end = 22
+          const isNight =
+            start < end
+                ? hour < start || hour >= end
+                : hour >= start || hour < end
+          if (theme === undefined) isNight ? activateDarkMode() : activateLightMode()
+          else theme === 'light' ? activateLightMode() : activateDarkMode()
+        
+      
+      // 每页独立记忆：以 pathname 区分不同页面的侧栏开合状态
+      const asideKey = 'aside-status-' + location.pathname
+      const asideStatus = saveToLocal.get(asideKey)
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":true},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: {"chs_to_cht":"已切换为繁体中文","cht_to_chs":"已切换为简体中文","day_to_night":"已切换为深色模式","night_to_day":"已切换为浅色模式","bgLight":"#49b1f5","bgDark":"#1f1f1f","position":"bottom-left"},
+  infinitegrid: {
+    js: '/pluginsSrc/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: true,
+  islazyloadPlugin: true,
+  isAnchor: true,
+  percent: {
+    toc: true,
+    rightside: true,
+  },
+  autoDarkmode: false,
+  darkmode: {
+    enable: true,
+    autoChangeMode: 2,
+    start: 8,
+    end: 22,
+    bgLight: "/img/wall/wallpaper.webp",
+    bgDark: "/img/wall/wall.webp"
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '摄影知识浓缩手册',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><script src="/js/theme-init.js"></script><link rel="stylesheet" href="/css/custom.css"><link rel="stylesheet" href="/css/album.css"><meta name="generator" content="Hexo 8.1.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+</head><body><div class="bg-animation" id="web_bg"></div><script>(() => {
+  const arr = ["background-image: url(/img/wall/wallpaper.webp);"]
+  const webBgDiv = document.getElementById('web_bg')
+
+  const setRandomBg = () => {
+    webBgDiv.style = arr[Math.floor(Math.random() * arr.length)]
+    requestAnimationFrame(() => webBgDiv.classList.add('bg-animation'))
+  }
+
+  document.addEventListener('pjax:send', () => {
+    webBgDiv.style = ''
+    webBgDiv.classList.remove('bg-animation')
+  })
+
+  document.addEventListener('pjax:complete', setRandomBg)
+  document.addEventListener('DOMContentLoaded', setRandomBg)
+})()
+</script><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/avatar.webp" onerror="this.onerror=null;this.src='/img/error.gif'" alt="avatar"/></div><div class="site-data text-center"><div class="site-data-item"><div class="headline">文章</div><div class="length-num">16</div></div><div class="site-data-item"><div class="headline">分类</div><div class="length-num">5</div></div></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E7%94%B5%E8%84%91/"><i class="fa-fw fas fa-folder"></i><span> 电脑</span></a></li><li><a class="site-page child" href="/categories/%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-folder"></i><span> 学习</span></a></li><li><a class="site-page child" href="/categories/%E7%94%9F%E6%B4%BB/"><i class="fa-fw fas fa-folder"></i><span> 生活</span></a></li><li><a class="site-page child" href="/categories/%E6%96%87%E6%91%98/"><i class="fa-fw fas fa-folder"></i><span> 文摘</span></a></li><li><a class="site-page child" href="/categories/%E6%91%84%E5%BD%B1/"><i class="fa-fw fas fa-folder"></i><span> 摄影</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/pet/"><i class="fa-fw fas fa-cat"></i><span> 编外成员</span></a></li><li><a class="site-page child" href="/garden/"><i class="fa-fw fas fa-seedling"></i><span> 葬爱花园</span></a></li><li><a class="site-page child" href="/diy/"><i class="fa-fw fas fa-gears"></i><span> 手作 DIY</span></a></li><li><a class="site-page child" href="/camera/"><i class="fa-fw fas fa-camera"></i><span> 捕光捉影</span></a></li><li><a class="site-page child" href="/angling/"><i class="fa-fw fas fa-fish"></i><span> 永不空军</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/"><i class="fa-fw fas fa-film"></i><span> 第三次元</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fas fa-feather-pointed"></i><span> 此去经年</span></a></div><div class="menus_item"><a class="site-page" href="/keepfit/"><i class="fa-fw fas fa-person-running"></i><span> 修身养性</span></a></div><div class="menus_item"><a class="site-page" href="/mountain/"><i class="fa-fw fas fa-mountain"></i><span> 十万大山</span></a></div><div class="menus_item"><a class="site-page" href="/travel/"><i class="fa-fw fas fa-person-walking-luggage"></i><span> 到此一游</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><img class="site-icon" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/logo.webp" alt="Logo"><span class="site-name">Scy's Blog</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/categories/%E7%94%B5%E8%84%91/"><i class="fa-fw fas fa-folder"></i><span> 电脑</span></a></li><li><a class="site-page child" href="/categories/%E5%AD%A6%E4%B9%A0/"><i class="fa-fw fas fa-folder"></i><span> 学习</span></a></li><li><a class="site-page child" href="/categories/%E7%94%9F%E6%B4%BB/"><i class="fa-fw fas fa-folder"></i><span> 生活</span></a></li><li><a class="site-page child" href="/categories/%E6%96%87%E6%91%98/"><i class="fa-fw fas fa-folder"></i><span> 文摘</span></a></li><li><a class="site-page child" href="/categories/%E6%91%84%E5%BD%B1/"><i class="fa-fw fas fa-folder"></i><span> 摄影</span></a></li></ul></div><div class="menus_item"><span class="site-page group"><i class="fa-fw fa fa-heartbeat"></i><span> 清单</span><i class="fas fa-chevron-down"></i></span><ul class="menus_item_child"><li><a class="site-page child" href="/pet/"><i class="fa-fw fas fa-cat"></i><span> 编外成员</span></a></li><li><a class="site-page child" href="/garden/"><i class="fa-fw fas fa-seedling"></i><span> 葬爱花园</span></a></li><li><a class="site-page child" href="/diy/"><i class="fa-fw fas fa-gears"></i><span> 手作 DIY</span></a></li><li><a class="site-page child" href="/camera/"><i class="fa-fw fas fa-camera"></i><span> 捕光捉影</span></a></li><li><a class="site-page child" href="/angling/"><i class="fa-fw fas fa-fish"></i><span> 永不空军</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/bangumis/"><i class="fa-fw fas fa-film"></i><span> 第三次元</span></a></div><div class="menus_item"><a class="site-page" href="/notes/"><i class="fa-fw fas fa-feather-pointed"></i><span> 此去经年</span></a></div><div class="menus_item"><a class="site-page" href="/keepfit/"><i class="fa-fw fas fa-person-running"></i><span> 修身养性</span></a></div><div class="menus_item"><a class="site-page" href="/mountain/"><i class="fa-fw fas fa-mountain"></i><span> 十万大山</span></a></div><div class="menus_item"><a class="site-page" href="/travel/"><i class="fa-fw fas fa-person-walking-luggage"></i><span> 到此一游</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">摄影知识浓缩手册</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-10-13T04:00:00.000Z" title="发表于 2026-10-13 12:00:00">2026-10-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-10-17T06:21:04.776Z" title="更新于 2026-10-17 14:21:04">2026-10-17</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%91%84%E5%BD%B1/">摄影</a></span></div><div class="meta-secondline"></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><blockquote>
+<p>从入门到精通，分四篇二十二节，覆盖曝光、对焦、构图、光线、滤镜、后期与实战，每节配图讲解。</p>
+</blockquote>
+<h2 id="第一篇：入门基础"><a href="#第一篇：入门基础" class="headerlink" title="第一篇：入门基础"></a>第一篇：入门基础</h2><h3 id="第1节：认识相机"><a href="#第1节：认识相机" class="headerlink" title="第1节：认识相机"></a>第1节：认识相机</h3><h4 id="1-1-相机类别"><a href="#1-1-相机类别" class="headerlink" title="1.1 相机类别"></a>1.1 相机类别</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/相机类别.png" alt="相机类别" width="400" height="auto">
+
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>特点</th>
+<th>适用人群</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>微单（无反）</td>
+<td>电子取景、体积小、实时预览、视频强</td>
+<td>主流首选，日常/旅行/视频</td>
+</tr>
+<tr>
+<td>单反（DSLR）</td>
+<td>光学取景、相位对焦快、镜头群丰富</td>
+<td>传统摄影、运动抓拍</td>
+</tr>
+<tr>
+<td>卡片机</td>
+<td>不可换镜头、极致便携</td>
+<td>随身记录</td>
+</tr>
+<tr>
+<td>手机</td>
+<td>计算摄影、随身即拍</td>
+<td>日常记录</td>
+</tr>
+</tbody></table>
+<h4 id="1-2-画幅（传感器尺寸）"><a href="#1-2-画幅（传感器尺寸）" class="headerlink" title="1.2 画幅（传感器尺寸）"></a>1.2 画幅（传感器尺寸）</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/画幅.png" alt="画幅对比" width="400" height="auto">
+
+<p>画幅是决定画质的根本因素——传感器越大，画质越好：</p>
+<table>
+<thead>
+<tr>
+<th>画幅</th>
+<th>尺寸</th>
+<th>等效系数</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>全画幅</td>
+<td>36×24mm</td>
+<td>1.0x</td>
+<td>高感好、景深浅、动态范围大</td>
+</tr>
+<tr>
+<td>APS-C</td>
+<td>~23×15mm</td>
+<td>1.5x(尼康/索尼)/1.6x(佳能)</td>
+<td>性价比高、等效焦距变长</td>
+</tr>
+<tr>
+<td>M4/3</td>
+<td>17.3×13mm</td>
+<td>2.0x</td>
+<td>体积小、视频好</td>
+</tr>
+<tr>
+<td>1英寸</td>
+<td>~13×9mm</td>
+<td>2.7x</td>
+<td>卡片机常用</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>核心规律</strong>：画幅越大 → 高感越好、虚化越明显、动态范围越高</p>
+</blockquote>
+<h4 id="1-3-主流品牌系列"><a href="#1-3-主流品牌系列" class="headerlink" title="1.3 主流品牌系列"></a>1.3 主流品牌系列</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/系列佳能.png" alt="佳能系列" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/系列尼康.png" alt="尼康系列" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/系列索尼.png" alt="索尼系列" width="400" height="auto">
+
+<table>
+<thead>
+<tr>
+<th>品牌</th>
+<th>无反系列</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>佳能</td>
+<td>EOS R5/R6/R8/R10/R50</td>
+<td>色彩讨喜、人像肤色好、操作直观</td>
+</tr>
+<tr>
+<td>尼康</td>
+<td>Z9/Z8/Z6III/Z50II/Zfc</td>
+<td>画质锐利、动态范围好、高感优秀</td>
+</tr>
+<tr>
+<td>索尼</td>
+<td>a1/a7IV/a7R V/a6700</td>
+<td>对焦最强（眼控追焦）、镜头群丰富</td>
+</tr>
+</tbody></table>
+<h4 id="1-4-相机按键布局"><a href="#1-4-相机按键布局" class="headerlink" title="1.4 相机按键布局"></a>1.4 相机按键布局</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/相机按键.png" alt="相机按键" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/相机按键-尼康.png" alt="尼康按键" width="400" height="auto">
+
+<p>关键按键速查：</p>
+<ul>
+<li><strong>快门</strong>：半按对焦，全按拍摄</li>
+<li><strong>模式转盘</strong>：切换 P/A/S/M/Auto</li>
+<li><strong>前后拨轮</strong>：调光圈/快门/ISO</li>
+<li><strong>曝光补偿键</strong>（+/-）：快速增减曝光</li>
+<li><strong>AF-ON</strong>：背按对焦（分离对焦与快门）</li>
+<li><strong>摇杆/方向键</strong>：选对焦点</li>
+<li><strong>FN</strong>：自定义快捷键</li>
+</ul>
+<h4 id="1-5-相机常识"><a href="#1-5-相机常识" class="headerlink" title="1.5 相机常识"></a>1.5 相机常识</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/相机常识.png" alt="相机常识" width="400" height="auto">
+
+<ul>
+<li>传感器是画质的核心，镜头决定进光质量</li>
+<li><strong>好镜头比好机身更值得投资</strong>（机身换代快，镜头保值）</li>
+<li>像素≠画质，传感器尺寸和镜头素质更重要</li>
+<li>机身防抖（IBIS）可降低安全快门2-5档</li>
+<li>存储卡建议UHS-II V90规格（连拍/4K视频必备）</li>
+</ul>
+<hr>
+<h3 id="第2节：曝光三要素——光圈、快门、ISO"><a href="#第2节：曝光三要素——光圈、快门、ISO" class="headerlink" title="第2节：曝光三要素——光圈、快门、ISO"></a>第2节：曝光三要素——光圈、快门、ISO</h3><p>曝光是摄影的基础。三个参数控制进入传感器的光量，决定了画面的明暗、景深、运动表现和画质。</p>
+<h4 id="2-1-光圈"><a href="#2-1-光圈" class="headerlink" title="2.1 光圈"></a>2.1 光圈</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/光圈.png" alt="光圈原理" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/光圈(2).png" alt="光圈详解" width="400" height="auto">
+
+<p>光圈是镜头内控制进光量的可变孔径：</p>
+<table>
+<thead>
+<tr>
+<th>f/数值</th>
+<th>光圈大小</th>
+<th>进光量</th>
+<th>景深</th>
+<th>典型用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>f/1.4-2.8</td>
+<td>大</td>
+<td>多</td>
+<td>浅</td>
+<td>人像虚化、夜景</td>
+</tr>
+<tr>
+<td>f/4-5.6</td>
+<td>中</td>
+<td>中</td>
+<td>适中</td>
+<td>日常、街拍</td>
+</tr>
+<tr>
+<td>f/8-11</td>
+<td>小</td>
+<td>少</td>
+<td>深</td>
+<td>风光、建筑</td>
+</tr>
+<tr>
+<td>f/16+</td>
+<td>极小</td>
+<td>极少</td>
+<td>极深</td>
+<td>长曝光、星芒</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>口诀</strong>：数值越小光圈越大，光圈越大虚化越多</p>
+</blockquote>
+<h4 id="2-2-快门"><a href="#2-2-快门" class="headerlink" title="2.2 快门"></a>2.2 快门</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/快门.png" alt="快门原理" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/快门(2).png" alt="快门详解" width="400" height="auto">
+
+<p>快门控制传感器曝光时间：</p>
+<table>
+<thead>
+<tr>
+<th>快门速度</th>
+<th>效果</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1/2000s+</td>
+<td>凝固高速运动</td>
+<td>体育、飞鸟</td>
+</tr>
+<tr>
+<td>1/250-1/1000s</td>
+<td>正常抓拍</td>
+<td>人像、日常</td>
+</tr>
+<tr>
+<td>1/60s</td>
+<td>手持最低安全快门</td>
+<td>—</td>
+</tr>
+<tr>
+<td>1/15-1s</td>
+<td>运动轨迹模糊</td>
+<td>瀑布丝滑</td>
+</tr>
+<tr>
+<td>2s-30s</td>
+<td>记录光线轨迹</td>
+<td>车轨、星空、光绘</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>安全快门法则</strong>：手持拍摄时快门 ≥ 1/等效焦距（85mm → ≥1/100s）</p>
+</blockquote>
+<h4 id="2-3-感光度（ISO）"><a href="#2-3-感光度（ISO）" class="headerlink" title="2.3 感光度（ISO）"></a>2.3 感光度（ISO）</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/感光度.png" alt="感光度原理" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/感光度(2).png" alt="感光度详解" width="400" height="auto">
+
+<p>ISO是传感器对光的敏感度：</p>
+<table>
+<thead>
+<tr>
+<th>ISO</th>
+<th>噪点水平</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>100-200</td>
+<td>极低</td>
+<td>晴天户外、风光</td>
+</tr>
+<tr>
+<td>400-800</td>
+<td>轻微</td>
+<td>室内、阴天</td>
+</tr>
+<tr>
+<td>1600-3200</td>
+<td>可见</td>
+<td>暗光室内、黄昏</td>
+</tr>
+<tr>
+<td>6400+</td>
+<td>明显</td>
+<td>夜景、极暗环境</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>原则</strong>：能用低ISO就不用高ISO，光线不足时先开大光圈和放慢快门，最后再提高ISO</p>
+</blockquote>
+<hr>
+<h3 id="第3节：曝光三角关系"><a href="#第3节：曝光三角关系" class="headerlink" title="第3节：曝光三角关系"></a>第3节：曝光三角关系</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/曝光三要素.png" alt="曝光三要素" width="400" height="auto">
+
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/曝光三角关系图.jpg" alt="曝光三角关系图" width="400" height="auto">
+
+<p>曝光三角是摄影最核心的概念——光圈、快门、ISO三者互相牵制：</p>
+<figure class="highlight plaintext"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">     光圈 → 控制景深（虚化程度）</span><br><span class="line">      ↗</span><br><span class="line">曝光量</span><br><span class="line">      ↘</span><br><span class="line">     快门 → 控制运动（凝固或轨迹）</span><br><span class="line">      ↗</span><br><span class="line">曝光量</span><br><span class="line">      ↘</span><br><span class="line">     ISO → 控制噪点（画质纯净度）</span><br></pre></td></tr></tbody></table></figure>
+
+<h4 id="等量曝光"><a href="#等量曝光" class="headerlink" title="等量曝光"></a>等量曝光</h4><p>不同参数组合可获得相同曝光量，但画面效果完全不同：</p>
+<table>
+<thead>
+<tr>
+<th>组合</th>
+<th>光圈</th>
+<th>快门</th>
+<th>ISO</th>
+<th>效果差异</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>A</td>
+<td>f/8</td>
+<td>1/250</td>
+<td>100</td>
+<td>景深大、运动凝固、画质纯净</td>
+</tr>
+<tr>
+<td>B</td>
+<td>f/4</td>
+<td>1/500</td>
+<td>100</td>
+<td>景深浅、运动凝固、画质纯净</td>
+</tr>
+<tr>
+<td>C</td>
+<td>f/8</td>
+<td>1/125</td>
+<td>200</td>
+<td>景深大、运动微糊、轻微噪点</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>三者联动：改变一个参数 → 必须反向调整另一个（或两个）保持曝光不变</p>
+</blockquote>
+<hr>
+<h3 id="第4节：拍摄模式（P-A-S-M）"><a href="#第4节：拍摄模式（P-A-S-M）" class="headerlink" title="第4节：拍摄模式（P/A/S/M）"></a>第4节：拍摄模式（P/A/S/M）</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/曝光模式.png" alt="曝光模式总览" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/拍照模式.png" alt="拍照模式" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/拍照模式1.png" alt="拍照模式1" width="400" height="auto">
+
+<h4 id="四大模式对比"><a href="#四大模式对比" class="headerlink" title="四大模式对比"></a>四大模式对比</h4><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>你控制</th>
+<th>相机控制</th>
+<th>适合场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>P</strong> 程序自动</td>
+<td>ISO/白平衡/补偿</td>
+<td>光圈+快门</td>
+<td>快速抓拍、新手入门</td>
+</tr>
+<tr>
+<td><strong>A</strong> 光圈优先</td>
+<td>光圈+ISO/白平衡/补偿</td>
+<td>快门</td>
+<td>人像/风光（控制景深）</td>
+</tr>
+<tr>
+<td><strong>S</strong> 快门优先</td>
+<td>快门+ISO/白平衡/补偿</td>
+<td>光圈</td>
+<td>运动/流水（控制运动表现）</td>
+</tr>
+<tr>
+<td><strong>M</strong> 全手动</td>
+<td>光圈+快门+ISO</td>
+<td>仅测光提示</td>
+<td>夜景/棚拍/延时/极端光比</td>
+</tr>
+</tbody></table>
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/曝光P档.png" alt="P档详解" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/曝光A档.png" alt="A档详解" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/曝光S档.png" alt="S档详解" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/曝光M档.png" alt="M档详解" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/曝光AU档.png" alt="AU档详解" width="400" height="auto">
+
+<h4 id="使用建议"><a href="#使用建议" class="headerlink" title="使用建议"></a>使用建议</h4><ul>
+<li><strong>新手入门</strong>：先用P档熟悉曝光补偿和参数关系</li>
+<li><strong>日常拍摄</strong>：A档最实用（设好光圈控制景深，相机匹配快门）</li>
+<li><strong>运动/流水</strong>：S档（设好快门控制运动表现）</li>
+<li><strong>专业控制</strong>：M档（完全掌控，适合复杂光线）</li>
+</ul>
+<blockquote>
+<p>A档注意：暗光下相机可能匹配过慢的快门导致手抖，需时刻关注快门速度</p>
+</blockquote>
+<hr>
+<h3 id="第5节：对焦技巧"><a href="#第5节：对焦技巧" class="headerlink" title="第5节：对焦技巧"></a>第5节：对焦技巧</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/对焦模式.png" alt="对焦模式" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/对焦测光白平衡.png" alt="对焦测光白平衡" width="400" height="auto">
+
+<h4 id="对焦模式"><a href="#对焦模式" class="headerlink" title="对焦模式"></a>对焦模式</h4><table>
+<thead>
+<tr>
+<th>模式</th>
+<th>说明</th>
+<th>场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AF-S（单次）</td>
+<td>半按对焦一次后锁定</td>
+<td>人像、风光、静物</td>
+</tr>
+<tr>
+<td>AF-C（连续）</td>
+<td>持续追踪移动主体</td>
+<td>运动、儿童、动物</td>
+</tr>
+<tr>
+<td>MF（手动）</td>
+<td>手动转动对焦环</td>
+<td>微距、星空、转接镜头</td>
+</tr>
+</tbody></table>
+<h4 id="对焦区域"><a href="#对焦区域" class="headerlink" title="对焦区域"></a>对焦区域</h4><table>
+<thead>
+<tr>
+<th>区域模式</th>
+<th>说明</th>
+<th>适用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>单点</td>
+<td>一个对焦点精确控制</td>
+<td>人像（对准眼睛）、静物</td>
+</tr>
+<tr>
+<td>区域/宽域</td>
+<td>一块区域内自动选择</td>
+<td>运动、街拍</td>
+</tr>
+<tr>
+<td>追踪/眼部</td>
+<td>自动锁定追踪人眼/动物眼</td>
+<td>人像利器</td>
+</tr>
+</tbody></table>
+<h4 id="实用对焦技巧"><a href="#实用对焦技巧" class="headerlink" title="实用对焦技巧"></a>实用对焦技巧</h4><ol>
+<li><strong>先对焦后构图</strong>：单点锁定主体→微移构图→拍摄（注意焦点偏移）</li>
+<li><strong>陷阱对焦</strong>：预对焦某点→等主体进入→连拍</li>
+<li><strong>峰值对焦</strong>：手动对焦时合焦区高亮显示（视频/微距）</li>
+<li><strong>放大对焦</strong>：放大局部手动对焦，精度最高</li>
+<li><strong>AF-ON分离</strong>：用背按按钮对焦，快门仅拍摄</li>
+</ol>
+<hr>
+<h2 id="第二篇：核心技巧"><a href="#第二篇：核心技巧" class="headerlink" title="第二篇：核心技巧"></a>第二篇：核心技巧</h2><h3 id="第6节：测光模式"><a href="#第6节：测光模式" class="headerlink" title="第6节：测光模式"></a>第6节：测光模式</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/测光模式.png" alt="测光模式" width="400" height="auto">
+
+<p>测光决定相机如何计算画面曝光量：</p>
+<h4 id="四种测光模式"><a href="#四种测光模式" class="headerlink" title="四种测光模式"></a>四种测光模式</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/测光多重.png" alt="多重测光" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/测光中心.png" alt="中心测光" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/测光平均.png" alt="平均测光" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/测光点.png" alt="点测光" width="400" height="auto">
+
+<table>
+<thead>
+<tr>
+<th>测光模式</th>
+<th>测量范围</th>
+<th>适用场景</th>
+<th>技巧</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>多重/矩阵</td>
+<td>整个画面分区加权</td>
+<td>风光、日常</td>
+<td>智能判断，最常用</td>
+</tr>
+<tr>
+<td>中央重点</td>
+<td>中央60-75%+边缘</td>
+<td>人物居中场景</td>
+<td>兼顾整体，侧重中心</td>
+</tr>
+<tr>
+<td>点测光</td>
+<td>中央2-5%极小区域</td>
+<td>逆光、高反差</td>
+<td>对准中灰区域测光→锁定→重新构图</td>
+</tr>
+<tr>
+<td>平均</td>
+<td>整个画面均匀</td>
+<td>光线均匀场景</td>
+<td>较少使用</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>点测光技巧：对准画面中接近18%灰的区域测光，按AE-L锁定曝光，重新构图后拍摄</p>
+</blockquote>
+<hr>
+<h3 id="第7节：曝光补偿"><a href="#第7节：曝光补偿" class="headerlink" title="第7节：曝光补偿"></a>第7节：曝光补偿</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/曝光补偿.png" alt="曝光补偿" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/推荐参数-曝光.png" alt="推荐参数-曝光" width="400" height="auto">
+
+<p>在P/A/S模式下手动增减曝光量（M档直接调参数）：</p>
+<h4 id="白加黑减原则"><a href="#白加黑减原则" class="headerlink" title="白加黑减原则"></a>白加黑减原则</h4><p>这是曝光补偿最核心的口诀：</p>
+<table>
+<thead>
+<tr>
+<th>拍摄场景</th>
+<th>主体颜色</th>
+<th>相机默认倾向</th>
+<th>补偿方向</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>雪景、白墙</td>
+<td>白色</td>
+<td>会欠曝（偏灰）</td>
+<td><strong>+1~+2 EV</strong></td>
+<td>相机认为画面太亮会自动减曝</td>
+</tr>
+<tr>
+<td>黑猫、暗背景</td>
+<td>黑色</td>
+<td>会过曝（偏灰）</td>
+<td><strong>-1~-2 EV</strong></td>
+<td>相机认为画面太暗会自动加曝</td>
+</tr>
+<tr>
+<td>正常场景</td>
+<td>中性</td>
+<td>基本准确</td>
+<td>±0 EV</td>
+<td>接近18%灰</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>EV每+1 = 进光量翻倍；每-1 = 进光量减半</p>
+</blockquote>
+<h4 id="常见补偿场景"><a href="#常见补偿场景" class="headerlink" title="常见补偿场景"></a>常见补偿场景</h4><ul>
+<li>逆光人像（主体偏暗）：+1~+1.7EV</li>
+<li>白色背景产品：+0.7~+1.3EV</li>
+<li>深色背景人像：-0.3~-1EV</li>
+<li>日落剪影（故意欠曝）：-1~-2EV</li>
+</ul>
+<hr>
+<h3 id="第8节：直方图判读"><a href="#第8节：直方图判读" class="headerlink" title="第8节：直方图判读"></a>第8节：直方图判读</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/直方图.png" alt="直方图" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/直方图对比度.png" alt="直方图对比度" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/直方图曝光度.png" alt="直方图曝光度" width="400" height="auto">
+
+<p>直方图是判断曝光是否准确的图形化工具，比肉眼判断屏幕更可靠：</p>
+<h4 id="如何读取"><a href="#如何读取" class="headerlink" title="如何读取"></a>如何读取</h4><ul>
+<li><strong>横轴</strong>（左→右）：从纯黑（0）到纯白（255）的亮度分布</li>
+<li><strong>纵轴</strong>：该亮度区域的像素数量</li>
+<li><strong>理想状态</strong>：直方图居中分布，左右不贴边</li>
+</ul>
+<h4 id="判读速查表"><a href="#判读速查表" class="headerlink" title="判读速查表"></a>判读速查表</h4><table>
+<thead>
+<tr>
+<th>直方图形态</th>
+<th>含义</th>
+<th>调整方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>![欠曝] 偏左贴边</td>
+<td>欠曝，暗部死黑无细节</td>
+<td>+EV / 开大光圈 / 放慢快门 / 提ISO</td>
+</tr>
+<tr>
+<td>![过曝] 偏右贴边</td>
+<td>过曝，亮部死白无细节</td>
+<td>-EV / 缩小光圈 / 加快快门 / 降ISO</td>
+</tr>
+<tr>
+<td>![正常] 居中分布</td>
+<td>曝光正常</td>
+<td>无需调整</td>
+</tr>
+<tr>
+<td>![高反差] 两侧高峰</td>
+<td>高反差，暗部和亮部都有细节丢失</td>
+<td>考虑HDR/渐变灰滤镜/补光</td>
+</tr>
+</tbody></table>
+<h4 id="向右曝光法（ETTR）"><a href="#向右曝光法（ETTR）" class="headerlink" title="向右曝光法（ETTR）"></a>向右曝光法（ETTR）</h4><p>在不溢出的前提下让直方图尽量偏右，后期再拉回正常亮度。这样做可以获得：</p>
+<ul>
+<li>暗部更多细节</li>
+<li>整体更少噪点</li>
+<li>更高动态范围</li>
+</ul>
+<blockquote>
+<p>必须使用RAW格式，JPEG向右曝光后期空间有限</p>
+</blockquote>
+<hr>
+<h3 id="第9节：白平衡与色温"><a href="#第9节：白平衡与色温" class="headerlink" title="第9节：白平衡与色温"></a>第9节：白平衡与色温</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/白平衡.png" alt="白平衡" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/白平衡介绍.png" alt="白平衡介绍" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/白平衡设置.png" alt="白平衡设置" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/色温.png" alt="色温" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/色温与白平衡.png" alt="色温与白平衡" width="400" height="auto">
+
+<h4 id="色温基础"><a href="#色温基础" class="headerlink" title="色温基础"></a>色温基础</h4><p>色温描述光源的颜色属性，单位为开尔文（K）：</p>
+<table>
+<thead>
+<tr>
+<th>色温</th>
+<th>光源</th>
+<th>视觉感受</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>2000K</td>
+<td>烛光</td>
+<td>暖橙</td>
+</tr>
+<tr>
+<td>3200K</td>
+<td>白炽灯/钨丝灯</td>
+<td>暖黄</td>
+</tr>
+<tr>
+<td>4000K</td>
+<td>日光灯/LED</td>
+<td>中性偏暖</td>
+</tr>
+<tr>
+<td>5500K</td>
+<td>正午日光</td>
+<td>中性白</td>
+</tr>
+<tr>
+<td>6500K</td>
+<td>阴天</td>
+<td>偏冷</td>
+</tr>
+<tr>
+<td>7500K+</td>
+<td>阴影/蓝天</td>
+<td>冷蓝</td>
+</tr>
+</tbody></table>
+<h4 id="白平衡的作用"><a href="#白平衡的作用" class="headerlink" title="白平衡的作用"></a>白平衡的作用</h4><p>让白色在不同光源下都还原为白色（色彩还原准确）：</p>
+<table>
+<thead>
+<tr>
+<th>设置方式</th>
+<th>精度</th>
+<th>适用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AWB自动</td>
+<td>高</td>
+<td>大多数场景</td>
+</tr>
+<tr>
+<td>预设（日光/阴天/白炽灯等）</td>
+<td>中</td>
+<td>特定光源环境</td>
+</tr>
+<tr>
+<td>色温K值手动设定</td>
+<td>高</td>
+<td>需精确控制时</td>
+</tr>
+<tr>
+<td>自定义（灰卡校准）</td>
+<td>最高</td>
+<td>商业/产品拍摄</td>
+</tr>
+</tbody></table>
+<h4 id="创意运用"><a href="#创意运用" class="headerlink" title="创意运用"></a>创意运用</h4><ul>
+<li><strong>偏暖</strong>（设低K值或调高色温偏移）：营造温馨日落氛围</li>
+<li><strong>偏冷</strong>（设高K值或调低色温偏移）：营造清冷科技感</li>
+<li><strong>混合光源</strong>：不同色温混搭可产生戏剧性色彩对比</li>
+</ul>
+<blockquote>
+<p>RAW格式可在后期无损调整白平衡，所以前期用AWB即可；JPEG后期调白平衡会损失画质</p>
+</blockquote>
+<hr>
+<h3 id="第10节：焦距与镜头选择"><a href="#第10节：焦距与镜头选择" class="headerlink" title="第10节：焦距与镜头选择"></a>第10节：焦距与镜头选择</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/焦距焦段.png" alt="焦距焦段" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/焦距畸变.png" alt="焦距畸变" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/焦距景深透视.png" alt="焦距景深透视" width="400" height="auto">
+
+<h4 id="焦距总览"><a href="#焦距总览" class="headerlink" title="焦距总览"></a>焦距总览</h4><table>
+<thead>
+<tr>
+<th>焦距段</th>
+<th>视角</th>
+<th>特点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>14-24mm 超广角</td>
+<td>&gt;90°</td>
+<td>视野宽广、畸变大</td>
+<td>建筑、星空</td>
+</tr>
+<tr>
+<td>24-35mm 广角</td>
+<td>60-80°</td>
+<td>自然宽广、有透视感</td>
+<td>风光、街拍</td>
+</tr>
+<tr>
+<td>50mm 标准</td>
+<td>45°</td>
+<td>接近人眼视角</td>
+<td>日常、纪实</td>
+</tr>
+<tr>
+<td>85-135mm 中长焦</td>
+<td>18-30°</td>
+<td>压缩空间、虚化好</td>
+<td>人像、特写</td>
+</tr>
+<tr>
+<td>200mm+ 长焦</td>
+<td>&lt;12°</td>
+<td>远距离拉近、强压缩</td>
+<td>体育、野生动物</td>
+</tr>
+</tbody></table>
+<h4 id="各焦段镜头效果"><a href="#各焦段镜头效果" class="headerlink" title="各焦段镜头效果"></a>各焦段镜头效果</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/镜头24mm.png" alt="24mm镜头" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/镜头35mm.png" alt="35mm镜头" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/镜头50mm.png" alt="50mm镜头" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/镜头85mm.png" alt="85mm镜头" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/镜头135mm.png" alt="135mm镜头" width="400" height="auto">
+
+<h5 id="24mm（广角）"><a href="#24mm（广角）" class="headerlink" title="24mm（广角）"></a>24mm（广角）</h5><ul>
+<li>视野宽广，透视感强（近大远小夸张）</li>
+<li>适合：风光、建筑、vlog自拍</li>
+<li>注意：边缘畸变，人像面部易变形</li>
+</ul>
+<h5 id="35mm（人文广角）"><a href="#35mm（人文广角）" class="headerlink" title="35mm（人文广角）"></a>35mm（人文广角）</h5><ul>
+<li>兼顾环境与主体，”人文之眼”</li>
+<li>适合：街头摄影、纪实、环境人像</li>
+<li>畸变小，画面自然真实</li>
+</ul>
+<h5 id="50mm（标准镜头）"><a href="#50mm（标准镜头）" class="headerlink" title="50mm（标准镜头）"></a>50mm（标准镜头）</h5><ul>
+<li>接近人眼视角，最自然</li>
+<li>适合：日常、半身人像、纪实</li>
+<li>50mm f/1.8价格低廉，新手必入”人类光学精华”</li>
+</ul>
+<h5 id="85mm（人像黄金焦段）"><a href="#85mm（人像黄金焦段）" class="headerlink" title="85mm（人像黄金焦段）"></a>85mm（人像黄金焦段）</h5><ul>
+<li>虚化优美、压缩适中、工作距离合适</li>
+<li>适合：半身/特写人像</li>
+<li>人像摄影师的主力焦段</li>
+</ul>
+<h5 id="135mm（中长焦人像）"><a href="#135mm（中长焦人像）" class="headerlink" title="135mm（中长焦人像）"></a>135mm（中长焦人像）</h5><ul>
+<li>极致压缩感、虚化最强</li>
+<li>适合：特写人像、舞台、远距离自然抓拍</li>
+<li>工作距离远，适合不打扰被摄者</li>
+</ul>
+<h4 id="焦距三大效应"><a href="#焦距三大效应" class="headerlink" title="焦距三大效应"></a>焦距三大效应</h4><ol>
+<li><strong>畸变效应</strong>：广角→桶形畸变（边缘外弯）；长焦→枕形畸变（边缘内弯）；50mm畸变最小</li>
+<li><strong>景深效应</strong>：焦距越长→景深越浅→虚化越强</li>
+<li><strong>透视压缩</strong>：焦距越长→远处物体看起来越近→空间压缩感越强</li>
+</ol>
+<hr>
+<h3 id="第11节：景深控制"><a href="#第11节：景深控制" class="headerlink" title="第11节：景深控制"></a>第11节：景深控制</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/景深三要素.png" alt="景深三要素" width="400" height="auto">
+
+<p>景深 = 画面中清晰成像的范围。控制景深是摄影中最重要的创作手段之一。</p>
+<h4 id="景深三要素"><a href="#景深三要素" class="headerlink" title="景深三要素"></a>景深三要素</h4><table>
+<thead>
+<tr>
+<th>因素</th>
+<th>变化方向</th>
+<th>景深效果</th>
+<th>实操方法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>光圈</strong></td>
+<td>f/数值越小（大光圈）</td>
+<td>越浅（虚化多）</td>
+<td>开大光圈如f/1.8</td>
+</tr>
+<tr>
+<td><strong>焦距</strong></td>
+<td>焦距越长</td>
+<td>越浅（虚化多）</td>
+<td>换长焦镜头如85mm</td>
+</tr>
+<tr>
+<td><strong>拍摄距离</strong></td>
+<td>离主体越近</td>
+<td>越浅（虚化多）</td>
+<td>靠近被摄主体</td>
+</tr>
+</tbody></table>
+<h4 id="浅景深-vs-大景深"><a href="#浅景深-vs-大景深" class="headerlink" title="浅景深 vs 大景深"></a>浅景深 vs 大景深</h4><table>
+<thead>
+<tr>
+<th>目标</th>
+<th>光圈</th>
+<th>焦距</th>
+<th>距离</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>浅景深</strong>（人像）</td>
+<td>f/1.4-2.8</td>
+<td>85mm+</td>
+<td>靠近主体</td>
+<td>背景虚化、主体突出</td>
+</tr>
+<tr>
+<td><strong>大景深</strong>（风光）</td>
+<td>f/8-11</td>
+<td>广角</td>
+<td>远离主体</td>
+<td>前后全清晰</td>
+</tr>
+</tbody></table>
+<h4 id="浅景深四步法"><a href="#浅景深四步法" class="headerlink" title="浅景深四步法"></a>浅景深四步法</h4><p>想要最大化虚化效果：</p>
+<ol>
+<li><strong>开大光圈</strong> → f/1.4-2.8</li>
+<li><strong>用长焦</strong> → 85mm以上</li>
+<li><strong>靠近主体</strong> → 缩短对焦距离</li>
+<li><strong>远离背景</strong> → 增加主体与背景距离</li>
+</ol>
+<blockquote>
+<p>超焦距：风光摄影中设定某光圈和焦距时，从近处到无穷远都清晰。可用超焦距计算器或App辅助</p>
+</blockquote>
+<hr>
+<h3 id="第12节：景别与取景"><a href="#第12节：景别与取景" class="headerlink" title="第12节：景别与取景"></a>第12节：景别与取景</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/景别一览图.png" alt="景别一览" width="400" height="auto">
+
+<p>景别指被摄主体在画面中的大小和取景范围：</p>
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/景别远景.png" alt="远景" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/景别全景.png" alt="全景" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/景别中景.png" alt="中景" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/景别近景.png" alt="近景" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/景别特写.png" alt="特写" width="400" height="auto">
+
+<table>
+<thead>
+<tr>
+<th>景别</th>
+<th>取景范围</th>
+<th>叙事功能</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>远景</td>
+<td>主体极小，环境为主</td>
+<td>交代环境、气势恢宏</td>
+<td>大场面风光</td>
+</tr>
+<tr>
+<td>全景</td>
+<td>主体完整可见</td>
+<td>展示整体动作和环境</td>
+<td>全身人像、活动</td>
+</tr>
+<tr>
+<td>中景</td>
+<td>膝盖/腰部以上</td>
+<td>兼顾人物与互动</td>
+<td>人像、对话场景</td>
+</tr>
+<tr>
+<td>近景</td>
+<td>胸部以上</td>
+<td>突出面部表情</td>
+<td>人像半身</td>
+</tr>
+<tr>
+<td>特写</td>
+<td>面部或局部细节</td>
+<td>强调细节质感</td>
+<td>眼睛、手部、物品</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>叙事递进</strong>：远景说环境 → 全景说动作 → 中景说关系 → 近景说表情 → 特写说情感</p>
+</blockquote>
+<hr>
+<h3 id="第13节：构图法则"><a href="#第13节：构图法则" class="headerlink" title="第13节：构图法则"></a>第13节：构图法则</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/构图法则示意图.jpg" alt="构图法则示意图" width="400" height="auto">
+
+<p>构图是摄影的”语法”，决定了画面的视觉秩序和美感。</p>
+<h4 id="三分法（黄金分割简化）"><a href="#三分法（黄金分割简化）" class="headerlink" title="三分法（黄金分割简化）"></a>三分法（黄金分割简化）</h4><p>将画面用两条水平线、两条垂直线分为九格，主体放在<strong>四个交叉点</strong>上：</p>
+<ul>
+<li>适用于任何题材</li>
+<li>地平线放在上1/3或下1/3线</li>
+<li>人像眼睛放在上1/3交叉点</li>
+</ul>
+<h4 id="引导线"><a href="#引导线" class="headerlink" title="引导线"></a>引导线</h4><p>利用画面中的线条（道路、河流、栏杆、光影）将视线引导至主体：</p>
+<ul>
+<li>直线：力量感、方向明确</li>
+<li>曲线：柔和、流动感</li>
+<li>对角线：动感、深度感</li>
+</ul>
+<h4 id="对称构图"><a href="#对称构图" class="headerlink" title="对称构图"></a>对称构图</h4><p>利用水面反射、建筑对称、左右镜像创造秩序美：</p>
+<ul>
+<li>正对称：庄重、仪式感</li>
+<li>近似对称：自然中找平衡</li>
+</ul>
+<h4 id="框架构图"><a href="#框架构图" class="headerlink" title="框架构图"></a>框架构图</h4><p>用前景元素（门窗、树枝、拱桥）形成自然画框，框住主体：</p>
+<ul>
+<li>增加层次感和深度</li>
+<li>引导视线聚焦主体</li>
+<li>常用于人像和风光</li>
+</ul>
+<h4 id="其他常用构图"><a href="#其他常用构图" class="headerlink" title="其他常用构图"></a>其他常用构图</h4><table>
+<thead>
+<tr>
+<th>构图法</th>
+<th>要点</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>中心构图</td>
+<td>主体放正中</td>
+<td>庄重、稳定</td>
+</tr>
+<tr>
+<td>对角线构图</td>
+<td>主体沿对角线</td>
+<td>动感、张力</td>
+</tr>
+<tr>
+<td>三角形构图</td>
+<td>主体呈三角形排布</td>
+<td>稳定中有变化</td>
+</tr>
+<tr>
+<td>留白</td>
+<td>主体前方留空间</td>
+<td>呼吸感、方向感</td>
+</tr>
+<tr>
+<td>前景运用</td>
+<td>加入前景元素</td>
+<td>增加层次和深度</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>构图法则不是死规矩，先学会再用好，最终目的是服务于画面表达</p>
+</blockquote>
+<hr>
+<h2 id="第三篇：进阶提升"><a href="#第三篇：进阶提升" class="headerlink" title="第三篇：进阶提升"></a>第三篇：进阶提升</h2><h3 id="第14节：光线运用"><a href="#第14节：光线运用" class="headerlink" title="第14节：光线运用"></a>第14节：光线运用</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/光线运用示意图.jpg" alt="光线运用示意图" width="400" height="auto">
+
+<p>光是摄影的灵魂——“摄影”一词本意就是”用光作画”。</p>
+<h4 id="光线方向"><a href="#光线方向" class="headerlink" title="光线方向"></a>光线方向</h4><table>
+<thead>
+<tr>
+<th>光线方向</th>
+<th>特点</th>
+<th>效果</th>
+<th>适用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>顺光（正面光）</td>
+<td>光从相机方向照射主体</td>
+<td>色彩鲜艳、细节清晰、阴影少</td>
+<td>记录、产品</td>
+</tr>
+<tr>
+<td>侧光</td>
+<td>光从侧面照射</td>
+<td>立体感强、明暗分明、质感突出</td>
+<td>人像、建筑</td>
+</tr>
+<tr>
+<td>逆光</td>
+<td>光从主体背后照射</td>
+<td>轮廓光/剪影、氛围感、透光效果</td>
+<td>创意人像、日落</td>
+</tr>
+<tr>
+<td>顶光</td>
+<td>光从正上方照射</td>
+<td>阴影垂直、不太理想</td>
+<td>避免正午拍摄</td>
+</tr>
+<tr>
+<td>半逆光</td>
+<td>光从侧后方照射</td>
+<td>轮廓勾勒+部分受光</td>
+<td>人像经典布光</td>
+</tr>
+</tbody></table>
+<h4 id="光线性质"><a href="#光线性质" class="headerlink" title="光线性质"></a>光线性质</h4><table>
+<thead>
+<tr>
+<th>光质</th>
+<th>特点</th>
+<th>来源</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>硬光</td>
+<td>方向性强、阴影锐利</td>
+<td>直射阳光、闪光灯</td>
+<td>对比高、质感强、戏剧性</td>
+</tr>
+<tr>
+<td>软光</td>
+<td>方向分散、阴影柔和</td>
+<td>云天、柔光箱、反光板</td>
+<td>过渡柔和、细节丰富、适合人像</td>
+</tr>
+</tbody></table>
+<h4 id="自然光时段"><a href="#自然光时段" class="headerlink" title="自然光时段"></a>自然光时段</h4><table>
+<thead>
+<tr>
+<th>时段</th>
+<th>色温</th>
+<th>光质</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>黄金时刻（日出后/日落前1h）</td>
+<td>3000-4000K</td>
+<td>暖且软</td>
+<td>最美光线，人像/风光首选</td>
+</tr>
+<tr>
+<td>蓝调时刻（日出前/日落后30min）</td>
+<td>8000-12000K</td>
+<td>冷且柔</td>
+<td>城市夜景天空仍有色彩</td>
+</tr>
+<tr>
+<td>正午</td>
+<td>5500K</td>
+<td>硬且顶</td>
+<td>光比大、阴影重，尽量避免</td>
+</tr>
+<tr>
+<td>阴天</td>
+<td>6500K</td>
+<td>软而散</td>
+<td>天然柔光箱，适合人像</td>
+</tr>
+</tbody></table>
+<h4 id="人造光"><a href="#人造光" class="headerlink" title="人造光"></a>人造光</h4><ul>
+<li><strong>闪光灯</strong>：凝固瞬间、补充光线、创造光效</li>
+<li><strong>持续光</strong>：LED常亮灯，视频/预览所见即所得</li>
+<li><strong>反光板</strong>：最便宜的补光工具，白色/银色/金色面不同效果</li>
+</ul>
+<hr>
+<h3 id="第15节：滤镜系统"><a href="#第15节：滤镜系统" class="headerlink" title="第15节：滤镜系统"></a>第15节：滤镜系统</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/滤镜类别.jpg" alt="滤镜类别" width="400" height="auto">
+
+<h4 id="滤镜总览"><a href="#滤镜总览" class="headerlink" title="滤镜总览"></a>滤镜总览</h4><table>
+<thead>
+<tr>
+<th>滤镜</th>
+<th>作用</th>
+<th>减光档数</th>
+<th>典型用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>UV保护镜</td>
+<td>保护镜头、过滤紫外线</td>
+<td>~0</td>
+<td>日常保护</td>
+</tr>
+<tr>
+<td>CPL偏振镜</td>
+<td>消反光、加饱和、压暗天空</td>
+<td>1-2</td>
+<td>风光、水面、玻璃</td>
+</tr>
+<tr>
+<td>ND减光镜</td>
+<td>减少进光量</td>
+<td>3-10</td>
+<td>白天长曝、瀑布丝滑</td>
+</tr>
+<tr>
+<td>渐变灰GND</td>
+<td>平衡天地光比</td>
+<td>上半部分</td>
+<td>日出日落风光</td>
+</tr>
+<tr>
+<td>星光镜</td>
+<td>点光源产生星芒</td>
+<td>~1</td>
+<td>夜景灯光</td>
+</tr>
+<tr>
+<td>黑柔滤镜</td>
+<td>柔化高光、降对比</td>
+<td>~0</td>
+<td>人像梦幻效果</td>
+</tr>
+</tbody></table>
+<h4 id="CPL偏振镜详解"><a href="#CPL偏振镜详解" class="headerlink" title="CPL偏振镜详解"></a>CPL偏振镜详解</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/滤镜偏振.png" alt="偏振镜" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/CPL注意事项.jpg" alt="CPL注意事项" width="400" height="auto">
+
+<ul>
+<li>旋转滤镜可实时调整偏振角度</li>
+<li>消除非金属表面反光（水面、玻璃、树叶反光）</li>
+<li>压暗蓝天增加饱和度</li>
+<li>注意事项：<ul>
+<li>广角端可能产生不均匀暗带</li>
+<li>超广角搭配需用薄边滤镜避免暗角</li>
+<li>不能消除金属反光和镜面反射</li>
+</ul>
+</li>
+</ul>
+<h4 id="ND减光镜详解"><a href="#ND减光镜详解" class="headerlink" title="ND减光镜详解"></a>ND减光镜详解</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/滤镜减光.png" alt="减光镜" width="400" height="auto">
+
+<ul>
+<li>ND8（减3档）：白天拍丝滑流水</li>
+<li>ND64（减6档）：白天拍云朵拉丝</li>
+<li>ND1000（减10档）：极长曝光，白天变黑夜效果</li>
+<li>可堆叠使用但注意色偏和画质</li>
+</ul>
+<h4 id="其他滤镜"><a href="#其他滤镜" class="headerlink" title="其他滤镜"></a>其他滤镜</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/滤镜渐变.png" alt="渐变滤镜" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/滤镜星光.png" alt="星光镜" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/滤镜紫外线.png" alt="紫外线滤镜" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/滤镜黑柔.png" alt="黑柔滤镜" width="400" height="auto">
+
+<ul>
+<li><strong>GND渐变灰</strong>：硬边（地平线分明）vs 软边（不规则地平线）</li>
+<li><strong>星光镜</strong>：缩小光圈(f/11-16)也可产生自然星芒，不一定需要滤镜</li>
+<li><strong>黑柔</strong>：电影制作常用1/8到1/4，只柔化亮部不影响暗部</li>
+</ul>
+<hr>
+<h3 id="第16节：色调风格"><a href="#第16节：色调风格" class="headerlink" title="第16节：色调风格"></a>第16节：色调风格</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/色调复古.png" alt="色调复古" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/色调港风小清新.png" alt="色调港风小清新" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/色调风格低饱和.png" alt="色调低饱和" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/色调风格复古.png" alt="色调风格复古" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/色调风格清新.png" alt="色调风格清新" width="400" height="auto">
+
+<h4 id="常见色调风格速查"><a href="#常见色调风格速查" class="headerlink" title="常见色调风格速查"></a>常见色调风格速查</h4><table>
+<thead>
+<tr>
+<th>风格</th>
+<th>色调特点</th>
+<th>后期要点</th>
+<th>氛围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>复古</td>
+<td>暖黄偏、低饱和、加颗粒</td>
+<td>色温偏暖、降饱和、加噪点</td>
+<td>怀旧感</td>
+</tr>
+<tr>
+<td>港风</td>
+<td>高对比、偏青绿暗调</td>
+<td>压暗阴影、阴影偏青、加对比</td>
+<td>质感、故事感</td>
+</tr>
+<tr>
+<td>小清新</td>
+<td>明亮、高调、偏青蓝/粉</td>
+<td>提亮阴影、色温偏冷、降对比</td>
+<td>轻快、少女感</td>
+</tr>
+<tr>
+<td>低饱和</td>
+<td>整体灰调、低饱和</td>
+<td>全局降饱和、提阴影、色调统一</td>
+<td>高级、沉静</td>
+</tr>
+<tr>
+<td>清新</td>
+<td>明亮通透、色彩干净</td>
+<td>适当提亮、白色干净、适度饱和</td>
+<td>干净、通透</td>
+</tr>
+</tbody></table>
+<h4 id="色调创作思路"><a href="#色调创作思路" class="headerlink" title="色调创作思路"></a>色调创作思路</h4><ol>
+<li><strong>确定主题情绪</strong>：温馨→暖色调；清冷→冷色调</li>
+<li><strong>统一色彩</strong>：选择主色调（如青橙色调、蓝黄对比）</li>
+<li><strong>分离人物与环境</strong>：HSL工具单独调整各颜色</li>
+<li><strong>控制明暗对比</strong>：低调（暗调）vs 高调（亮调）</li>
+<li><strong>加氛围感</strong>：颗粒/暗角/光效</li>
+</ol>
+<blockquote>
+<p>色调主要通过后期调色实现，前期注意选择合适的光线和背景搭配</p>
+</blockquote>
+<hr>
+<h3 id="第17节：RAW与JPEG"><a href="#第17节：RAW与JPEG" class="headerlink" title="第17节：RAW与JPEG"></a>第17节：RAW与JPEG</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/RAW与JPEG对比图.jpg" alt="RAW与JPEG对比图" width="400" height="auto">
+
+<p>相机存储格式决定了后期空间的大小：</p>
+<h4 id="格式对比"><a href="#格式对比" class="headerlink" title="格式对比"></a>格式对比</h4><table>
+<thead>
+<tr>
+<th>对比项</th>
+<th>RAW</th>
+<th>JPEG</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件大小</td>
+<td>大（25-50MB/张）</td>
+<td>小（5-10MB/张）</td>
+</tr>
+<tr>
+<td>压缩方式</td>
+<td>无损</td>
+<td>有损压缩</td>
+</tr>
+<tr>
+<td>色彩深度</td>
+<td>12/14-bit</td>
+<td>8-bit</td>
+</tr>
+<tr>
+<td>白平衡</td>
+<td>后期无损调整</td>
+<td>后期调整有损</td>
+</tr>
+<tr>
+<td>曝光宽容度</td>
+<td>±2-3EV可恢复</td>
+<td>±0.5-1EV有限</td>
+</tr>
+<tr>
+<td>即时分享</td>
+<td>需转换</td>
+<td>直出可用</td>
+</tr>
+<tr>
+<td>后期空间</td>
+<td>极大</td>
+<td>有限</td>
+</tr>
+</tbody></table>
+<h4 id="选择建议"><a href="#选择建议" class="headerlink" title="选择建议"></a>选择建议</h4><table>
+<thead>
+<tr>
+<th>场景</th>
+<th>推荐格式</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>重要拍摄（人像/风光/商业）</td>
+<td>RAW</td>
+<td>后期空间大，可救回失误</td>
+</tr>
+<tr>
+<td>日常记录</td>
+<td>JPEG</td>
+<td>节省空间，即拍即用</td>
+</tr>
+<tr>
+<td>旅行/活动</td>
+<td>RAW+JPEG双格式</td>
+<td>两者兼顾</td>
+</tr>
+<tr>
+<td>连拍/体育</td>
+<td>JPEG</td>
+<td>缓冲更快，存储更快</td>
+</tr>
+<tr>
+<td>视频</td>
+<td>通常无RAW选项</td>
+<td>多数相机视频仅JPEG级压缩</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>建议新手从RAW+JPEG双格式开始，JPEG用于即时查看和分享，RAW留作后期处理</p>
+</blockquote>
+<hr>
+<h3 id="第18节：后期处理基础"><a href="#第18节：后期处理基础" class="headerlink" title="第18节：后期处理基础"></a>第18节：后期处理基础</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/后期处理流程图.jpg" alt="后期处理流程图" width="400" height="auto">
+
+<p>后期是数码摄影不可或缺的一环——“前期是作曲，后期是演奏”。</p>
+<h4 id="后期流程（七步法）"><a href="#后期流程（七步法）" class="headerlink" title="后期流程（七步法）"></a>后期流程（七步法）</h4><h5 id="第1步：导入与筛选"><a href="#第1步：导入与筛选" class="headerlink" title="第1步：导入与筛选"></a>第1步：导入与筛选</h5><ul>
+<li>将照片导入电脑/Lightroom等管理软件</li>
+<li>标记星级（1-5星），筛掉废片</li>
+<li>保留精修候选照片</li>
+</ul>
+<h5 id="第2步：基础调整"><a href="#第2步：基础调整" class="headerlink" title="第2步：基础调整"></a>第2步：基础调整</h5><ul>
+<li><strong>白平衡</strong>：校正色温和色调（RAW无损调整）</li>
+<li><strong>曝光</strong>：整体明暗调整</li>
+<li><strong>对比度</strong>：明暗反差</li>
+<li><strong>高光/阴影</strong>：恢复过曝和欠曝区域细节</li>
+<li><strong>白色/黑色</strong>：调整最亮和最暗点</li>
+</ul>
+<h5 id="第3步：裁剪与构图"><a href="#第3步：裁剪与构图" class="headerlink" title="第3步：裁剪与构图"></a>第3步：裁剪与构图</h5><ul>
+<li>二次构图：调整水平线、裁掉杂物</li>
+<li>改变宽高比（如16:9、1:1、4:3）</li>
+<li>注意裁剪后分辨率是否够用</li>
+</ul>
+<h5 id="第4步：色彩校正"><a href="#第4步：色彩校正" class="headerlink" title="第4步：色彩校正"></a>第4步：色彩校正</h5><ul>
+<li>HSL工具：单独调整各颜色的色相/饱和度/明度</li>
+<li>色调分离：高光和阴影分别上色</li>
+<li>自然饱和度 vs 饱和度（前者更智能）</li>
+</ul>
+<h5 id="第5步：局部修饰"><a href="#第5步：局部修饰" class="headerlink" title="第5步：局部修饰"></a>第5步：局部修饰</h5><ul>
+<li>污点修复：去除传感器灰尘、皮肤瑕疵</li>
+<li>笔刷/渐变滤镜：局部调整曝光/色彩</li>
+<li>径向滤镜：突出主体</li>
+<li>修复笔刷：去除路人/杂物</li>
+</ul>
+<h5 id="第6步：锐化与降噪"><a href="#第6步：锐化与降噪" class="headerlink" title="第6步：锐化与降噪"></a>第6步：锐化与降噪</h5><ul>
+<li>锐化：提升细节清晰度（输出时根据用途调整）</li>
+<li>降噪：高ISO照片减少噪点（亮度降噪+色彩降噪）</li>
+<li>注意平衡：锐化过度产生噪点，降噪过度损失细节</li>
+</ul>
+<h5 id="第7步：导出输出"><a href="#第7步：导出输出" class="headerlink" title="第7步：导出输出"></a>第7步：导出输出</h5><ul>
+<li>用途决定参数：<ul>
+<li>网络分享：长边1920px、sRGB、JPEG质量80%</li>
+<li>打印：原尺寸、Adobe RGB/ProPhoto RGB、JPEG/TIFF质量100%</li>
+<li>保存备份：保留RAW原片+XMP/Lightroom目录</li>
+</ul>
+</li>
+</ul>
+<h4 id="常用后期软件"><a href="#常用后期软件" class="headerlink" title="常用后期软件"></a>常用后期软件</h4><table>
+<thead>
+<tr>
+<th>软件</th>
+<th>特点</th>
+<th>适合</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Adobe Lightroom</td>
+<td>照片管理+调色一体、批量处理</td>
+<td>主力后期工具</td>
+</tr>
+<tr>
+<td>Adobe Photoshop</td>
+<td>像素级精修、合成、特殊效果</td>
+<td>进阶精修</td>
+</tr>
+<tr>
+<td>Capture One</td>
+<td>色彩还原好、 tethered shooting</td>
+<td>商业摄影</td>
+</tr>
+<tr>
+<td>Snapseed（手机）</td>
+<td>免费、功能够用</td>
+<td>手机后期</td>
+</tr>
+<tr>
+<td>Luminar AI</td>
+<td>AI辅助、一键风格</td>
+<td>快速出片</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="第19节：常见拍摄场景技巧"><a href="#第19节：常见拍摄场景技巧" class="headerlink" title="第19节：常见拍摄场景技巧"></a>第19节：常见拍摄场景技巧</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/拍摄场景技巧示意图.jpg" alt="拍摄场景技巧示意图" width="400" height="auto">
+
+<h4 id="人像摄影"><a href="#人像摄影" class="headerlink" title="人像摄影"></a>人像摄影</h4><table>
+<thead>
+<tr>
+<th>要素</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>光圈</td>
+<td>f/1.4-2.8（浅景深虚化背景）</td>
+</tr>
+<tr>
+<td>快门</td>
+<td>≥1/200s（避免人物微动模糊）</td>
+</tr>
+<tr>
+<td>ISO</td>
+<td>100-800（根据光线）</td>
+</tr>
+<tr>
+<td>焦距</td>
+<td>50mm/85mm/135mm</td>
+</tr>
+<tr>
+<td>对焦</td>
+<td>眼部对焦，确保眼睛锐利</td>
+</tr>
+<tr>
+<td>光线</td>
+<td>侧光/半逆光最有立体感；黄金时刻最佳</td>
+</tr>
+<tr>
+<td>构图</td>
+<td>眼睛放上1/3线；视线前方留白</td>
+</tr>
+</tbody></table>
+<h4 id="风光摄影"><a href="#风光摄影" class="headerlink" title="风光摄影"></a>风光摄影</h4><table>
+<thead>
+<tr>
+<th>要素</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>光圈</td>
+<td>f/8-11（大景深，全清晰）</td>
+</tr>
+<tr>
+<td>快门</td>
+<td>三脚架可任意；手持≥1/等效焦距</td>
+</tr>
+<tr>
+<td>ISO</td>
+<td>100（最低，画质纯净）</td>
+</tr>
+<tr>
+<td>焦距</td>
+<td>广角14-35mm为主；长焦压缩远景</td>
+</tr>
+<tr>
+<td>对焦</td>
+<td>超焦距或手动对焦1/3处</td>
+</tr>
+<tr>
+<td>配件</td>
+<td>三脚架+GND渐变灰+ND+CPL</td>
+</tr>
+<tr>
+<td>时段</td>
+<td>黄金时刻、蓝调时刻</td>
+</tr>
+</tbody></table>
+<h4 id="夜景摄影"><a href="#夜景摄影" class="headerlink" title="夜景摄影"></a>夜景摄影</h4><table>
+<thead>
+<tr>
+<th>要素</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>光圈</td>
+<td>f/4-8（保证景深）</td>
+</tr>
+<tr>
+<td>快门</td>
+<td>1-30s（长曝光记录光线）</td>
+</tr>
+<tr>
+<td>ISO</td>
+<td>100-800（低ISO减少噪点）</td>
+</tr>
+<tr>
+<td>配件</td>
+<td><strong>三脚架必备</strong>、快门线/2秒延时</td>
+</tr>
+<tr>
+<td>技巧</td>
+<td>关闭长曝降噪(节省时间)或开启(减少热噪点)</td>
+</tr>
+<tr>
+<td>直方图</td>
+<td>检查不要过曝高光（灯光区域）</td>
+</tr>
+</tbody></table>
+<h4 id="星空摄影"><a href="#星空摄影" class="headerlink" title="星空摄影"></a>星空摄影</h4><table>
+<thead>
+<tr>
+<th>要素</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>光圈</td>
+<td>f/1.4-2.8（最大光圈）</td>
+</tr>
+<tr>
+<td>快门</td>
+<td>15-25s（500法则防拖线）</td>
+</tr>
+<tr>
+<td>ISO</td>
+<td>3200-6400</td>
+</tr>
+<tr>
+<td>焦距</td>
+<td>14-24mm超广角</td>
+</tr>
+<tr>
+<td>对焦</td>
+<td>手动对焦至无限远（或峰值对焦）</td>
+</tr>
+<tr>
+<td>500法则</td>
+<td>快门 ≤ 500/等效焦距（14mm→35s，24mm→20s）</td>
+</tr>
+</tbody></table>
+<h4 id="运动摄影"><a href="#运动摄影" class="headerlink" title="运动摄影"></a>运动摄影</h4><table>
+<thead>
+<tr>
+<th>要素</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>快门</td>
+<td>1/1000-1/4000s（凝固动作）</td>
+</tr>
+<tr>
+<td>光圈</td>
+<td>f/2.8-4（大光圈+高快门）</td>
+</tr>
+<tr>
+<td>ISO</td>
+<td>400-3200（自动ISO配合高速快门）</td>
+</tr>
+<tr>
+<td>对焦</td>
+<td>AF-C连续追焦+区域/追踪</td>
+</tr>
+<tr>
+<td>技巧</td>
+<td>连拍高速连拍；预判对焦点</td>
+</tr>
+<tr>
+<td>追随拍摄</td>
+<td>1/30-1/125s跟随主体移动→主体清晰背景拉丝</td>
+</tr>
+</tbody></table>
+<h4 id="微距摄影"><a href="#微距摄影" class="headerlink" title="微距摄影"></a>微距摄影</h4><table>
+<thead>
+<tr>
+<th>要素</th>
+<th>建议</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>光圈</td>
+<td>f/8-16（极浅景深需小光圈补偿）</td>
+</tr>
+<tr>
+<td>快门</td>
+<td>≥1/200s或三脚架（放大倍率下手抖放大）</td>
+</tr>
+<tr>
+<td>对焦</td>
+<td>手动对焦+放大对焦或峰值对焦</td>
+</tr>
+<tr>
+<td>光线</td>
+<td>柔和散射光；环形闪光灯补光</td>
+</tr>
+<tr>
+<td>配件</td>
+<td>微距镜头（1:1放大）、三脚架、对焦导轨</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="第四篇：实战体系"><a href="#第四篇：实战体系" class="headerlink" title="第四篇：实战体系"></a>第四篇：实战体系</h2><h3 id="第20节：摄影流程与参数调校"><a href="#第20节：摄影流程与参数调校" class="headerlink" title="第20节：摄影流程与参数调校"></a>第20节：摄影流程与参数调校</h3><h4 id="20-1-摄影框架"><a href="#20-1-摄影框架" class="headerlink" title="20.1 摄影框架"></a>20.1 摄影框架</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/摄影框架.png" alt="摄影框架" width="400" height="auto">
+
+<p>系统化摄影思维框架：</p>
+<ol>
+<li><strong>观察与构思</strong> → 看到画面，预想效果</li>
+<li><strong>选择参数</strong> → 根据效果设定光圈/快门/ISO</li>
+<li><strong>构图取景</strong> → 选择焦段、机位、构图方式</li>
+<li><strong>对焦拍摄</strong> → 选择对焦模式和位置</li>
+<li><strong>检查回放</strong> → 查看直方图，放大检查</li>
+<li><strong>调整重拍</strong> → 根据回放结果微调</li>
+</ol>
+<h4 id="20-2-摄影顺序"><a href="#20-2-摄影顺序" class="headerlink" title="20.2 摄影顺序"></a>20.2 摄影顺序</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/摄影顺序.png" alt="摄影顺序" width="400" height="auto">
+
+<p>推荐的标准拍摄操作流程：</p>
+<ol>
+<li>确认拍摄主题和效果需求</li>
+<li>设定拍摄模式（P/A/S/M）</li>
+<li>调整光圈/快门/ISO</li>
+<li>设置白平衡</li>
+<li>选择对焦模式和区域</li>
+<li>选择测光模式</li>
+<li>构图取景</li>
+<li>对焦并拍摄</li>
+<li>检查直方图和回放</li>
+<li>必要时曝光补偿或调整重拍</li>
+</ol>
+<h4 id="20-3-调参顺序"><a href="#20-3-调参顺序" class="headerlink" title="20.3 调参顺序"></a>20.3 调参顺序</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/调参顺序.png" alt="调参顺序" width="400" height="auto">
+
+<p>参数调校推荐顺序：</p>
+<ol>
+<li><strong>先定ISO</strong> → 根据光线条件确定基础ISO（优先最低）</li>
+<li><strong>再定光圈或快门</strong> → 根据创作意图选择优先控制项<ul>
+<li>需控制景深 → 先定光圈（A档思路）</li>
+<li>需控制运动 → 先定快门（S档思路）</li>
+</ul>
+</li>
+<li><strong>检查曝光</strong> → 看取景器测光指示条</li>
+<li><strong>补偿调整</strong> → 必要时使用曝光补偿</li>
+<li><strong>试拍确认</strong> → 看直方图确认曝光</li>
+</ol>
+<h4 id="20-4-屏幕参数"><a href="#20-4-屏幕参数" class="headerlink" title="20.4 屏幕参数"></a>20.4 屏幕参数</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/屏幕参数.png" alt="屏幕参数" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/屏幕及调参.png" alt="屏幕及调参" width="400" height="auto">
+
+<p>取景器/屏幕上的关键参数显示：</p>
+<ul>
+<li>光圈值（f/数值）</li>
+<li>快门速度</li>
+<li>ISO感光度</li>
+<li>曝光补偿标尺（测光指示条）</li>
+<li>白平衡模式/色温值</li>
+<li>对焦模式/区域</li>
+<li>测光模式</li>
+<li>剩余可拍张数/电池电量/存储卡状态</li>
+<li>拍摄模式/驱动模式（单拍/连拍/定时）</li>
+</ul>
+<h4 id="20-5-推荐参数速查"><a href="#20-5-推荐参数速查" class="headerlink" title="20.5 推荐参数速查"></a>20.5 推荐参数速查</h4><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/推荐参数.png" alt="推荐参数" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/推荐参数-曝光.png" alt="推荐参数-曝光" width="400" height="auto">
+
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>光圈</th>
+<th>快门</th>
+<th>ISO</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>晴天人像</td>
+<td>f/1.8-2.8</td>
+<td>1/500-1/1000</td>
+<td>100</td>
+<td>大光圈虚化</td>
+</tr>
+<tr>
+<td>阴天人像</td>
+<td>f/2-2.8</td>
+<td>1/250-1/500</td>
+<td>200-400</td>
+<td>注意安全快门</td>
+</tr>
+<tr>
+<td>室内人像</td>
+<td>f/1.8-2.8</td>
+<td>1/125-1/250</td>
+<td>800-1600</td>
+<td>大光圈+高ISO</td>
+</tr>
+<tr>
+<td>风光远景</td>
+<td>f/8-11</td>
+<td>1/125-1/250</td>
+<td>100-200</td>
+<td>三脚架更佳</td>
+</tr>
+<tr>
+<td>夜景城市</td>
+<td>f/4-8</td>
+<td>1-15s</td>
+<td>100-400</td>
+<td>三脚架必备</td>
+</tr>
+<tr>
+<td>星空银河</td>
+<td>f/1.4-2.8</td>
+<td>15-25s</td>
+<td>3200-6400</td>
+<td>500法则防拖线</td>
+</tr>
+<tr>
+<td>运动抓拍</td>
+<td>f/2.8-4</td>
+<td>1/1000-1/2000</td>
+<td>400-1600</td>
+<td>高速快门</td>
+</tr>
+<tr>
+<td>瀑布流水</td>
+<td>f/11-16</td>
+<td>1-5s</td>
+<td>100</td>
+<td>ND镜+三脚架</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="第21节：注意事项"><a href="#第21节：注意事项" class="headerlink" title="第21节：注意事项"></a>第21节：注意事项</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/0注意事项(1).png" alt="注意事项" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/0注意事项(2).png" alt="注意事项" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/0注意事项(11).png" alt="注意事项" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/0注意事项(12).png" alt="注意事项" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/0注意事项(13).png" alt="注意事项" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/0注意事项(21).png" alt="注意事项" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/0注意事项(22).png" alt="注意事项" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/0注意事项(23).png" alt="注意事项" width="400" height="auto">
+
+<h4 id="器材保护"><a href="#器材保护" class="headerlink" title="器材保护"></a>器材保护</h4><ul>
+<li>镜头不用时盖好前后盖，防止灰尘和刮伤</li>
+<li><strong>禁止直对太阳拍摄</strong>（尤其长焦+实时取景，可烧毁传感器）</li>
+<li>雨天/海边注意防潮防盐雾（用防雨罩/防水套）</li>
+<li>温差大时镜头起雾 → 提前放摄影包中过渡</li>
+<li>换镜头时关机，传感器朝下，快速完成</li>
+<li>存储卡热插拔前先关机</li>
+</ul>
+<h4 id="操作习惯"><a href="#操作习惯" class="headerlink" title="操作习惯"></a>操作习惯</h4><ul>
+<li>拍摄前检查：模式/光圈/快门/ISO/白平衡/对焦模式/测光模式</li>
+<li>注意水平线是否平直（开启电子水平仪）</li>
+<li>检查画面边缘是否有杂物/路人入画</li>
+<li>逆光时使用遮光罩减少眩光</li>
+<li>重要场合同时存RAW+JPEG</li>
+<li>定期备份照片到多块硬盘（3-2-1备份法则）</li>
+</ul>
+<h4 id="常见失误防范"><a href="#常见失误防范" class="headerlink" title="常见失误防范"></a>常见失误防范</h4><table>
+<thead>
+<tr>
+<th>失误</th>
+<th>原因</th>
+<th>预防</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>手抖模糊</td>
+<td>快门慢于安全快门</td>
+<td>提ISO/开大光圈/用三脚架</td>
+</tr>
+<tr>
+<td>对焦不准</td>
+<td>对焦点偏离主体</td>
+<td>用单点对焦对准眼睛/放大检查</td>
+</tr>
+<tr>
+<td>过曝/欠曝</td>
+<td>测光被欺骗</td>
+<td>看直方图/用曝光补偿</td>
+</tr>
+<tr>
+<td>背景杂乱</td>
+<td>取景不仔细</td>
+<td>换角度/大光圈虚化/改变机位</td>
+</tr>
+<tr>
+<td>色彩偏差</td>
+<td>白平衡不准</td>
+<td>RAW拍摄/自定义白平衡</td>
+</tr>
+</tbody></table>
+<hr>
+<h3 id="第22节：相机选购与验机"><a href="#第22节：相机选购与验机" class="headerlink" title="第22节：相机选购与验机"></a>第22节：相机选购与验机</h3><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/购买相机.png" alt="购买相机" width="400" height="auto">
+<img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="摄影知识手册/相机验机.png" alt="相机验机" width="400" height="auto">
+
+<h4 id="选购指南"><a href="#选购指南" class="headerlink" title="选购指南"></a>选购指南</h4><h5 id="第一步：确定需求"><a href="#第一步：确定需求" class="headerlink" title="第一步：确定需求"></a>第一步：确定需求</h5><ul>
+<li><strong>拍什么</strong>：人像/风光/视频/旅行/Vlog → 决定画幅和镜头</li>
+<li><strong>谁用</strong>：新手/进阶/专业 → 决定机身级别</li>
+<li><strong>预算</strong>：机身:镜头 = 4:6 或 3:7（镜头更重要）</li>
+</ul>
+<h5 id="第二步：推荐搭配"><a href="#第二步：推荐搭配" class="headerlink" title="第二步：推荐搭配"></a>第二步：推荐搭配</h5><table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>机身</th>
+<th>镜头搭配</th>
+<th>预算参考</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>新手入门</td>
+<td>APS-C微单（如Z50II）</td>
+<td>变焦套机+50mm f/1.8定焦</td>
+<td>5000-8000</td>
+</tr>
+<tr>
+<td>进阶选择</td>
+<td>全画幅入门（如Z5/a7c）</td>
+<td>24-70变焦+85mm f/1.8定焦</td>
+<td>12000-20000</td>
+</tr>
+<tr>
+<td>专业创作</td>
+<td>全画幅旗舰（如Z8/a7R V）</td>
+<td>大三元+多定焦</td>
+<td>30000+</td>
+</tr>
+</tbody></table>
+<h5 id="第三步：购买渠道"><a href="#第三步：购买渠道" class="headerlink" title="第三步：购买渠道"></a>第三步：购买渠道</h5><ul>
+<li>官方旗舰店/品牌体验店（行货有保修）</li>
+<li>正规授权经销商</li>
+<li>二手：选择信誉好的平台，注意验机</li>
+</ul>
+<h4 id="验机清单"><a href="#验机清单" class="headerlink" title="验机清单"></a>验机清单</h4><table>
+<thead>
+<tr>
+<th>检查项</th>
+<th>方法</th>
+<th>合格标准</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>外观</td>
+<td>肉眼检查</td>
+<td>无磕碰、螺丝无拧痕、接口无松动</td>
+</tr>
+<tr>
+<td>快门次数</td>
+<td>软件查询（shuttercount等）</td>
+<td>新机&lt;200次</td>
+</tr>
+<tr>
+<td>传感器</td>
+<td>拍白墙f/16 + 后期增强</td>
+<td>无坏点、无灰尘</td>
+</tr>
+<tr>
+<td>LCD/EVF</td>
+<td>显示纯色画面</td>
+<td>无坏点/亮点</td>
+</tr>
+<tr>
+<td>对焦</td>
+<td>各对焦点逐一测试</td>
+<td>均能合焦</td>
+</tr>
+<tr>
+<td>镜头</td>
+<td>对焦/变焦环手感</td>
+<td>顺滑无阻尼异常</td>
+</tr>
+<tr>
+<td>配件</td>
+<td>逐一核对</td>
+<td>电池/充电器/肩带/说明书/保修卡</td>
+</tr>
+<tr>
+<td>发票/保修</td>
+<td>确认政策</td>
+<td>行货联保</td>
+</tr>
+</tbody></table>
+<hr>
+</article><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/2026/10/sheng-huo/ren-sheng-ce-suan-gong-ju-qing-dan/" title="人生测算工具清单"><div class="cover" style="background: var(--btn-bg)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">人生测算工具清单</div></div><div class="info-2"><div class="info-item-1">把生活和工作里的大事算成账、把”自己”测成数据的在线工具汇总，共六类：职场、财务、性格、能力、心理、生活。  提示：部分在线工具可能已下线或停止维护，如遇无法访问的情况请尝试搜索替代工具。以下工具均为免费使用。⚠ 能力测评与心理量表只作自我了解的参考，不等于诊断结论；情绪困扰明显时请优先咨询专业机构。   一、职场工作围绕”上班”这件事的测算：薪资性价比、跨城 Offer 对比、离职补偿、摸鱼减压等。    工具 说明 渠道 测算网址    这 b 班上得值不值 综合薪资、工时、通勤等因素折算工作性价比评级 github 打开   城市 Offer 薪资对比 按生活方式换算不同城市间的等价薪资与倍率 github 打开   职场计算器全家桶 税后工资、个税、房贷、离职补偿、Offer 对比等职场计算 微信小程序 微信内搜索同名小程序   在线求生资源集合 职场求生工具集合，含离职倒计时、减压工具与求职资源 AntiWork 不想工作网 打开    二、财务计算围绕”花钱 / 省钱”的测算：个税社保、房贷租房、婚嫁养车、养老金等。    工具 说明 渠道 测算网址    个人财物与...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content is-expand"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E7%AF%87%EF%BC%9A%E5%85%A5%E9%97%A8%E5%9F%BA%E7%A1%80"><span class="toc-number">1.</span> <span class="toc-text">第一篇：入门基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC1%E8%8A%82%EF%BC%9A%E8%AE%A4%E8%AF%86%E7%9B%B8%E6%9C%BA"><span class="toc-number">1.1.</span> <span class="toc-text">第1节：认识相机</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-1-%E7%9B%B8%E6%9C%BA%E7%B1%BB%E5%88%AB"><span class="toc-number">1.1.1.</span> <span class="toc-text">1.1 相机类别</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-2-%E7%94%BB%E5%B9%85%EF%BC%88%E4%BC%A0%E6%84%9F%E5%99%A8%E5%B0%BA%E5%AF%B8%EF%BC%89"><span class="toc-number">1.1.2.</span> <span class="toc-text">1.2 画幅（传感器尺寸）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-3-%E4%B8%BB%E6%B5%81%E5%93%81%E7%89%8C%E7%B3%BB%E5%88%97"><span class="toc-number">1.1.3.</span> <span class="toc-text">1.3 主流品牌系列</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-4-%E7%9B%B8%E6%9C%BA%E6%8C%89%E9%94%AE%E5%B8%83%E5%B1%80"><span class="toc-number">1.1.4.</span> <span class="toc-text">1.4 相机按键布局</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#1-5-%E7%9B%B8%E6%9C%BA%E5%B8%B8%E8%AF%86"><span class="toc-number">1.1.5.</span> <span class="toc-text">1.5 相机常识</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC2%E8%8A%82%EF%BC%9A%E6%9B%9D%E5%85%89%E4%B8%89%E8%A6%81%E7%B4%A0%E2%80%94%E2%80%94%E5%85%89%E5%9C%88%E3%80%81%E5%BF%AB%E9%97%A8%E3%80%81ISO"><span class="toc-number">1.2.</span> <span class="toc-text">第2节：曝光三要素——光圈、快门、ISO</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-%E5%85%89%E5%9C%88"><span class="toc-number">1.2.1.</span> <span class="toc-text">2.1 光圈</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-%E5%BF%AB%E9%97%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text">2.2 快门</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-%E6%84%9F%E5%85%89%E5%BA%A6%EF%BC%88ISO%EF%BC%89"><span class="toc-number">1.2.3.</span> <span class="toc-text">2.3 感光度（ISO）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC3%E8%8A%82%EF%BC%9A%E6%9B%9D%E5%85%89%E4%B8%89%E8%A7%92%E5%85%B3%E7%B3%BB"><span class="toc-number">1.3.</span> <span class="toc-text">第3节：曝光三角关系</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%AD%89%E9%87%8F%E6%9B%9D%E5%85%89"><span class="toc-number">1.3.1.</span> <span class="toc-text">等量曝光</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC4%E8%8A%82%EF%BC%9A%E6%8B%8D%E6%91%84%E6%A8%A1%E5%BC%8F%EF%BC%88P-A-S-M%EF%BC%89"><span class="toc-number">1.4.</span> <span class="toc-text">第4节：拍摄模式（P&#x2F;A&#x2F;S&#x2F;M）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B%E5%A4%A7%E6%A8%A1%E5%BC%8F%E5%AF%B9%E6%AF%94"><span class="toc-number">1.4.1.</span> <span class="toc-text">四大模式对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.4.2.</span> <span class="toc-text">使用建议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC5%E8%8A%82%EF%BC%9A%E5%AF%B9%E7%84%A6%E6%8A%80%E5%B7%A7"><span class="toc-number">1.5.</span> <span class="toc-text">第5节：对焦技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E7%84%A6%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.5.1.</span> <span class="toc-text">对焦模式</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E7%84%A6%E5%8C%BA%E5%9F%9F"><span class="toc-number">1.5.2.</span> <span class="toc-text">对焦区域</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E7%94%A8%E5%AF%B9%E7%84%A6%E6%8A%80%E5%B7%A7"><span class="toc-number">1.5.3.</span> <span class="toc-text">实用对焦技巧</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E7%AF%87%EF%BC%9A%E6%A0%B8%E5%BF%83%E6%8A%80%E5%B7%A7"><span class="toc-number">2.</span> <span class="toc-text">第二篇：核心技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC6%E8%8A%82%EF%BC%9A%E6%B5%8B%E5%85%89%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.1.</span> <span class="toc-text">第6节：测光模式</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B%E7%A7%8D%E6%B5%8B%E5%85%89%E6%A8%A1%E5%BC%8F"><span class="toc-number">2.1.1.</span> <span class="toc-text">四种测光模式</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC7%E8%8A%82%EF%BC%9A%E6%9B%9D%E5%85%89%E8%A1%A5%E5%81%BF"><span class="toc-number">2.2.</span> <span class="toc-text">第7节：曝光补偿</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%99%BD%E5%8A%A0%E9%BB%91%E5%87%8F%E5%8E%9F%E5%88%99"><span class="toc-number">2.2.1.</span> <span class="toc-text">白加黑减原则</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E8%A1%A5%E5%81%BF%E5%9C%BA%E6%99%AF"><span class="toc-number">2.2.2.</span> <span class="toc-text">常见补偿场景</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC8%E8%8A%82%EF%BC%9A%E7%9B%B4%E6%96%B9%E5%9B%BE%E5%88%A4%E8%AF%BB"><span class="toc-number">2.3.</span> <span class="toc-text">第8节：直方图判读</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E8%AF%BB%E5%8F%96"><span class="toc-number">2.3.1.</span> <span class="toc-text">如何读取</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%A4%E8%AF%BB%E9%80%9F%E6%9F%A5%E8%A1%A8"><span class="toc-number">2.3.2.</span> <span class="toc-text">判读速查表</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%91%E5%8F%B3%E6%9B%9D%E5%85%89%E6%B3%95%EF%BC%88ETTR%EF%BC%89"><span class="toc-number">2.3.3.</span> <span class="toc-text">向右曝光法（ETTR）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC9%E8%8A%82%EF%BC%9A%E7%99%BD%E5%B9%B3%E8%A1%A1%E4%B8%8E%E8%89%B2%E6%B8%A9"><span class="toc-number">2.4.</span> <span class="toc-text">第9节：白平衡与色温</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%89%B2%E6%B8%A9%E5%9F%BA%E7%A1%80"><span class="toc-number">2.4.1.</span> <span class="toc-text">色温基础</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%99%BD%E5%B9%B3%E8%A1%A1%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">2.4.2.</span> <span class="toc-text">白平衡的作用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E6%84%8F%E8%BF%90%E7%94%A8"><span class="toc-number">2.4.3.</span> <span class="toc-text">创意运用</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC10%E8%8A%82%EF%BC%9A%E7%84%A6%E8%B7%9D%E4%B8%8E%E9%95%9C%E5%A4%B4%E9%80%89%E6%8B%A9"><span class="toc-number">2.5.</span> <span class="toc-text">第10节：焦距与镜头选择</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%84%A6%E8%B7%9D%E6%80%BB%E8%A7%88"><span class="toc-number">2.5.1.</span> <span class="toc-text">焦距总览</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%84%E7%84%A6%E6%AE%B5%E9%95%9C%E5%A4%B4%E6%95%88%E6%9E%9C"><span class="toc-number">2.5.2.</span> <span class="toc-text">各焦段镜头效果</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#24mm%EF%BC%88%E5%B9%BF%E8%A7%92%EF%BC%89"><span class="toc-number">2.5.2.1.</span> <span class="toc-text">24mm（广角）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#35mm%EF%BC%88%E4%BA%BA%E6%96%87%E5%B9%BF%E8%A7%92%EF%BC%89"><span class="toc-number">2.5.2.2.</span> <span class="toc-text">35mm（人文广角）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#50mm%EF%BC%88%E6%A0%87%E5%87%86%E9%95%9C%E5%A4%B4%EF%BC%89"><span class="toc-number">2.5.2.3.</span> <span class="toc-text">50mm（标准镜头）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#85mm%EF%BC%88%E4%BA%BA%E5%83%8F%E9%BB%84%E9%87%91%E7%84%A6%E6%AE%B5%EF%BC%89"><span class="toc-number">2.5.2.4.</span> <span class="toc-text">85mm（人像黄金焦段）</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#135mm%EF%BC%88%E4%B8%AD%E9%95%BF%E7%84%A6%E4%BA%BA%E5%83%8F%EF%BC%89"><span class="toc-number">2.5.2.5.</span> <span class="toc-text">135mm（中长焦人像）</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%84%A6%E8%B7%9D%E4%B8%89%E5%A4%A7%E6%95%88%E5%BA%94"><span class="toc-number">2.5.3.</span> <span class="toc-text">焦距三大效应</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC11%E8%8A%82%EF%BC%9A%E6%99%AF%E6%B7%B1%E6%8E%A7%E5%88%B6"><span class="toc-number">2.6.</span> <span class="toc-text">第11节：景深控制</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%99%AF%E6%B7%B1%E4%B8%89%E8%A6%81%E7%B4%A0"><span class="toc-number">2.6.1.</span> <span class="toc-text">景深三要素</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%85%E6%99%AF%E6%B7%B1-vs-%E5%A4%A7%E6%99%AF%E6%B7%B1"><span class="toc-number">2.6.2.</span> <span class="toc-text">浅景深 vs 大景深</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%B5%85%E6%99%AF%E6%B7%B1%E5%9B%9B%E6%AD%A5%E6%B3%95"><span class="toc-number">2.6.3.</span> <span class="toc-text">浅景深四步法</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC12%E8%8A%82%EF%BC%9A%E6%99%AF%E5%88%AB%E4%B8%8E%E5%8F%96%E6%99%AF"><span class="toc-number">2.7.</span> <span class="toc-text">第12节：景别与取景</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC13%E8%8A%82%EF%BC%9A%E6%9E%84%E5%9B%BE%E6%B3%95%E5%88%99"><span class="toc-number">2.8.</span> <span class="toc-text">第13节：构图法则</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89%E5%88%86%E6%B3%95%EF%BC%88%E9%BB%84%E9%87%91%E5%88%86%E5%89%B2%E7%AE%80%E5%8C%96%EF%BC%89"><span class="toc-number">2.8.1.</span> <span class="toc-text">三分法（黄金分割简化）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BC%95%E5%AF%BC%E7%BA%BF"><span class="toc-number">2.8.2.</span> <span class="toc-text">引导线</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AF%B9%E7%A7%B0%E6%9E%84%E5%9B%BE"><span class="toc-number">2.8.3.</span> <span class="toc-text">对称构图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A1%86%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="toc-number">2.8.4.</span> <span class="toc-text">框架构图</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%B8%B8%E7%94%A8%E6%9E%84%E5%9B%BE"><span class="toc-number">2.8.5.</span> <span class="toc-text">其他常用构图</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E7%AF%87%EF%BC%9A%E8%BF%9B%E9%98%B6%E6%8F%90%E5%8D%87"><span class="toc-number">3.</span> <span class="toc-text">第三篇：进阶提升</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC14%E8%8A%82%EF%BC%9A%E5%85%89%E7%BA%BF%E8%BF%90%E7%94%A8"><span class="toc-number">3.1.</span> <span class="toc-text">第14节：光线运用</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%89%E7%BA%BF%E6%96%B9%E5%90%91"><span class="toc-number">3.1.1.</span> <span class="toc-text">光线方向</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%89%E7%BA%BF%E6%80%A7%E8%B4%A8"><span class="toc-number">3.1.2.</span> <span class="toc-text">光线性质</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%87%AA%E7%84%B6%E5%85%89%E6%97%B6%E6%AE%B5"><span class="toc-number">3.1.3.</span> <span class="toc-text">自然光时段</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%BA%E9%80%A0%E5%85%89"><span class="toc-number">3.1.4.</span> <span class="toc-text">人造光</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC15%E8%8A%82%EF%BC%9A%E6%BB%A4%E9%95%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.2.</span> <span class="toc-text">第15节：滤镜系统</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%BB%A4%E9%95%9C%E6%80%BB%E8%A7%88"><span class="toc-number">3.2.1.</span> <span class="toc-text">滤镜总览</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#CPL%E5%81%8F%E6%8C%AF%E9%95%9C%E8%AF%A6%E8%A7%A3"><span class="toc-number">3.2.2.</span> <span class="toc-text">CPL偏振镜详解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ND%E5%87%8F%E5%85%89%E9%95%9C%E8%AF%A6%E8%A7%A3"><span class="toc-number">3.2.3.</span> <span class="toc-text">ND减光镜详解</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%BB%A4%E9%95%9C"><span class="toc-number">3.2.4.</span> <span class="toc-text">其他滤镜</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC16%E8%8A%82%EF%BC%9A%E8%89%B2%E8%B0%83%E9%A3%8E%E6%A0%BC"><span class="toc-number">3.3.</span> <span class="toc-text">第16节：色调风格</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E8%89%B2%E8%B0%83%E9%A3%8E%E6%A0%BC%E9%80%9F%E6%9F%A5"><span class="toc-number">3.3.1.</span> <span class="toc-text">常见色调风格速查</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%89%B2%E8%B0%83%E5%88%9B%E4%BD%9C%E6%80%9D%E8%B7%AF"><span class="toc-number">3.3.2.</span> <span class="toc-text">色调创作思路</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC17%E8%8A%82%EF%BC%9ARAW%E4%B8%8EJPEG"><span class="toc-number">3.4.</span> <span class="toc-text">第17节：RAW与JPEG</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%A0%BC%E5%BC%8F%E5%AF%B9%E6%AF%94"><span class="toc-number">3.4.1.</span> <span class="toc-text">格式对比</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E6%8B%A9%E5%BB%BA%E8%AE%AE"><span class="toc-number">3.4.2.</span> <span class="toc-text">选择建议</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC18%E8%8A%82%EF%BC%9A%E5%90%8E%E6%9C%9F%E5%A4%84%E7%90%86%E5%9F%BA%E7%A1%80"><span class="toc-number">3.5.</span> <span class="toc-text">第18节：后期处理基础</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8E%E6%9C%9F%E6%B5%81%E7%A8%8B%EF%BC%88%E4%B8%83%E6%AD%A5%E6%B3%95%EF%BC%89"><span class="toc-number">3.5.1.</span> <span class="toc-text">后期流程（七步法）</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC1%E6%AD%A5%EF%BC%9A%E5%AF%BC%E5%85%A5%E4%B8%8E%E7%AD%9B%E9%80%89"><span class="toc-number">3.5.1.1.</span> <span class="toc-text">第1步：导入与筛选</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC2%E6%AD%A5%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%B0%83%E6%95%B4"><span class="toc-number">3.5.1.2.</span> <span class="toc-text">第2步：基础调整</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC3%E6%AD%A5%EF%BC%9A%E8%A3%81%E5%89%AA%E4%B8%8E%E6%9E%84%E5%9B%BE"><span class="toc-number">3.5.1.3.</span> <span class="toc-text">第3步：裁剪与构图</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC4%E6%AD%A5%EF%BC%9A%E8%89%B2%E5%BD%A9%E6%A0%A1%E6%AD%A3"><span class="toc-number">3.5.1.4.</span> <span class="toc-text">第4步：色彩校正</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC5%E6%AD%A5%EF%BC%9A%E5%B1%80%E9%83%A8%E4%BF%AE%E9%A5%B0"><span class="toc-number">3.5.1.5.</span> <span class="toc-text">第5步：局部修饰</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC6%E6%AD%A5%EF%BC%9A%E9%94%90%E5%8C%96%E4%B8%8E%E9%99%8D%E5%99%AA"><span class="toc-number">3.5.1.6.</span> <span class="toc-text">第6步：锐化与降噪</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC7%E6%AD%A5%EF%BC%9A%E5%AF%BC%E5%87%BA%E8%BE%93%E5%87%BA"><span class="toc-number">3.5.1.7.</span> <span class="toc-text">第7步：导出输出</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E7%94%A8%E5%90%8E%E6%9C%9F%E8%BD%AF%E4%BB%B6"><span class="toc-number">3.5.2.</span> <span class="toc-text">常用后期软件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC19%E8%8A%82%EF%BC%9A%E5%B8%B8%E8%A7%81%E6%8B%8D%E6%91%84%E5%9C%BA%E6%99%AF%E6%8A%80%E5%B7%A7"><span class="toc-number">3.6.</span> <span class="toc-text">第19节：常见拍摄场景技巧</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%BA%E5%83%8F%E6%91%84%E5%BD%B1"><span class="toc-number">3.6.1.</span> <span class="toc-text">人像摄影</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%A3%8E%E5%85%89%E6%91%84%E5%BD%B1"><span class="toc-number">3.6.2.</span> <span class="toc-text">风光摄影</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%A4%9C%E6%99%AF%E6%91%84%E5%BD%B1"><span class="toc-number">3.6.3.</span> <span class="toc-text">夜景摄影</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%98%9F%E7%A9%BA%E6%91%84%E5%BD%B1"><span class="toc-number">3.6.4.</span> <span class="toc-text">星空摄影</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%BF%90%E5%8A%A8%E6%91%84%E5%BD%B1"><span class="toc-number">3.6.5.</span> <span class="toc-text">运动摄影</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%BE%AE%E8%B7%9D%E6%91%84%E5%BD%B1"><span class="toc-number">3.6.6.</span> <span class="toc-text">微距摄影</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E5%9B%9B%E7%AF%87%EF%BC%9A%E5%AE%9E%E6%88%98%E4%BD%93%E7%B3%BB"><span class="toc-number">4.</span> <span class="toc-text">第四篇：实战体系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC20%E8%8A%82%EF%BC%9A%E6%91%84%E5%BD%B1%E6%B5%81%E7%A8%8B%E4%B8%8E%E5%8F%82%E6%95%B0%E8%B0%83%E6%A0%A1"><span class="toc-number">4.1.</span> <span class="toc-text">第20节：摄影流程与参数调校</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#20-1-%E6%91%84%E5%BD%B1%E6%A1%86%E6%9E%B6"><span class="toc-number">4.1.1.</span> <span class="toc-text">20.1 摄影框架</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#20-2-%E6%91%84%E5%BD%B1%E9%A1%BA%E5%BA%8F"><span class="toc-number">4.1.2.</span> <span class="toc-text">20.2 摄影顺序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#20-3-%E8%B0%83%E5%8F%82%E9%A1%BA%E5%BA%8F"><span class="toc-number">4.1.3.</span> <span class="toc-text">20.3 调参顺序</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#20-4-%E5%B1%8F%E5%B9%95%E5%8F%82%E6%95%B0"><span class="toc-number">4.1.4.</span> <span class="toc-text">20.4 屏幕参数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#20-5-%E6%8E%A8%E8%8D%90%E5%8F%82%E6%95%B0%E9%80%9F%E6%9F%A5"><span class="toc-number">4.1.5.</span> <span class="toc-text">20.5 推荐参数速查</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC21%E8%8A%82%EF%BC%9A%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="toc-number">4.2.</span> <span class="toc-text">第21节：注意事项</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%99%A8%E6%9D%90%E4%BF%9D%E6%8A%A4"><span class="toc-number">4.2.1.</span> <span class="toc-text">器材保护</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C%E4%B9%A0%E6%83%AF"><span class="toc-number">4.2.2.</span> <span class="toc-text">操作习惯</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%B8%B8%E8%A7%81%E5%A4%B1%E8%AF%AF%E9%98%B2%E8%8C%83"><span class="toc-number">4.2.3.</span> <span class="toc-text">常见失误防范</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%AC%AC22%E8%8A%82%EF%BC%9A%E7%9B%B8%E6%9C%BA%E9%80%89%E8%B4%AD%E4%B8%8E%E9%AA%8C%E6%9C%BA"><span class="toc-number">4.3.</span> <span class="toc-text">第22节：相机选购与验机</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%89%E8%B4%AD%E6%8C%87%E5%8D%97"><span class="toc-number">4.3.1.</span> <span class="toc-text">选购指南</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%EF%BC%9A%E7%A1%AE%E5%AE%9A%E9%9C%80%E6%B1%82"><span class="toc-number">4.3.1.1.</span> <span class="toc-text">第一步：确定需求</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%EF%BC%9A%E6%8E%A8%E8%8D%90%E6%90%AD%E9%85%8D"><span class="toc-number">4.3.1.2.</span> <span class="toc-text">第二步：推荐搭配</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%EF%BC%9A%E8%B4%AD%E4%B9%B0%E6%B8%A0%E9%81%93"><span class="toc-number">4.3.1.3.</span> <span class="toc-text">第三步：购买渠道</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%AA%8C%E6%9C%BA%E6%B8%85%E5%8D%95"><span class="toc-number">4.3.2.</span> <span class="toc-text">验机清单</span></a></li></ol></li></ol></li></ol></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2023.07 - 2026 By Scy</span></div><div class="footer_custom_text">在这个智商过剩，利益至上的年代；<br/>💖💖💖诚挚和走心显得格外有质感！💖💖💖</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/pluginsSrc/@fancyapps/ui/dist/fancybox/fancybox.umd.js"></script><script src="/pluginsSrc/instant.page/instantpage.js" type="module"></script><script src="/pluginsSrc/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/pluginsSrc/node-snackbar/dist/snackbar.min.js"></script><div class="js-pjax"></div><script src="/bangumis/assets/js/bangumi-view.js"></script><script src="/js/album-menu.js"></script><script src="/js/toc-details.js"></script><script src="/js/img-fallback.js"></script><script async data-pjax src="https://events.vercount.one/js"></script></div></body></html>
