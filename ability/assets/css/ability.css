@@ -12,14 +12,13 @@
  * =========================================================== */
 
 .ability-page {
-  /* 状态 / 档位取色：沿用首页树状图降饱和自然系（见《样式配置说明》§3.5） */
-  --ab-excellent: #4a9a8f;
-  --ab-advancing: #d08a5f;
-  --ab-weak: #bd6b6b;
-  --ab-tier-high: #4a9a8f;
-  --ab-tier-mid: #6a93b8;
-  --ab-tier-low: #d08a5f;
-  --ab-tier-none: #9aa3ab;
+  /* 档位取色：沿用首页树状图降饱和自然系（见《样式配置说明》§3.5）
+     2026-10-28：不再在此重复硬编码同一组色值，改为引用 :root 的 --c-nat-* 单一事实源
+     （custom.css 全站加载，本页可直接引用）——站点级改色时与树状图自动同步，不再漂移。 */
+  --ab-tier-high: var(--c-nat-green);
+  --ab-tier-mid: var(--c-nat-blue);
+  --ab-tier-low: var(--c-nat-orange);
+  --ab-tier-none: var(--c-nat-grey);
 
   max-width: 100%;
   margin: 0 auto;
@@ -156,20 +155,11 @@
   color: var(--font-color);
 }
 
-/* 达标状态徽章：仅保留「业余优秀」成就标记（进阶中 / 需补强不再显示） */
-.ability-cat__status {
-  font-size: var(--fs-badge);
-  padding: 0.05rem 0.5rem;
-  border-radius: var(--radius-pill);
-  color: var(--ab-excellent);
-  background: color-mix(in srgb, var(--ab-excellent) 16%, transparent);
-}
-
 .ability-cat__score {
   margin-left: auto;
   font-size: var(--fs-card);
   font-weight: 700;
-  color: var(--default-bg-color);
+  color: var(--accent-ink); /* 16px 主色文字，暗色走提亮变体达 AA */
   font-variant-numeric: tabular-nums;
 }
 
@@ -209,9 +199,11 @@
   line-height: var(--lh-base);
 }
 
+/* 2026-10-28 对齐 mountain-table：th / td 的 padding 拆开写——
+   表头 pad 取 0.8rem 1rem（与 mountain thead th 一致）；
+   单元格保持 0.5rem 0.7rem 不动：ability 五列且内容长短悬殊，跟着放宽会显得空旷、信息密度掉。 */
 .ability-table th,
 .ability-table td {
-  padding: 0.5rem 0.7rem;
   text-align: center;
   border-bottom: 1px solid var(--tab-border-color);
   /* 定宽后允许长内容换行，绝不截断/遮挡显示 */
@@ -221,9 +213,16 @@
 .ability-table th {
   background: color-mix(in srgb, var(--default-bg-color) 12%, var(--card-bg));
   color: var(--font-color);
-  font-size: var(--fs-meta);
+  /* 2026-10-28：删掉原来的 font-size: var(--fs-meta)（12px）——不再显式写即继承
+     .ability-table 的 --fs-body(14px)，与 mountain thead th 同款实现，也符合
+     《样式配置说明》「表格统一 --fs-body」的约定。 */
   font-weight: 700;
+  padding: 0.8rem 1rem;
   white-space: nowrap;
+}
+
+.ability-table td {
+  padding: 0.5rem 0.7rem;
 }
 
 .ability-table tbody td {
@@ -259,37 +258,39 @@
 
 .ability-row__score {
   font-weight: 700;
-  color: var(--default-bg-color);
+  color: var(--accent-ink); /* 14px 主色文字，暗色走提亮变体达 AA */
 }
 
 /* 档位徽章：胶囊 + 极淡底色（底色由档位色 color-mix 派生，明暗自动适配） */
 .ability-badge {
   display: inline-block;
-  padding: 0.05rem 0.5rem;
+  /* 2026-10-28：0.5rem → 0.45rem，与 mountain .badge 取齐（分档配色本身保留） */
+  padding: 0.05rem 0.45rem;
   border-radius: var(--radius-pill);
   font-size: var(--fs-badge);
   line-height: var(--lh-base);
   white-space: nowrap;
 }
 
+/* 2026-10-28：底色浓度 16% → 18%，与 mountain .badge 取齐（色值仍按档位分四色） */
 .ability-badge.tier-high {
   color: var(--ab-tier-high);
-  background: color-mix(in srgb, var(--ab-tier-high) 16%, transparent);
+  background: color-mix(in srgb, var(--ab-tier-high) 18%, transparent);
 }
 
 .ability-badge.tier-mid {
   color: var(--ab-tier-mid);
-  background: color-mix(in srgb, var(--ab-tier-mid) 16%, transparent);
+  background: color-mix(in srgb, var(--ab-tier-mid) 18%, transparent);
 }
 
 .ability-badge.tier-low {
   color: var(--ab-tier-low);
-  background: color-mix(in srgb, var(--ab-tier-low) 16%, transparent);
+  background: color-mix(in srgb, var(--ab-tier-low) 18%, transparent);
 }
 
 .ability-badge.tier-none {
   color: var(--ab-tier-none);
-  background: color-mix(in srgb, var(--ab-tier-none) 16%, transparent);
+  background: color-mix(in srgb, var(--ab-tier-none) 18%, transparent);
 }
 
 /* ── 5. 空数据 / 未生成占位 ─────────────────────────────── */

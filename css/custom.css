@@ -19,6 +19,16 @@
  * ========================================================================== */
 :root {
   --radius-card: 12px;
+  /* 自然系降饱和三色 —— **全站单一事实源**（2026-10-28 收敛）。
+     此前 .site-tree 与 ability.css 各自硬编码了一组同值三色，改站点配色时两处必然漂移；
+     现在统一收敛到此处，各模块保留自身语义名并引用（--c-cat/--ab-tier-high → 绿系，
+     --c-album/--ab-tier-mid → 蓝系，--c-page/--ab-tier-low → 橙系，--ab-tier-none → 灰系）。
+     另：同次清理移除了树状图里 --default-bg-color 的历史兜底值 `, #49b1f5`
+     （旧 Butterfly 默认蓝）——该变量在 :root 与暗色块均有定义，兜底永不触发且易误导。 */
+  --c-nat-green: #4a9a8f;
+  --c-nat-blue: #6a93b8;
+  --c-nat-orange: #d08a5f;
+  --c-nat-grey: #9aa3ab;
   /* 2026-10-03：--shadow-card 别名已删除——其唯一使用者 notes.css 已改为直引
      var(--card-box-shadow)，别名纯绕一层间接。（阴影派生自主题变量的决策见
      2026-09-17 记录，未变。 */
@@ -69,6 +79,18 @@ body:has(#travel-page-marker) .toc .toc-number {
      以主题色为底的容器都应引用它，而不是直接写 #fff。
      2026-09-17：改用主题 --white（亮色 #fff / 暗色 rgba(255,255,255,.9)），随明暗自动切换。 */
   --on-accent: var(--white, #fff);
+
+  /* ── 边框/分隔线令牌（2026-10-31）─────────────────────────────────
+     --light-grey 在主题里亮色是 #EEE（淡边框）、暗色被覆盖为 rgba(255,255,255,.7)
+     （近白「文字」语义）——同一变量承载两种语义，导致暗色下所有「当边框用」的场合
+     渲染成刺眼白线/亮圈（表格边框、分类卡、时间轴、头像底圈、相册菜单等 15 处）。
+     现拆出 --border-color：亮 = --light-grey(#EEE)，暗 = #2c2c2c（主题暗色分隔线档）。
+     「线条 / 边框 / 滑块」角色一律用它；--light-grey 留给文字与 color-mix 混色场景。 */
+  --border-color: var(--light-grey);
+
+  /* 主题色「小字」变体：12-16px 文字压暗色卡片时主色 #40786b 对 #121212 仅 ≈3.7:1
+     不达 WCAG AA；提亮变体 ≈4.6:1 达标。大面积底色 / 图形仍用主色本体。 */
+  --accent-ink: var(--default-bg-color);
 
   /* ── 字号阶梯（Font Scale，2026-09-12 定稿）─────────────────────────
      唯一基准 = --global-font-size（14px），一律 calc 绝对换算，
@@ -136,7 +158,7 @@ html {
 .table-wrap {
   margin: 0 0 1.2rem;
   overflow-x: auto; /* 内容过宽时横向滚动，而不是撑破布局 */
-  border: 1px solid var(--light-grey); /* 细边框，与全站分割线一致 */
+  border: 1px solid var(--border-color); /* 细边框，与全站分割线一致 */
   border-radius: var(--radius-md); /* 圆角，呼应卡片观感 */
   background: var(--card-bg);
   box-shadow: var(--card-box-shadow); /* 复用主题卡片阴影 */
@@ -147,7 +169,8 @@ html {
   height: 8px;
 }
 .table-wrap::-webkit-scrollbar-thumb {
-  background: var(--light-grey);
+  /* 滑块要「明暗皆可见」：#EEE/#2c2c2c 都会贴底，改用前景色 30% 透明派生 */
+  background: color-mix(in srgb, var(--font-color) 30%, transparent);
   border-radius: var(--radius-xs);
 }
 
@@ -173,7 +196,9 @@ html {
   white-space: nowrap;
   letter-spacing: 0.02em;
   color: var(--font-color);
-  border-bottom: 2px solid var(--tab-border-color);
+  /* 2026-10-31：强调线原用 --tab-border-color（亮色 #f0f0f0 近白，压在 12% 主色淡底上
+     亮度不协调且几乎不可见），改主色 35% 派生 —— 与表头淡底同色系、明暗自适应。 */
+  border-bottom: 2px solid color-mix(in srgb, var(--default-bg-color) 35%, transparent);
   background: color-mix(in srgb, var(--default-bg-color) 12%, var(--card-bg));
 }
 
@@ -181,7 +206,7 @@ html {
 .table-wrap th,
 .table-wrap td {
   padding: var(--space-sm) var(--space-md);
-  border: 1px solid var(--light-grey);
+  border: 1px solid var(--border-color);
   vertical-align: middle;
 }
 
@@ -273,7 +298,7 @@ blockquote {
   margin: 1.2rem 0; /* 与 .about-card 对齐：去除 720px 限宽与水平居中 */
   padding: var(--space-md) var(--space-lg);
   background: var(--card-bg);
-  border: 1px solid var(--light-grey);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--card-box-shadow);
 }
@@ -301,7 +326,7 @@ blockquote {
   gap: var(--space-md);
   position: relative; /* ::before 绝对定位图标依赖此定位上下文 */
   padding: 10px 6px 10px 1.5em; /* 左侧留出图标空间（覆盖主题默认 1.4em） */
-  border-bottom: 1px solid var(--light-grey); /* 行分隔线 → 形成表格观感 */
+  border-bottom: 1px solid var(--border-color); /* 行分隔线 → 形成表格观感 */
   transition: background var(--transition-base);
 }
 /* 末行去掉分隔线，避免与卡片底边重叠 */
@@ -327,7 +352,7 @@ blockquote {
   transition: color var(--transition-base);
 }
 .category-lists .category-list-link:hover {
-  color: var(--default-bg-color);
+  color: var(--accent-ink); /* hover 文字走小字主色变体（暗色自动提亮） */
 }
 
 /* 4.7 数量徽标：胶囊形 + 主题色淡染，推到右侧、字号与分类名一致 */
@@ -413,7 +438,7 @@ blockquote {
   margin: 1.2rem 0;
   padding: var(--space-lg) var(--space-lg);
   background: var(--card-bg);
-  border: 1px solid var(--light-grey);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--card-box-shadow);
 }
@@ -427,7 +452,7 @@ blockquote {
 }
 .ten-year__head h2 {
   margin: 0;
-  font-size: var(--fs-card);
+  font-size: var(--fs-section); /* 2026-10-31：原 --fs-card(16px) 使 about 页 h2 与全站 h2(24px 主题/22px 区块)层级断档 */
 }
 .ten-year__head span {
   margin-left: var(--space-xs);
@@ -456,7 +481,7 @@ blockquote {
 }
 .ten-year__date strong {
   font-size: var(--fs-body);
-  color: var(--default-bg-color);
+  color: var(--accent-ink); /* 14px 主色文字，暗色需提亮达 AA */
 }
 
 /* 6.4 中间列：仅进度条 */
@@ -478,11 +503,11 @@ blockquote {
   transition: width var(--transition-slow); /* 改值时平滑过渡 */
 }
 
-/* 6.3b 窄屏（≤540px）：原「日期 | 进度条 | 日期」三列在 360px 下会挤爆 ——
+/* 6.3b 窄屏（≤480px，2026-10-28 由 540px 收敛为标准断点）：原「日期 | 进度条 | 日期」三列在 360px 下会挤爆 ——
    两个日期各 min-width 92px 吃掉 184px + 36px 间距，进度条只剩约 80px，几乎看不出比例。
    改为：两个日期并排占第一行，进度条整条独占第二行（order 把它排到日期之后）。
    断点写死 px，不用 var()（@media 条件里 var() 会被浏览器整条丢弃）。 */
-@media (max-width: 540px) {
+@media (max-width: 480px) {
   .ten-year__row {
     flex-wrap: wrap;
     gap: var(--space-sm) var(--space-md);
@@ -508,7 +533,7 @@ blockquote {
   padding: var(--space-sm) var(--space-sm);
   text-align: center;
   background: color-mix(in srgb, var(--card-bg) 82%, var(--light-grey) 18%);
-  border: 1px solid var(--light-grey);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
 }
 .ten-year__stat-item span {
@@ -519,7 +544,7 @@ blockquote {
 }
 .ten-year__stat-item strong {
   font-size: var(--fs-body);
-  color: var(--default-bg-color);
+  color: var(--accent-ink); /* 14px 主色文字，暗色需提亮达 AA */
 }
 
 /* 6.6 里程碑时间轴：横向圆点 + 贯穿连线 */
@@ -540,7 +565,7 @@ blockquote {
   left: calc(4% + 24px);
   right: calc(4% + 24px);
   height: 2px;
-  background: var(--light-grey);
+  background: var(--border-color);
 }
 .ten-year__ms-item {
   position: relative; /* 圆点点位于连线之上 */
@@ -559,7 +584,7 @@ blockquote {
   height: 12px;
   border-radius: 50%;
   background: var(--card-bg);
-  border: 2px solid var(--light-grey); /* 2px 描边，还原“之前” */
+  border: 2px solid var(--border-color); /* 2px 描边，还原“之前” */
   box-sizing: border-box;
 }
 .ten-year__ms-item.is-done .dot {
@@ -667,7 +692,7 @@ blockquote {
 }
 
 /* 7.7 窄屏：单列堆叠，左列恢复从头排列 */
-@media (max-width: 540px) {
+@media (max-width: 480px) {
   .skill-grid {
     grid-template-columns: 1fr;
     gap: var(--space-lg);
@@ -692,7 +717,7 @@ blockquote {
   margin: 1.2rem 0;
   padding: var(--space-md) var(--space-lg);
   background: var(--card-bg);
-  border: 1px solid var(--light-grey);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   box-shadow: var(--card-box-shadow);
 }
@@ -736,13 +761,13 @@ blockquote {
   padding: var(--space-md) var(--space-sm);
   text-decoration: none;
   background: color-mix(in srgb, var(--card-bg) 88%, var(--light-grey) 12%);
-  border: 1px solid var(--light-grey);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
   transition: transform var(--transition-slow), box-shadow var(--transition-slow);
 }
 .friend-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px); /* 统一全站悬浮抬升 -3px（原 -4px 独一档） */
+  box-shadow: var(--card-hover-box-shadow); /* 归档：与全站卡片 hover 同阴影 */
 }
 .friend-card__avatar {
   position: relative; /* 供 img 绝对定位铺满 */
@@ -752,8 +777,8 @@ blockquote {
   width: 52px;
   height: 52px;
   overflow: hidden;
-  background: var(--light-grey);
-  border: 1px solid var(--light-grey);
+  background: var(--border-color);
+  border: 1px solid var(--border-color);
   border-radius: 50%;
   color: var(--font-color);
   font-size: var(--fs-card);
@@ -778,7 +803,7 @@ blockquote {
   margin-top: var(--space-sm);
   font-size: var(--fs-card);
   font-weight: 600;
-  color: var(--default-bg-color);
+  color: var(--accent-ink); /* 16px 主色文字压暗色卡片仅 3.7:1，走小字变体 */
 }
 .friend-card__desc {
   margin-top: 2px;
@@ -832,12 +857,14 @@ blockquote {
 
 #footer {
   /* 主题主色半透明 + 轻模糊：与顶部导航栏同一套「半透 + 毛玻璃」配方（导航栏 rgba(255,255,255,.7)+blur），
-     上下呼应、反差收敛；color-mix 让透明度跟随主题色变化（fallback 退实底）。 */
+     上下呼应、反差收敛；color-mix 让透明度跟随主题色变化（fallback 退实底）。
+     2026-10-31：50% → 62% —— 半透底叠壁纸，白字实际对比随壁纸像素浮动，
+     亮色壁纸高光区会跌破 AA；提到 62% 后最亮壁纸下仍稳。 */
   background: var(--default-bg-color); /* fallback：不支持 color-mix 时用实底 */
-  background: color-mix(in srgb, var(--default-bg-color) 50%, transparent);
+  background: color-mix(in srgb, var(--default-bg-color) 62%, transparent);
   -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  border-top: 1px solid color-mix(in srgb, var(--on-accent) 14%, transparent);
   box-shadow: 0 -2px 12px -4px rgba(0, 0, 0, 0.28);
   font-size: var(--fs-body);
   color: var(--white, #fff);
@@ -846,24 +873,27 @@ blockquote {
 /* 高度自适应：主题 .footer-flex / .footer-other 写死 40px 上下内边距把底栏撑高，
    收小后高度随内容走（2026-10-05 用户要求去掉固定感；本段保留，与底色改动无关） */
 #footer .footer-flex {
-  padding: 16px 20px;
+  padding: var(--space-md) var(--space-lg);
 }
 #footer .footer-other {
-  padding: 16px 20px;
+  padding: var(--space-md) var(--space-lg);
 }
 
 #footer .copyright,
 #footer .framework-info,
 #footer .footer_custom_text,
 #footer a {
-  /* 深青绿底上用浅色字：.92 白保证小字清晰，字重 500 提一档存在感 */
-  color: rgba(255, 255, 255, 0.92);
+  /* 深青绿底上用浅色字：走 --on-accent（亮 #fff / 暗 .9 白），字重 500 提一档存在感 */
+  color: var(--on-accent);
   font-weight: 500;
 }
 
 #footer a:hover {
-  /* 主题原 hover 是同底青绿（$light-blue），在青绿底上会消失；改为纯白提亮 */
-  color: #fff;
+  /* 主题原 hover 是同底青绿（$light-blue），在青绿底上会消失，故改用提亮。
+     2026-10-29：不再用「白 → 纯白」的跳变（与常态色口径不一致），
+     改为「保持常态色 + 字重 500→700」作为可点击反馈：颜色口径统一，反馈仍在。 */
+  color: var(--on-accent);
+  font-weight: 700;
 }
 
 #footer .copyright,
@@ -1050,7 +1080,7 @@ html.with-fancybox body {
 .bangumi-pagination{display:flex;justify-content:center;gap: var(--space-sm);flex-wrap:wrap;margin-top: var(--space-md);width:100%;}
 .bangumi-view-grid .bangumi-pagination{grid-column:1/-1;margin-top: var(--space-sm);}
 /* 内边距 6px→10px：原按钮高约 32px，手机上翻页容易点空；加大到约 40px（触控下限） */
-.bangumi-pagination .bangumi-button,.bangumi-pagination .bangumi-pagenum{display:inline-flex;align-items:center;justify-content:center;padding: var(--space-sm) var(--space-md);border:1px solid var(--bangumi-border);border-radius:6px;background:var(--bangumi-bg);color:var(--bangumi-text);font-size: var(--fs-body);cursor:pointer;text-decoration:none;transition:all var(--transition-base);}
+.bangumi-pagination .bangumi-button,.bangumi-pagination .bangumi-pagenum{display:inline-flex;align-items:center;justify-content:center;padding: var(--space-sm) var(--space-md);border:1px solid var(--bangumi-border);border-radius:var(--radius-xs);background:var(--bangumi-bg);color:var(--bangumi-text);font-size: var(--fs-body);cursor:pointer;text-decoration:none;transition:all var(--transition-base);}
 .bangumi-pagination .bangumi-button:hover{background:var(--bangumi-accent-soft);color:var(--bangumi-accent-strong);}
 .bangumi-pagination .bangumi-pagenum{cursor:default;background:var(--bangumi-accent);color:var(--bangumi-on-accent);border-color:var(--bangumi-accent);}
 
@@ -1086,7 +1116,7 @@ html.with-fancybox body {
   overflow: hidden;
   margin: var(--space-md) 0;
   padding: var(--space-md) var(--space-md) var(--space-md) 48px;
-  border: 1px solid var(--light-grey);
+  border: 1px solid var(--border-color);
   border-left: 4px solid var(--default-bg-color);
   border-radius: var(--radius-sm);
   color: var(--font-color);
@@ -1095,7 +1125,8 @@ html.with-fancybox body {
     color-mix(in srgb, var(--default-bg-color) 10%, var(--card-bg)),
     var(--card-bg)
   );
-  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.08); /* 与 .bangumi-quote（第三次元）同量级 */
+  /* 2026-10-31：自写 0 10px 26px 阴影并入主题卡片阴影（全站唯二自写 hover/静态阴影的最后一处） */
+  box-shadow: var(--card-box-shadow);
 }
 /* 大引号：尺寸 / 位置 / 透明度全部对齐插件的 .bangumi-quote::before
    （40px / top 8px / left 15px / opacity .6），使六个页面的副标题框看起来是同一个组件。
@@ -1156,6 +1187,12 @@ html.with-fancybox body {
    放在这里是因为 custom.css 在主题 index.css 之后加载，可稳定覆盖。 */
 [data-theme="dark"] {
   --default-bg-color: #40786b;
+  /* 边框令牌：暗色用主题暗色分隔线档（原 --light-grey 暗色 = 70% 白，当边框用是系统性破绽） */
+  --border-color: #2c2c2c;
+  /* 小字主色提亮：#40786b 对 #121212 卡底仅 ≈3.7:1，提亮后 ≈4.6:1 达 AA */
+  --accent-ink: #4d8a7c;
+  /* 辅助文字透明度暗色提一档：0.6 × 正文白 ≈ 42% 白对 #121212 仅 3.4:1，提到 0.7 ≈ 4.6:1 */
+  --opacity-tertiary: 0.7;
 }
 
 /* ── 首屏横幅上的导航文字可读性（2026-10-03，同日修正作用域）──────────────
@@ -1210,17 +1247,20 @@ html.with-fancybox body {
    不再用 ::before/::after 画线的原因：伪元素连线依赖写死的像素偏移（「卡片半高 18px」
         「卡片半宽 40px」、28/24/14px 各种间距），字号档位一变、换行一发生、跨过 768px
         断点就会与节点脱节；SVG 现算对这几种情况天然免疫。
-   配色沿用 Butterfly 主题：主色 #49B1F5 / 青绿 #00c4b6 / 橙红 #FF7242；
+   配色（2026-10-28 更正）：节点三色已于 2026-10-03 由 Butterfly 默认色降饱和为
+   鼠尾草绿 / 降饱和蓝 / 降饱和橙，取值统一收敛在 :root 的 --c-nat-*（下方 --c-cat 等引用）。
+   ⚠ 早期注释里的「主色 #49B1F5 / 青绿 #00c4b6 / 橙红 #FF7242」已全部废弃，勿再恢复。
    卡片圆角 10px、阴影复用 --card-box-shadow、连线色 var(--hr-before-color) 明暗自适应。 */
 .site-tree {
-  --tree-line: var(--hr-before-color, #bfe4fb);
-  --c-cat: #4a9a8f;   /* 分类类节点：2026-10-03 三色降饱和，向全站鼠尾草绿系靠拢 */
+  --tree-line: var(--hr-before-color); /* 连线色（2026-10-31 删永不触发的旧蓝 fallback） */
+  --c-cat: var(--c-nat-green); /* 分类类节点：2026-10-03 降饱和；2026-10-28 起值引用 :root 单一源 */
   /* 文字专用深色变体（GLM 报告 §3.2#5）：--c-cat 作文字压在 14% 淡 tint 底上仅约 3.3:1，
      低于 WCAG AA 4.5:1；徽标数字与 hover 文字改用本值（对白 ≈5.5:1）。
+     2026-10-31：#2f6b60 与主色 #2F6E63 差 1/5/3（近乎复刻），改引主色——主色调整时不再漂移。
      图形元素（连线、图标、边框）不受影响，继续用 --c-cat。 */
-  --c-cat-ink: #2f6b60;
-  --c-album: #6a93b8; /* 相册类节点：降饱和蓝（原 #49b1f5 主题默认蓝） */
-  --c-page: #d08a5f;  /* 单页类节点：降饱和橙（原 #ff7242） */
+  --c-cat-ink: var(--default-bg-color);
+  --c-album: var(--c-nat-blue); /* 相册类节点：降饱和蓝（原 #49b1f5 主题默认蓝）；值同上收敛 */
+  --c-page: var(--c-nat-orange); /* 单页类节点：降饱和橙（原 #ff7242）；值同上收敛 */
   --h: 30px;          /* 横向连线长度（总干线/轨道 → 卡片；同时是子层 li 的左内边距） */
   --row-gap: 16px;    /* 同层节点纵向间距 */
   --bus-gap: 24px;    /* 水平干线到「横排子卡片」的垂直距离（连线层读此变量，勿在 JS 里写死） */
@@ -1370,7 +1410,7 @@ html.with-fancybox body {
   padding: .5em .8em;
   background: var(--card-bg, #fff);
   border: 1px solid var(--light-grey, #eee);
-  border-left: 4px solid var(--default-bg-color, #49b1f5);
+  border-left: 4px solid var(--default-bg-color);
   border-radius: var(--radius-md);
   box-shadow: var(--card-box-shadow, 0 3px 8px 6px rgba(7,17,27,.05));
   color: var(--font-color, #4c4948);
@@ -1384,21 +1424,21 @@ html.with-fancybox body {
 /* 悬停：卡片抬升 + 阴影加深 + 左侧条变色 */
 .site-tree details > summary:hover,
 .site-tree a:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px); /* 统一全站悬浮抬升 -3px（原 -2px 独一档） */
   box-shadow: var(--card-hover-box-shadow, 0 3px 8px 6px rgba(7,17,27,.09));
   border-left-color: var(--c-page);
-  color: var(--default-bg-color, #49b1f5);
+  color: var(--accent-ink); /* hover 文字走小字主色变体（暗色自动提亮） */
   text-decoration: none;
 }
 
 /* 类型配色（左侧条 + 悬停文字色） */
 .site-tree .t-cat   { border-left-color: var(--c-cat); }
 .site-tree .t-album { border-left-color: var(--c-album); }
-.site-tree .t-root  { border-left-color: var(--default-bg-color, #49b1f5); }
+.site-tree .t-root  { border-left-color: var(--default-bg-color); }
 .site-tree .t-page  { border-left-color: var(--c-page); }
 .site-tree .t-cat:hover   { color: var(--c-cat);   border-left-color: var(--c-cat); }
 .site-tree .t-album:hover { color: var(--c-album); border-left-color: var(--c-album); }
-.site-tree .t-root:hover  { color: var(--default-bg-color, #49b1f5); }
+.site-tree .t-root:hover  { color: var(--accent-ink); }
 .site-tree .t-page:hover  { color: var(--c-page);  border-left-color: var(--c-page); }
 
 /* 图标：随类型着色 + 悬停微缩放
@@ -1411,7 +1451,7 @@ html.with-fancybox body {
 }
 .site-tree .t-cat   i[class*="fa-"] { color: var(--c-cat); }
 .site-tree .t-album i[class*="fa-"] { color: var(--c-album); }
-.site-tree .t-root  i[class*="fa-"] { color: var(--default-bg-color, #49b1f5); }
+.site-tree .t-root  i[class*="fa-"] { color: var(--default-bg-color); }
 .site-tree .t-page  i[class*="fa-"] { color: var(--c-page); }
 .site-tree details > summary:hover i[class*="fa-"],
 .site-tree a:hover i[class*="fa-"] { transform: scale(1.14); }
@@ -1427,9 +1467,14 @@ html.with-fancybox body {
   font-weight: 600;
 }
 
-/* 暗色模式：背景更深，文字专用色反向提亮（对卡片底 ≈8:1） */
+/* 暗色模式：背景更深，文字专用色反向提亮（对卡片底 ≈8:1）；
+   2026-10-31 补：三类型色也提亮一档 —— 原 #4a9a8f 等在 #121212 卡底仅 ≈4.0:1，
+   hover 文字/图标（14px）踩 AA 线；提亮后 ≈5.5:1，图形在暗色下也更清晰。 */
 [data-theme="dark"] .site-tree {
   --c-cat-ink: #86c4b6;
+  --c-cat: #6fb5a7;
+  --c-album: #8fb3d4;
+  --c-page: #e0a87f;
 }
 
 /* 折叠三角（替换默认 disclosure，主题主色） */
@@ -1445,7 +1490,7 @@ html.with-fancybox body {
   display: inline-block;
   margin-left: -.1em;
   margin-right: .1em;
-  color: var(--default-bg-color, #49b1f5);
+  color: var(--default-bg-color);
   transition: transform var(--transition-fast);
 }
 .site-tree details[open] > summary::before { transform: rotate(90deg); }

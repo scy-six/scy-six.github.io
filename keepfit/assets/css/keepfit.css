@@ -135,29 +135,37 @@
   stroke-width: 2;
 }
 
-/* 三项运动配色（与表格、图例一致）：跑步=主色，骑行=绿，游泳=橙 */
-.keepfit-page .mc-dot.run { fill: var(--default-bg-color); }
-.keepfit-page .mc-line.run { stroke: var(--default-bg-color); }
+/* 三项运动配色（与表格、图例一致）：跑步=青绿（主色色相），骑行=绿，游泳=橙。
+   2026-10-31 亮度统一：原 run 用主色（L≈31%）而 bike/swim/weight 为 L≈52-63% 的高亮色，
+   同一张图里主系列明显比别人暗一截（暗色模式下差距更大：35% vs 66%）。
+   现四系列统一到等亮度带 —— 亮色 L≈46 / 暗色 L≈60，色相各保持不变：
+   run #43a596 / bike #3eac76 / swim #e47511 / weight #6f3fc0（暗 #6fb5a7 / #59c785 / #f69d40 / #965ad7）。
+   ⚠ 图表系列色为独立字面色板（数据可视化惯例），不随主色变量联动；
+     标题文字仍走下方加深/提亮变体（文字达 AA，图形不受约束）。 */
+.keepfit-page .mc-dot.run { fill: #43a596; }
+.keepfit-page .mc-line.run { stroke: #43a596; }
 
-.keepfit-page .mc-dot.bike { fill: #4cbf8b; }
-.keepfit-page .mc-line.bike { stroke: #4cbf8b; }
+.keepfit-page .mc-dot.bike { fill: #3eac76; }
+.keepfit-page .mc-line.bike { stroke: #3eac76; }
 
-.keepfit-page .mc-dot.swim { fill: #ff9f43; }
-.keepfit-page .mc-line.swim { stroke: #ff9f43; }
+.keepfit-page .mc-dot.swim { fill: #e47511; }
+.keepfit-page .mc-line.swim { stroke: #e47511; }
 
 /* 质量监控：体重趋势（紫，区别于三项运动） */
-.keepfit-page .mc-dot.weight { fill: #a06cd5; }
-.keepfit-page .mc-line.weight { stroke: #a06cd5; }
+.keepfit-page .mc-dot.weight { fill: #6f3fc0; }
+.keepfit-page .mc-line.weight { stroke: #6f3fc0; }
 
-/* 2026-10-03 暗色适配：三项运动色明度中等，暗底（#0d0d0d 系卡片）上饱和色会显得发闷，
-   提供调亮版（明度 +12% 左右），亮色模式不受影响。
+/* 暗色适配（2026-10-03 建，2026-10-31 四系列一起统一到等亮度带 L≈60）：
+   暗底（#0d0d0d 系卡片）上饱和色会显得发闷，用提亮版。
    注意只改 dot 的 fill / line 的 stroke——dot 的 stroke 是卡片底色描边，不能覆盖。 */
-[data-theme="dark"] .keepfit-page .mc-dot.bike   { fill: #5fd0a0; }
-[data-theme="dark"] .keepfit-page .mc-line.bike  { stroke: #5fd0a0; }
-[data-theme="dark"] .keepfit-page .mc-dot.swim   { fill: #ffb066; }
-[data-theme="dark"] .keepfit-page .mc-line.swim  { stroke: #ffb066; }
-[data-theme="dark"] .keepfit-page .mc-dot.weight { fill: #b98fe8; }
-[data-theme="dark"] .keepfit-page .mc-line.weight{ stroke: #b98fe8; }
+[data-theme="dark"] .keepfit-page .mc-dot.run    { fill: #6fb5a7; }
+[data-theme="dark"] .keepfit-page .mc-line.run   { stroke: #6fb5a7; }
+[data-theme="dark"] .keepfit-page .mc-dot.bike   { fill: #59c785; }
+[data-theme="dark"] .keepfit-page .mc-line.bike  { stroke: #59c785; }
+[data-theme="dark"] .keepfit-page .mc-dot.swim   { fill: #f69d40; }
+[data-theme="dark"] .keepfit-page .mc-line.swim  { stroke: #f69d40; }
+[data-theme="dark"] .keepfit-page .mc-dot.weight { fill: #965ad7; }
+[data-theme="dark"] .keepfit-page .mc-line.weight{ stroke: #965ad7; }
 
 /* ── 4b. 速率图网格（每项独立一行，整行宽度） ─────────────────────────── */
 .keepfit-h3 {
@@ -168,10 +176,11 @@
 
 /* 运动项着色（用于图表标题 / 趋势子标题，与图表三色一致） */
 .keepfit-chart-title.sport-run,
-.keepfit-h3.sport-run { color: var(--default-bg-color); }
+.keepfit-h3.sport-run { color: var(--accent-ink); /* 2026-10-31：主色小字，暗色自动提亮 */ }
 /* P1 修复（对比度 F5）：浅色模式下 #4cbf8b/#ff9f43/#a06cd5 在白卡上仅 2.0–3.7:1，
    低于 WCAG AA 4.5:1。标题文字用加深变体（均 ≥5:1）；图表内 dot/line 保持亮色（图形非文字，
-   不受对比度约束）。暗色模式卡底深，亮色原值反而可读，下方 [data-theme="dark"] 恢复原色。 */
+   不受对比度约束）。暗色模式卡底深，亮色原值反而可读，下方 [data-theme="dark"] 恢复原色。
+   2026-10-31：暗色值同步到等亮度系列色板（与 mc-line 一致）。 */
 .keepfit-chart-title.sport-bike,
 .keepfit-h3.sport-bike { color: #1f7a52; }
 .keepfit-chart-title.sport-swim,
@@ -179,10 +188,10 @@
 .keepfit-chart-title.sport-weight { color: #7c45ad; }
 
 [data-theme="dark"] .keepfit-chart-title.sport-bike,
-[data-theme="dark"] .keepfit-h3.sport-bike { color: #4cbf8b; }
+[data-theme="dark"] .keepfit-h3.sport-bike { color: #59c785; }
 [data-theme="dark"] .keepfit-chart-title.sport-swim,
-[data-theme="dark"] .keepfit-h3.sport-swim { color: #ff9f43; }
-[data-theme="dark"] .keepfit-chart-title.sport-weight { color: #a06cd5; }
+[data-theme="dark"] .keepfit-h3.sport-swim { color: #f69d40; }
+[data-theme="dark"] .keepfit-chart-title.sport-weight { color: #965ad7; }
 
 /* ── 4c. 距离明细表（速率图下方，按日期降序） ───────────────────────────── */
 .keepfit-dist-chart {

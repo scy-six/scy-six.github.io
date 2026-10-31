@@ -194,13 +194,21 @@ document.addEventListener('DOMContentLoaded', () => {
       return height
     }
 
-    const createEle = (lang, item) => {
+    const createEle = (langText, item) => {
       const fragment = document.createDocumentFragment()
 
       if (isShowTool) {
         const hlTools = document.createElement('div')
         hlTools.className = `highlight-tools ${highlightShrinkClass}`
-        hlTools.innerHTML = highlightMacStyleEle + highlightShrinkEle + lang + highlightCopyEle + highlightFullpageEle
+        hlTools.innerHTML = highlightMacStyleEle + highlightShrinkEle
+        if (langText) {
+          const langEl = document.createElement('div')
+          langEl.className = 'code-lang'
+          // 语言名来自 Markdown 围栏，必须走 textContent，避免被当作 HTML 注入
+          langEl.textContent = langText
+          hlTools.appendChild(langEl)
+        }
+        hlTools.insertAdjacentHTML('beforeend', highlightCopyEle + highlightFullpageEle)
         btf.addEventListenerPjax(hlTools, 'click', highlightToolsFn)
         fragment.appendChild(hlTools)
       }
@@ -234,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
         langName = item.getAttribute('class').split(' ')[1]
         if (langName === 'plain' || langName === undefined) langName = 'Code'
       }
-      createEle(`<div class="code-lang">${langName}</div>`, item)
+      createEle(langName, item)
     })
   }
 
@@ -258,175 +266,6 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   const runLightbox = $article => {
     btf.loadLightbox($article.querySelectorAll('img:not(.no-lightbox)'))
-  }
-
-  /**
-   * justified-gallery 圖庫排版
-   */
-
-  const fetchUrl = async url => {
-    try {
-      const response = await fetch(url)
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
-      return await response.json()
-    } catch (error) {
-      console.error('Failed to fetch URL:', error)
-      throw error
-    }
-  }
-
-  const runJustifiedGallery = (container, data, config) => {
-    const { isButton, tabs } = config
-    const limit = Math.max(1, Number(config.limit) || 20)
-    const firstLimit = Math.max(1, Number(config.firstLimit) || limit)
-
-    const dataLength = data.length
-    const maxGroupKey = dataLength
-      ? Math.ceil(Math.max(0, dataLength - firstLimit) / limit) + 1
-      : 0
-
-    // Gallery configuration
-    const igConfig = {
-      gap: 5,
-      isConstantSize: true,
-      sizeRange: [150, 600],
-      // useResizeObserver: true,
-      // observeChildren: true,
-      useTransform: true
-      // useRecycle: false
-    }
-
-    const ig = new InfiniteGrid.JustifiedInfiniteGrid(container, igConfig)
-    let isLayoutHidden = false
-
-    // Utility functions
-    const sanitizeString = str => String(str ?? '')
-      .replace(/&/g, '&amp;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#39;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-
-    const createImageItem = item => {
-      const alt = item.alt ? `alt="${sanitizeString(item.alt)}"` : ''
-      const title = item.title ? `title="${sanitizeString(item.title)}"` : ''
-      const url = item.url ? sanitizeString(item.url) : ''
-      return `<div class="item">
-        <img src="${url}" data-grid-maintained-target="true" ${alt} ${title} />
-      </div>`
-    }
-
-    const getItems = (nextGroupKey, count, isFirst = false) => {
-      const startIndex = isFirst ? (nextGroupKey - 1) * count : (nextGroupKey - 2) * count + firstLimit
-      return data.slice(startIndex, startIndex + count).map(createImageItem)
-    }
-
-    // Load more button
-    const addLoadMoreButton = container => {
-      const button = document.createElement('button')
-      button.innerHTML = `${GLOBAL_CONFIG.infinitegrid.buttonText}<i class="fa-solid fa-arrow-down"></i>`
-
-      button.addEventListener('click', () => {
-        button.remove()
-        btf.setLoading.add(container)
-        appendItems(ig.getGroups().length + 1, limit)
-      }, { once: true })
-
-      container.insertAdjacentElement('afterend', button)
-    }
-
-    const appendItems = (nextGroupKey, count, isFirst) => {
-      ig.append(getItems(nextGroupKey, count, isFirst), nextGroupKey)
-    }
-
-    // Event handlers
-    const handleRenderComplete = e => {
-      if (tabs) {
-        const parentNode = container.parentNode
-        if (isLayoutHidden) {
-          parentNode.style.visibility = 'visible'
-        }
-        if (container.offsetHeight === 0) {
-          parentNode.style.visibility = 'hidden'
-          isLayoutHidden = true
-        }
-      }
-
-      const { updated, isResize, mounted } = e
-      if (!updated.length || !mounted.length || isResize) return
-
-      btf.loadLightbox(container.querySelectorAll('img:not(.medium-zoom-image)'))
-
-      if (ig.getGroups().length === maxGroupKey) {
-        btf.setLoading.remove(container)
-        !tabs && ig.off('renderComplete', handleRenderComplete)
-        return
-      }
-
-      if (isButton) {
-        btf.setLoading.remove(container)
-        addLoadMoreButton(container)
-      }
-    }
-
-    const handleRequestAppend = btf.debounce(e => {
-      const nextGroupKey = (+e.groupKey || 0) + 1
-
-      if (nextGroupKey === 1) appendItems(nextGroupKey, firstLimit, true)
-      else appendItems(nextGroupKey, limit)
-
-      if (nextGroupKey === maxGroupKey) ig.off('requestAppend', handleRequestAppend)
-    }, 300)
-
-    btf.setLoading.add(container)
-    ig.on('renderComplete', handleRenderComplete)
-
-    if (isButton && dataLength) {
-      appendItems(1, firstLimit, true)
-    } else if (dataLength) {
-      ig.on('requestAppend', handleRequestAppend)
-      ig.renderItems()
-    } else {
-      btf.setLoading.remove(container)
-    }
-
-    btf.addGlobalFn('pjaxSendOnce', () => ig.destroy())
-  }
-
-  const addJustifiedGallery = async (elements, tabs = false) => {
-    if (!elements.length) return
-
-    const initGallery = async () => {
-      for (const element of elements) {
-        if (btf.isHidden(element) || element.classList.contains('loaded')) continue
-
-        const config = {
-          isButton: element.getAttribute('data-button') === 'true',
-          limit: parseInt(element.getAttribute('data-limit'), 10),
-          firstLimit: parseInt(element.getAttribute('data-first'), 10),
-          tabs
-        }
-
-        const container = element.firstElementChild
-        const content = container.textContent
-        container.textContent = ''
-        try {
-          const data = element.getAttribute('data-type') === 'url' ? await fetchUrl(content) : JSON.parse(content)
-          if (!Array.isArray(data)) throw new TypeError('Gallery data must be an array')
-          runJustifiedGallery(container, data, config)
-          element.classList.add('loaded')
-        } catch (error) {
-          console.error('Gallery data parsing failed:', error)
-        }
-      }
-    }
-
-    if (typeof InfiniteGrid === 'function') {
-      await initGallery()
-    } else {
-      await btf.getScript(GLOBAL_CONFIG.infinitegrid.js)
-      await initGallery()
-    }
   }
 
   /**
@@ -822,82 +661,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   }
 
-  const clickFnOfTagHide = $article => {
-    const hideButtons = $article.querySelectorAll('.hide-button')
-    if (!hideButtons.length) return
-
-    const handleClickOfTagHide = e => {
-      const button = e.target.closest('.hide-button')
-      if (!button) return
-      button.classList.add('open')
-      addJustifiedGallery(button.nextElementSibling.querySelectorAll('.gallery-container'))
-    }
-
-    btf.addEventListenerPjax($article, 'click', handleClickOfTagHide)
-  }
-
-  const tabsFn = $article => {
-    if (!$article.querySelector('.tabs')) return
-
-    const setActiveClass = (elements, activeIndex) => {
-      elements.forEach((el, index) => el.classList.toggle('active', index === activeIndex))
-    }
-
-    const handleClick = e => {
-      const tabsRoot = e.target.closest('.tabs')
-      if (!tabsRoot) return
-
-      const navContainer = tabsRoot.firstElementChild
-      const toTopContainer = tabsRoot.lastElementChild
-
-      if (navContainer.contains(e.target)) {
-        const target = e.target.closest('button')
-        if (!target || target.classList.contains('active')) return
-
-        const navItems = [...navContainer.children]
-        const tabContents = [...navContainer.nextElementSibling.children]
-        const indexOfButton = navItems.indexOf(target)
-        setActiveClass(navItems, indexOfButton)
-        navContainer.classList.remove('no-default')
-        setActiveClass(tabContents, indexOfButton)
-        addJustifiedGallery(tabContents[indexOfButton].querySelectorAll('.gallery-container'), true)
-        return
-      }
-
-      if (toTopContainer.contains(e.target) && e.target.closest('button')) {
-        btf.scrollToDest(btf.getEleTop(tabsRoot), 300)
-      }
-    }
-
-    btf.addEventListenerPjax($article, 'click', handleClick)
-  }
-
-  const toggleCardCategory = () => {
-    const cardCategory = document.querySelector('#aside-cat-list.expandBtn')
-    if (!cardCategory) return
-
-    const handleToggleBtn = e => {
-      const target = e.target
-      if (target.nodeName === 'I') {
-        e.preventDefault()
-        target.parentNode.classList.toggle('expand')
-      }
-    }
-    btf.addEventListenerPjax(cardCategory, 'click', handleToggleBtn, true)
-  }
-
-  const addPostOutdateNotice = () => {
-    const ele = document.getElementById('post-outdate-notice')
-    if (!ele) return
-
-    const { limitDay, messagePrev, messageNext, postUpdate } = JSON.parse(ele.getAttribute('data'))
-    const diffDay = btf.diffDate(postUpdate)
-    if (diffDay >= limitDay) {
-      ele.textContent = `${messagePrev} ${diffDay} ${messageNext}`
-      ele.hidden = false
-    }
-  }
-
   const lazyloadImg = () => {
     window.lazyLoadInstance = new LazyLoad({
       elements_selector: 'img',
@@ -964,12 +727,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     addHighlightTool($article)
     addPhotoFigcaption($article)
-    addJustifiedGallery($article.querySelectorAll('.gallery-container'))
     runLightbox($article)
     scrollFnToDo($article)
     addTableWrap($article)
-    clickFnOfTagHide($article)
-    tabsFn($article)
   }
 
   const refreshFn = () => {
@@ -980,13 +740,11 @@ document.addEventListener('DOMContentLoaded', () => {
     justifiedIndexPostUI()
 
     if (GLOBAL_CONFIG_SITE.pageType === 'post') {
-      addPostOutdateNotice()
       GLOBAL_CONFIG.relativeDate.post && relativeDate(document.querySelectorAll('#post-meta time'))
     } else {
       GLOBAL_CONFIG.relativeDate.homepage && relativeDate(document.querySelectorAll('#recent-posts time'))
       GLOBAL_CONFIG.runtime && addRuntime()
       addLastPushDate()
-      toggleCardCategory()
     }
 
     GLOBAL_CONFIG_SITE.pageType === 'home' && scrollDownInIndex()

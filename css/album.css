@@ -29,7 +29,7 @@
 .diy-grid,
 .pet-grid {
   display: grid;
-  gap: 0.85rem;
+  gap: 0.6rem; /* 2026-10-31 统一：与 travel / notes 图片网格同间距（原 0.85rem 独一档） */
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
@@ -48,9 +48,10 @@
   overflow: hidden;
   background: color-mix(in srgb, var(--card-bg) 97%, var(--font-color) 3%);
   border: 1px solid color-mix(in srgb, var(--font-color) 8%, transparent);
+  /* 2026-10-28：改引用过渡令牌（自带 ease，勿补）——值同为 0.22s，视觉零差异，但令牌调值时会跟随 */
   transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease;
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .garden-card:hover,
@@ -87,9 +88,10 @@
   display: block;
   margin: 0;
   border-radius: 0;
+  /* 2026-10-28：改引用过渡令牌（自带 ease，勿补）——值同为 0.35s，视觉零差异 */
   transition:
-    transform 0.35s ease,
-    filter 0.35s ease;
+    transform var(--transition-slow),
+    filter var(--transition-slow);
 }
 
 .garden-card:hover .garden-media img,
@@ -203,9 +205,10 @@
   overflow: hidden;
   background: color-mix(in srgb, var(--card-bg) 97%, var(--font-color) 3%);
   border: 1px solid color-mix(in srgb, var(--font-color) 8%, transparent);
+  /* 2026-10-28：改引用过渡令牌（自带 ease，勿补）——值同为 0.22s，视觉零差异，但令牌调值时会跟随 */
   transition:
-    transform 0.22s ease,
-    box-shadow 0.22s ease;
+    transform var(--transition-base),
+    box-shadow var(--transition-base);
 }
 
 .gallery-group:hover {
@@ -242,18 +245,17 @@
   bottom: 0;
   margin: 0;
   padding: 1.7rem 0.75rem 0.6rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.66), rgba(0, 0, 0, 0));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.68), rgba(0, 0, 0, 0));
   /* 文字必须浅色：底部是半透明黑渐变，用 --font-color 在亮色模式下解析为深灰
      → 深字压深底、几乎看不清（注释早已写明「保证白字」，但值写成了 --font-color）。
-     统一改白字 + 文字阴影，与 travel.css 的 .travel-photo a::after 一致。 */
+     统一改白字 + 文字阴影，与 travel.css 的 .travel-photo a::after 一致。
+     2026-10-31：渐变/阴影统一为 .68/.85（原 .66/.55 与 .*-info、travel 各一套）。 */
   color: #fff;
-  /* 2026-10-03：原此处与下方重复声明 text-shadow（0.85 被 0.55 覆盖），删除前者，
-     保留实际渲染值 0.55，零视觉变化。 */
   font-size: var(--fs-card);
   font-weight: 600;
   line-height: var(--lh-tight); /* 原 1.3 */
   text-align: left;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
   pointer-events: none; /* 不遮挡整卡点击热区 */
 }
 
@@ -288,7 +290,7 @@
   gap: 0.4rem;
   margin: 0 0 0.9rem;
   padding-bottom: 0.7rem;
-  border-bottom: 1px solid var(--light-grey);
+  border-bottom: 1px solid var(--border-color);
 }
 
 /* 8.2 模块（触发按钮 + 下拉） */
@@ -303,7 +305,7 @@
   appearance: none;
   cursor: pointer;
   padding: 0.32rem 0.85rem;
-  border: 1px solid var(--light-grey);
+  border: 1px solid var(--border-color);
   border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--card-bg) 88%, var(--light-grey) 12%);
   color: color-mix(in srgb, var(--font-color) 82%, transparent);
@@ -313,10 +315,10 @@
   line-height: var(--lh-base); /* 原 1.5 */
   white-space: nowrap;
   transition:
-    background 0.18s ease,
-    color 0.18s ease,
-    border-color 0.18s ease,
-    box-shadow 0.18s ease;
+    background var(--transition-fast),
+    color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 .album-menu-trigger:hover {
   border-color: color-mix(in srgb, var(--default-bg-color) 45%, transparent);
@@ -376,9 +378,9 @@
   visibility: hidden;
   transform: translateY(-4px);
   transition:
-    opacity 0.16s ease,
-    transform 0.16s ease,
-    visibility 0.16s;
+    opacity var(--transition-fast),
+    transform var(--transition-fast),
+    visibility var(--transition-fast);
 }
 .album-menu:hover > .album-menu-list,
 .album-menu:focus-within > .album-menu-list,
@@ -467,7 +469,7 @@
  *     下拉伸出视口右侧，导致整页横向滚动、右侧菜单项点不到。
  *   · 下拉项同样加大内边距，避免密集误触。
  */
-@media (max-width: 560px) {
+@media (max-width: 480px) {
   .album-menu-bar {
     gap: 0.35rem;
   }

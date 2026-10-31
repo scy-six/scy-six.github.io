@@ -103,7 +103,8 @@
   text-align: center;
   padding: 0.8rem 1rem;
   white-space: nowrap;
-  border-bottom: 2px solid var(--tab-border-color);
+  /* 2026-10-31：与 custom.css 表头同步——强调线改主色 35% 派生（原近白灰亮度不协调） */
+  border-bottom: 2px solid color-mix(in srgb, var(--default-bg-color) 35%, transparent);
 }
 
 .mountain-table tbody td {
@@ -134,7 +135,7 @@
 }
 
 .mountain-table .dist {
-  color: var(--default-bg-color);
+  color: var(--accent-ink); /* 14px 主色文字，暗色走提亮变体（原 #40786b 仅 ≈3.7:1） */
   font-weight: 700;
 }
 
@@ -146,7 +147,10 @@
   line-height: var(--lh-base); /* 原 1.4 */
   border-radius: var(--radius-pill);
   background: color-mix(in srgb, var(--default-bg-color) 18%, transparent);
-  color: var(--default-bg-color);
+  /* 2026-10-31：12px 文字压 18% 主色淡底，暗色下有效对比仅 ≈2.6:1（全站最差），
+     改走小字提亮变体；底色同步提高不透明度补偿（18% → 24%）。 */
+  background: color-mix(in srgb, var(--default-bg-color) 24%, transparent);
+  color: var(--accent-ink);
 }
 
 /* ── 4. 图表卡片 ──────────────────────────────────────────────────────── */
@@ -212,9 +216,12 @@
   font-size: calc(var(--fs-body) + 1px); /* 同上：SVG 缩放补偿 */
   font-weight: 500;
 }
+/* 折线/数据点：2026-10-31 改用图表系列色板等亮度值（亮 #43a596 L≈46 / 暗 #6fb5a7 L≈59）——
+   原主色本体（亮 #2F6E63 L≈31 / 暗 #40786b L≈35）与 keepfit 统一后的系列色亮度不一致，
+   且暗色下折线贴底偏闷。面积填充仍用主色派生（大面积低透明，无需提亮）。 */
 .mountain-page .mc-line {
   fill: none;
-  stroke: var(--default-bg-color);
+  stroke: #43a596;
   stroke-width: 2.5;
   stroke-linejoin: round;
 }
@@ -223,15 +230,18 @@
   stroke: none;
 }
 .mountain-page .mc-dot {
-  fill: var(--default-bg-color);
+  fill: #43a596;
   stroke: var(--card-bg);
   stroke-width: 2;
 }
 .mountain-page .mc-dot-last {
   fill: var(--card-bg);
-  stroke: var(--default-bg-color);
+  stroke: #43a596;
   stroke-width: 3;
 }
+[data-theme="dark"] .mountain-page .mc-line      { stroke: #6fb5a7; }
+[data-theme="dark"] .mountain-page .mc-dot       { fill: #6fb5a7; }
+[data-theme="dark"] .mountain-page .mc-dot-last  { stroke: #6fb5a7; }
 
 /* ── 5. 响应式 ─────────────────────────────────────────────────────────────
  * ⚠ 断点写死 px：@media 条件里用 var() 会被浏览器整条丢弃（规则从未生效），

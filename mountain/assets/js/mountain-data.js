@@ -20,5 +20,6 @@ window.MOUNTAIN_RECORDS = [
   { region: '深圳光明', name: '大雁山', height: 310, plannedDist: 0, bestDist: 4.11, bestDate: '2026-03-14', climbs: 1 },
   { region: '深圳坪山', name: '马峦山', height: 590, plannedDist: 14.0, bestDist: 5.03, bestDate: '2026-03-29', climbs: 1 },
   { region: '深圳龙华', name: '亚寄山', height: 286, plannedDist: 0, bestDist: 2.72, bestDate: '2026-05-17', climbs: 1 },
+  { region: '深圳福田', name: '小笔架山', height: 180, plannedDist: 10.0, bestDist: 2.49, bestDate: '2026-10-25', climbs: 1 },
 ];
-/* 汇总：山峰数=20，累计最长单程合计=144.79 km */
+/* 汇总：山峰数=21，累计最长单程合计=147.28 km */

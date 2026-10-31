@@ -82,9 +82,11 @@
   padding: 1.3rem 1rem;
   text-align: center;
   box-shadow: var(--card-box-shadow);
+  /* 2026-10-28：改引用过渡令牌（自带 ease，勿补）——原写死 0.3s 与 --transition-slow(0.35s) 不符，
+     与 keepfit / mountain / ability 等数据页的起伏节奏不一致 */
   transition:
-    box-shadow 0.3s ease,
-    transform 0.3s ease;
+    box-shadow var(--transition-slow),
+    transform var(--transition-slow);
 }
 
 .travel-stat-card:hover {
@@ -169,9 +171,11 @@
   border-radius: var(--radius-card);
   padding: 1.4rem 1.5rem;
   box-shadow: var(--card-box-shadow);
+  /* 2026-10-28：改引用过渡令牌（自带 ease，勿补）——原写死 0.3s 与 --transition-slow(0.35s) 不符，
+     与 keepfit / mountain / ability 等数据页的起伏节奏不一致 */
   transition:
-    box-shadow 0.3s ease,
-    transform 0.3s ease;
+    box-shadow var(--transition-slow),
+    transform var(--transition-slow);
 }
 
 .travel-card:hover {
